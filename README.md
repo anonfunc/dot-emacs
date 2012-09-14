@@ -7,3 +7,4 @@ Uses
 ====
 
 * el-get
+* scrub git-filter to remove some workplace identification from .emacs
