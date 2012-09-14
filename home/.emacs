@@ -433,39 +433,39 @@
 (setq org-contacts-files '("~/org/contacts.org"))
 ;;}}}
 ;;{{{   mu4e
-(require 'mu4e)
-(setq mu4e-org-contacts-file "~/org/contacts.org"
-      mu4e-maildir       "~/Mail/@workplace@"   ;; top-level Maildir
-      mu4e-sent-folder   "/sent"       ;; where do i keep sent mail?
-      mu4e-drafts-folder "/Drafts"     ;; where do i keep half-written mail?
-      mu4e-trash-folder  "/Trash"     ;; where do i move deleted mail?
-      user-mail-address "@first@.@last@@@workplace@.com"
-      user-full-name "@First@ @Last@"
-      mail-user-agent 'mu4e-user-agent
-      mu4e-get-mail-command "pkill -SIGUSR1 offlineimap"
- ;;     mu4e-html2text-command "html2text -nobs -utf8 -width 72"
-      mu4e-html2text-command "my-html2text"
-)
-(add-to-list 'mu4e-headers-actions
-	     '("org-contact-add" ?o mu4e-action-add-org-contact) t)
-(add-to-list 'mu4e-view-actions
-	     '("org-contact-add" ?o mu4e-action-add-org-contact) t)
-(global-set-key (kbd "C-c m") 'mu4e)
+(when  (require 'mu4e nil t)
+  (setq mu4e-org-contacts-file "~/org/contacts.org"
+	mu4e-maildir       "~/Mail/@workplace@"   ;; top-level Maildir
+	mu4e-sent-folder   "/sent"       ;; where do i keep sent mail?
+	mu4e-drafts-folder "/Drafts"     ;; where do i keep half-written mail?
+	mu4e-trash-folder  "/Trash"     ;; where do i move deleted mail?
+	user-mail-address "@first@.@last@@@workplace@.com"
+	user-full-name "@First@ @Last@"
+	mail-user-agent 'mu4e-user-agent
+	mu4e-get-mail-command "pkill -SIGUSR1 offlineimap"
+	;;     mu4e-html2text-command "html2text -nobs -utf8 -width 72"
+	mu4e-html2text-command "my-html2text"
+	)
+  (add-to-list 'mu4e-headers-actions
+	       '("org-contact-add" ?o mu4e-action-add-org-contact) t)
+  (add-to-list 'mu4e-view-actions
+	       '("org-contact-add" ?o mu4e-action-add-org-contact) t)
+  (global-set-key (kbd "C-c m") 'mu4e)
 
-;; Patch in a maildirproc button.
-(defun my-mu4e-maildirproc ()
-  (interactive)
-  (let ((mu4e-get-mail-command "maildirproc --once"))
-    (mu4e-update-mail-show-window)))
-(defun my-add-maildirproc-mu4e-command ()
-  (let ((buf (get-buffer-create mu4e~main-buffer-name))
-	(inhibit-read-only t))
-    (with-current-buffer buf
-      (insert
-       (mu4e~main-action-str "\t* [m]aildirproc\n" 'my-mu4e-maildirproc)))))
-(define-key mu4e-main-mode-map "m" 'my-mu4e-maildirproc)
-(defadvice mu4e~main-view (after my-ad-maildirproc activate)
-  (my-add-maildirproc-mu4e-command))
+  ;; Patch in a maildirproc button.
+  (defun my-mu4e-maildirproc ()
+    (interactive)
+    (let ((mu4e-get-mail-command "maildirproc --once"))
+      (mu4e-update-mail-show-window)))
+  (defun my-add-maildirproc-mu4e-command ()
+    (let ((buf (get-buffer-create mu4e~main-buffer-name))
+	  (inhibit-read-only t))
+      (with-current-buffer buf
+	(insert
+	 (mu4e~main-action-str "\t* [m]aildirproc\n" 'my-mu4e-maildirproc)))))
+  (define-key mu4e-main-mode-map "m" 'my-mu4e-maildirproc)
+  (defadvice mu4e~main-view (after my-ad-maildirproc activate)
+    (my-add-maildirproc-mu4e-command)))
 ;;}}
 
 ;;}}}
