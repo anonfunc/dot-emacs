@@ -72,6 +72,7 @@
 		    flymake-cursor
 		    yasnippet
 		    paredit
+		    zencoding-mode
 		    ;; VCS
 		    magit
 		    magithub
@@ -88,15 +89,12 @@
 ;;}}}
 ;;{{{ Behavior tweaks
 ;;{{{   Disable backups
-
 (setq backup-inhibited t)
 (setq auto-save-default nil)
-
 ;;}}}
 ;;{{{   Speed tweaks
 (setq font-lock-verbose nil)
 (setq vc-handled-backends '(Git))
-
 ;;}}}
 ;;{{{   Modern sentences
 (setq sentence-end-double-space nil)
@@ -115,14 +113,12 @@
 (scroll-bar-mode 0)
 ;;}}}
 ;;{{{   Color
-
 (defun my-theme () 
   (if (equalp (getenv "SCHEME") "light")
       (color-theme-solarized-light)
     (color-theme-solarized-dark)))
 
 (if window-system (my-theme))
-
 ;;}}}
 ;;{{{   Ido
 (ido-mode t)
@@ -526,7 +522,5 @@
  ;; If there is more than one, they won't work right.
  )
 ;; Local Variables:
-;; folded-file: t
-;; eval: (folding-mode t)
 ;; mode: lisp
 ;; end:
