@@ -15,7 +15,12 @@
 ;;{{{   List of packages
 
 ;; local sources
-(setq el-get-sources '(
+(setq el-get-sources '((:name region-bindings-mode
+			      :type github
+			      :username "fgallina"
+			      :pkgname "region-bindings-mode"
+			      :features region-bindings-mode
+			      :after (progn (region-bindings-mode-enable)))
 		       (:name flymake-shell
 			      :type github
 			      :username "purcell"
@@ -55,7 +60,8 @@
 		    autopair
 		    ace-jump-mode
 		    auto-complete
-
+                    expand-region
+                    multiple-cursors
 		    ;; Sunrise commander
 		    sunrise-commander
 		    sunrise-x-mirror
@@ -160,6 +166,24 @@
 ;;}}}
 ;;{{{   CUA Mode (no stomping on C-x C-c)
 (cua-selection-mode t)
+;;}}}
+;;{{{   Expand Region
+(global-set-key (kbd "C-=") 'er/expand-region)
+
+;;}}}
+;;{{{   Multiple-Cursors
+(global-set-key (kbd "C-c C-SPC") 'mc/edit-lines)
+(global-set-key (kbd "C-c C-e") 'mc/edit-ends-of-lines)
+(global-set-key (kbd "C-c C-a") 'mc/edit-beginnings-of-lines)
+
+;; Rectangular region mode
+(global-set-key (kbd "C-c RET") 'set-rectangular-region-anchor)
+
+;; Mark more like this
+(define-key region-bindings-mode-map "a" 'mc/mark-all-like-this)
+(define-key region-bindings-mode-map "p" 'mc/mark-previous-like-this)
+(define-key region-bindings-mode-map "n" 'mc/mark-next-like-this)
+(define-key region-bindings-mode-map "m" 'mc/mark-more-like-this-extended)
 ;;}}}
 ;;{{{   Misc Bindings
 
