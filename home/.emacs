@@ -97,7 +97,11 @@
 ;;}}}
 ;;}}}
 ;;{{{ Interface
-
+;;{{{   Font
+;;      Same fonts have different names on each platform.
+(case window-system
+  ('ns (set-frame-font "Source Code Pro 18")))
+;;}}}
 ;;{{{   Minimization
 (setq inhibit-splash-screen t)
 (menu-bar-mode 0)
