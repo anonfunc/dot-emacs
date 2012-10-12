@@ -56,7 +56,7 @@
 		    color-theme-solarized
 		    ;; Interface
 		    ido-ubiquitous
-		    evil
+		    ;;evil
 		    autopair
 		    ace-jump-mode
 		    auto-complete
