@@ -209,7 +209,9 @@
 (global-set-key (kbd "C-c e") 'my-edit-dot-emacs)
 
 ;;}}}
-
+;;{{{   Mac specific:
+(set-default 'ns-command-modifier 'meta)
+;;}}}
 ;;}}}
 ;;{{{ Programming
 ;;{{{   Lisps
