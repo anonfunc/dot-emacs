@@ -147,8 +147,10 @@ Inspiration from the approach at [[https://github.com/dbr/dotemacs][dbr/dotemacs
 ** Font
 The same font can have different names on each platform.
 #+begin_src emacs-lisp
+(defun my-font ()  
   (case window-system
-    ('ns (set-frame-font "Source Code Pro 18")))
+    ('ns (set-frame-font "Source Code Pro 18"))))
+(my-font)
 #+end_src
 
 ** Minimal Window Decor
@@ -166,12 +168,21 @@ environment variable.
 Not particularly useful on the Mac.
 
 #+begin_src emacs-lisp
-  (defun my-theme () 
-    (if (equalp (getenv "SCHEME") "light")
-        (color-theme-solarized-light)
-      (color-theme-solarized-dark)))
-  
-  (if window-system (my-theme))
+(defun my-theme () 
+  (if (equalp (getenv "SCHEME") "light")
+      (color-theme-solarized-light)
+    (color-theme-solarized-dark)))
+
+(defun my-frame-hook (frame)  
+    (set-variable 'color-theme-is-global nil)
+    (select-frame frame)
+    (if window-system
+    	(progn (my-theme) (my-font))
+        (color-theme-tty-dark)))
+(add-hook 'after-make-frame-functions 'my-frame-hook)
+
+(set-variable 'color-theme-is-global nil)
+(if window-system (my-theme))
 #+end_src
 ** Don't bother me as much
 #+begin_src emacs-lisp
