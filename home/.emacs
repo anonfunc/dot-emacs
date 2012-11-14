@@ -1,15 +1,15 @@
 ;;{{{ el-get
 ;;{{{   Setup and bootstrap
-
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
-(setq el-get-user-package-directory "~/.emacs.d/packages.d/")
 
 (unless (require 'el-get nil t)
-  (with-current-buffer
-      (url-retrieve-synchronously
-       "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
-    (goto-char (point-max))
-    (eval-print-last-sexp)))
+  (url-retrieve
+   "https://raw.github.com/dimitri/el-get/master/el-get-install.el"
+   (lambda (s)
+     (let (el-get-master-branch)
+       (goto-char (point-max))
+       (eval-print-last-sexp)))))
+
 
 ;;}}}
 ;;{{{   List of packages
@@ -17,14 +17,12 @@
 ;; local sources
 (setq el-get-sources '((:name region-bindings-mode
 			      :type github
-			      :username "fgallina"
-			      :pkgname "region-bindings-mode"
+			      :pkgname "fgallina/region-bindings-mode"
 			      :features region-bindings-mode
 			      :after (progn (region-bindings-mode-enable)))
 		       (:name flymake-shell
 			      :type github
-			      :username "purcell"
-			      :pkgname "flymake-shell")
+			      :pkgname "purcell/flymake-shell")
 		       (:name eshell-manual
 			      :description "eshell is great but lacks a good manual, someone wrote one."
 			      :type github
@@ -45,8 +43,7 @@
 			      :after (add-hook 'folding-mode-hook 'fold-dwim-org/minor-mode))
 		       (:name elisp-slime-nav
 			      :type github
-			      :username "purcell"
-			      :pkgname "elisp-slime-nav")
+			      :pkgname "purcell/elisp-slime-nav")
 		       ))
 
 (setq my-packages '(
@@ -73,6 +70,7 @@
 		    yasnippet
 		    paredit
 		    zencoding-mode
+		    js3-mode
 		    ;; VCS
 		    magit
 		    magithub
