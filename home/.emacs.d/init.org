@@ -198,7 +198,7 @@ Not particularly useful on the Mac.
 ;; Jump to .emacs
 (defun my-edit-dot-emacs ()
   (interactive)
-  (find-file "~/.emacs"))
+  (find-file "~/.emacs.d/init.org"))
 (global-set-key (kbd "C-c e") 'my-edit-dot-emacs)
 #+end_src
 
@@ -400,7 +400,6 @@ Possible fit for project management.
 
  
 
-
 ** Bindings
 *** Capture
 #+begin_src emacs-lisp
@@ -497,8 +496,8 @@ Possible fit for project management.
 ;;(global-set-key (kbd "C-c v") 'org-velocity-read)
 ;;(setq org-velocity-bucket "~/org/velocity.org")
 #+end_src
-** Org and YAS
-#+begin_src emacs-lisp
+** Org and YAS (Defunct)
+#+begin_src emacs-lisp :tangle no
 (defun yas/org-very-safe-expand ()
   (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
 
@@ -522,8 +521,6 @@ Possible fit for project management.
 (org-agenda-to-appt t)
 (add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt)
 #+end_src
-
-
 
 ** Stay on task (Idle display of Agenda)
 #+begin_src emacs-lisp
@@ -624,8 +621,6 @@ Possible fit for project management.
     (defadvice mu4e~main-view (after my-ad-maildirproc activate)
       (my-add-maildirproc-mu4e-command)))
 #+end_src
-
-
 
 * Custom File
 #+begin_src emacs-lisp
