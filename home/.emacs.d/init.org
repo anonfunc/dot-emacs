@@ -123,6 +123,11 @@ Inspiration from the approach at [[https://github.com/dbr/dotemacs][dbr/dotemacs
 #+end_src
 
 * Behavior Tweaks
+** Server mode
+#+begin_src emacs-lisp
+(server-start)
+#+end_src
+
 ** Disable backups
 #+begin_src emacs-lisp
   (setq backup-inhibited t)
