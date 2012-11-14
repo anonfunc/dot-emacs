@@ -77,6 +77,7 @@ Inspiration from the approach at [[https://github.com/dbr/dotemacs][dbr/dotemacs
   (:name org-bullets
          :type github
          :pkgname "sabof/org-bullets"
+         :features org-bullets
          :after (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 #+end_src
 ** Provided packages
@@ -542,7 +543,10 @@ Possible fit for project management.
 (setq org-contacts-files '("~/org/contacts.org"))
 #+end_src
 
-
+** org bullets
+#+begin_src emacs-lisp
+  (setq org-bullets-bullet-list '("◉" "○" "•" "★"))
+#+end_src
 ** Export
 *** Dark backgrounds for code blocks
 #+begin_src emacs-lisp
