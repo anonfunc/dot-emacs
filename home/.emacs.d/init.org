@@ -203,6 +203,17 @@ Not particularly useful on the Mac.
 #+end_src
 
 * Module Configuration
+** Tramp
+Fix too long TMPDIR:
+#+begin_src emacs-lisp
+(setenv "TMPDIR" "/tmp")
+#+end_src
+
+Default method:
+#+begin_src emacs-lisp
+  ;;(setq tramp-default-method "ssh")
+#+end_src
+
 ** IDO Everywhere
 #+begin_src emacs-lisp
 (ido-mode t)

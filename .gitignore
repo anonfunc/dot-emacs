@@ -6,3 +6,5 @@ home/.emacs.d/auto-save-list/
 home/.emacs.d/.mc-lists.el
 home/.emacs.d/.org-id-locations
 *~
+home/.emacs.d/eshell/
+home/.emacs.d/tramp
