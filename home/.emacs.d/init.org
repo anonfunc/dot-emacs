@@ -127,6 +127,12 @@ Inspiration from the approach at [[https://github.com/dbr/dotemacs][dbr/dotemacs
 #+begin_src emacs-lisp
 (server-start)
 #+end_src
+** Chdir to ~ 
+Depending on how the emacs daemon is started, the current directory is less than ideal.
+
+#+begin_src emacs-lisp
+  (cd (expand-file-name "~/"))
+#+end_src
 
 ** Disable backups
 #+begin_src emacs-lisp
