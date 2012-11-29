@@ -509,9 +509,9 @@ Possible fit for project management.
 #+end_src
 ** Org-Velocity
 #+begin_src emacs-lisp
-;;(require 'org-velocity)
-;;(global-set-key (kbd "C-c v") 'org-velocity-read)
-;;(setq org-velocity-bucket "~/org/velocity.org")
+(require 'org-velocity)
+(global-set-key (kbd "C-c v") 'org-velocity-read)
+(setq org-velocity-bucket "~/org/velocity.org")
 #+end_src
 ** Org and YAS (Defunct)
 #+begin_src emacs-lisp :tangle no
