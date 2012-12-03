@@ -80,7 +80,24 @@ Inspiration from the approach at [[https://github.com/dbr/dotemacs][dbr/dotemacs
          :features org-bullets
          :after (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 #+end_src
-** Provided packages
+
+*** dash
+    modern list library
+#+begin_src emacs-lisp :noweb-ref my-pkg :exports none :tangle no
+  (:name dash
+         :type github
+         :pkgname "magnars/dash.el")
+#+end_src
+*** smartparens
+    modern lightweight smart parens/auto-insert/wrapping package for Emacs
+#+begin_src emacs-lisp :noweb-ref my-pkg :exports none :tangle no
+  (:name smartparens
+         :type github
+         :pkgname "Fuco1/smartparens"
+         :depends dash
+         :feature smartparens
+         :after)
+#+end_src** Provided packages
 #+begin_src emacs-lisp
   (setq my-packages '(
                       ;; PKG management
@@ -91,7 +108,6 @@ Inspiration from the approach at [[https://github.com/dbr/dotemacs][dbr/dotemacs
                       ido-ubiquitous
                       dired+
                       ;;evil
-                      autopair
                       ace-jump-mode
                       auto-complete
                       expand-region
@@ -362,6 +378,24 @@ Possible fit for project management.
 (defalias 'yas/snippets-at-point 'yas--snippets-at-point) ;; fold-dwim-org compatibility
 (setq fold-dwim-org/trigger-keys-block (list [tab] [lefttab] [(control tab)]))
 #+end_src
+** smartparens
+#+begin_src emacs-lisp
+  (smartparens-global-mode t)
+
+  ;;; key binds
+  (define-key sp-keymap (kbd "C-M-f") 'sp-forward-sexp)
+  (define-key sp-keymap (kbd "C-M-b") 'sp-backward-sexp)
+  (define-key sp-keymap (kbd "C-M-d") 'sp-down-sexp)
+  (define-key sp-keymap (kbd "C-M-a") 'sp-backward-down-sexp)
+  (define-key sp-keymap (kbd "C-M-e") 'sp-up-sexp)
+  (define-key sp-keymap (kbd "C-M-u") 'sp-backward-up-sexp)
+  (define-key sp-keymap (kbd "C-M-n") 'sp-next-sexp)
+  (define-key sp-keymap (kbd "C-M-p") 'sp-previous-sexp)
+  (define-key sp-keymap (kbd "C-M-k") 'sp-kill-sexp)
+  (sp-add-ban-insert-pair-in-string "'")
+
+#+end_src
+
 * Org-mode Setup
 ** Require
 #+begin_src emacs-lisp
