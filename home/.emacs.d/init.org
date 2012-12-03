@@ -17,24 +17,13 @@ Inspiration from the approach at [[https://github.com/dbr/dotemacs][dbr/dotemacs
          (eval-print-last-sexp)))))
 #+end_src
 ** Custom package sources
+These are generally put next to their relevant configuration when applicable.
+To find, search for ':noweb-ref my-pkg'
+
 #+begin_src emacs-lisp :noweb yes
 (setq el-get-sources '(
       <<my-pkg>>
       ))
-#+end_src
-*** Region Bindings Mode
-#+begin_src emacs-lisp :noweb-ref my-pkg :exports none :tangle no
-  (:name region-bindings-mode
-         :type github
-         :pkgname "fgallina/region-bindings-mode"
-         :features region-bindings-mode
-         :after (progn (region-bindings-mode-enable)))
-#+end_src
-*** Flymake Shell
-#+begin_src emacs-lisp :noweb-ref my-pkg :exports none :tangle no
-  (:name flymake-shell
-         :type github
-         :pkgname "purcell/flymake-shell")
 #+end_src
 *** Eshell Manual
 #+begin_src emacs-lisp :noweb-ref my-pkg :exports none :tangle no
@@ -51,14 +40,17 @@ Inspiration from the approach at [[https://github.com/dbr/dotemacs][dbr/dotemacs
   (:name folding 
          :post-init (folding-mode-add-find-file-hook))
 #+end_src
-*** Fold DWIM
+**** Fold DWIM
 #+begin_src emacs-lisp :noweb-ref my-pkg :exports none :tangle no
   (:name fold-dwim
          :type http
          :url "http://www.dur.ac.uk/p.j.heslin/Software/Emacs/Download/fold-dwim.el"
          :features fold-dwim)
 #+end_src
-*** Fold DWIM Org-mode style bindings
+
+See also [[*Fold-Dwim-Org%20compatibility%20shim][Fold-Dwim-Org compatibility shim]]
+
+**** Fold DWIM Org-mode style bindings
 #+begin_src emacs-lisp :noweb-ref my-pkg :exports none :tangle no
   (:name fold-dwim-org
          :type emacswiki
@@ -66,38 +58,7 @@ Inspiration from the approach at [[https://github.com/dbr/dotemacs][dbr/dotemacs
          :depends fold-dwim
          :after (add-hook 'folding-mode-hook 'fold-dwim-org/minor-mode))
 #+end_src
-*** Elisp Slime style navigation
-#+begin_src emacs-lisp :noweb-ref my-pkg :exports none :tangle no
-  (:name elisp-slime-nav
-         :type github
-         :pkgname "purcell/elisp-slime-nav")
-#+end_src
-*** Pretty org-mode bullets
-#+begin_src emacs-lisp :noweb-ref my-pkg :exports none :tangle no
-  (:name org-bullets
-         :type github
-         :pkgname "sabof/org-bullets"
-         :features org-bullets
-         :after (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-#+end_src
-
-*** dash
-    modern list library
-#+begin_src emacs-lisp :noweb-ref my-pkg :exports none :tangle no
-  (:name dash
-         :type github
-         :pkgname "magnars/dash.el")
-#+end_src
-*** smartparens
-    modern lightweight smart parens/auto-insert/wrapping package for Emacs
-#+begin_src emacs-lisp :noweb-ref my-pkg :exports none :tangle no
-  (:name smartparens
-         :type github
-         :pkgname "Fuco1/smartparens"
-         :depends dash
-         :feature smartparens
-         :after)
-#+end_src** Provided packages
+** Provided packages
 #+begin_src emacs-lisp
   (setq my-packages '(
                       ;; PKG management
@@ -286,28 +247,34 @@ Default method:
 #+end_src
 ** Multiple Cursors
 #+begin_src emacs-lisp
-(global-set-key (kbd "C-c C-SPC") 'mc/edit-lines)
-(global-set-key (kbd "C-c C-e") 'mc/edit-ends-of-lines)
-(global-set-key (kbd "C-c C-a") 'mc/edit-beginnings-of-lines)
+;; (global-set-key (kbd "C-c C-SPC") 'mc/edit-lines)
+;; (global-set-key (kbd "C-c C-e") 'mc/edit-ends-of-lines)
+;; (global-set-key (kbd "C-c C-a") 'mc/edit-beginnings-of-lines)
 #+end_src
 *** Rectangular region mode
 #+begin_src emacs-lisp
-(global-set-key (kbd "C-c RET") 'set-rectangular-region-anchor)
+;; (global-set-key (kbd "C-c RET") 'set-rectangular-region-anchor)
 #+end_src
 *** Mark More like this
 These are available with an active region.
 #+begin_src emacs-lisp
-(define-key region-bindings-mode-map "a" 'mc/mark-all-like-this)
-(define-key region-bindings-mode-map "p" 'mc/mark-previous-like-this)
-(define-key region-bindings-mode-map "n" 'mc/mark-next-like-this)
-(define-key region-bindings-mode-map "m" 'mc/mark-more-like-this-extended)
+;; (define-key region-bindings-mode-map "a" 'mc/mark-all-like-this)
+;; (define-key region-bindings-mode-map "p" 'mc/mark-previous-like-this)
+;; (define-key region-bindings-mode-map "n" 'mc/mark-next-like-this)
+;; (define-key region-bindings-mode-map "m" 'mc/mark-more-like-this-extended)
 #+end_src
 
+#+begin_src emacs-lisp :noweb-ref my-pkg :exports none :tangle no
+;;  (:name region-bindings-mode
+;;         :type github
+;;         :pkgname "fgallina/region-bindings-mode"
+;;         :features region-bindings-mode
+;;         :after (progn (region-bindings-mode-enable)))
+#+end_src
 ** Ace Jump Mode
 #+begin_src emacs-lisp
-(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+;; (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 #+end_src
-
 ** Sunrise Commander
 *** Bindings
 #+begin_src emacs-lisp
@@ -326,34 +293,35 @@ These are available with an active region.
 ;; Safe alternative
 (global-set-key (kbd "C-c g") 'magit-status)
 #+end_src
-
-
- 
-
-
-
 ** Battery life in mode line
 #+begin_src emacs-lisp
-(setq battery-mode-line-format "[%b%p%% %t]")
-(display-battery-mode)
+;; (setq battery-mode-line-format "[%b%p%% %t]")
+;; (display-battery-mode)
 #+end_src
 
 * Programming modes
 ** Lisps
 *** Paredit
 #+begin_src emacs-lisp
-;; Paredit
-(mapc (lambda (mode)
-	(let ((hook (intern (concat (symbol-name mode)
-				    "-mode-hook"))))
-	  (add-hook hook (lambda () (paredit-mode +1)))))
-      '(emacs-lisp lisp inferior-lisp))
+  ;; ;; Paredit
+  ;; (mapc (lambda (mode)
+  ;;         (let ((hook (intern (concat (symbol-name mode)
+  ;;                                     "-mode-hook"))))
+  ;;           (add-hook hook (lambda () (paredit-mode +1)))))
+  ;;       '(emacs-lisp lisp inferior-lisp))
 #+end_src
 *** Elisp slime nav
 Adds M-* and M-, to elisp buffers.
-#+begin_src emacs-lisp
-(add-hook 'emacs-lisp-mode-hook (lambda () (elisp-slime-nav-mode t)))
+#+begin_src emacs-lisp :noweb-ref my-pkg :exports none :tangle no
+  ;; (:name elisp-slime-nav
+  ;;        :type github
+  ;;        :pkgname "purcell/elisp-slime-nav")
 #+end_src
+
+#+begin_src emacs-lisp
+  ;; (add-hook 'emacs-lisp-mode-hook (lambda () (elisp-slime-nav-mode t)))
+#+end_src
+
 ** Projectile
 Possible fit for project management.
 #+begin_src emacs-lisp
@@ -362,7 +330,13 @@ Possible fit for project management.
 #+end_src
 ** Flymake
 #+begin_src emacs-lisp
-(require 'flymake-cursor)
+;; (require 'flymake-cursor)
+#+end_src
+
+#+begin_src emacs-lisp :noweb-ref my-pkg :exports none :tangle no
+;;  (:name flymake-shell
+;;         :type github
+;;         :pkgname "purcell/flymake-shell")
 #+end_src
 ** Tags
 #+begin_src emacs-lisp
@@ -370,8 +344,8 @@ Possible fit for project management.
 #+end_src
 ** Yasnippet
 #+begin_src emacs-lisp
-(yas-global-mode 1)
-(yas-load-directory "~/.emacs.d/snippets" t)
+;; (yas-global-mode 1)
+;; (yas-load-directory "~/.emacs.d/snippets" t)
 #+end_src
 *** Fold-Dwim-Org compatibility shim
 #+begin_src emacs-lisp
@@ -379,21 +353,37 @@ Possible fit for project management.
 (setq fold-dwim-org/trigger-keys-block (list [tab] [lefttab] [(control tab)]))
 #+end_src
 ** smartparens
+modern lightweight smart parens/auto-insert/wrapping package for Emacs
+#+begin_src emacs-lisp :noweb-ref my-pkg :exports none :tangle no
+  ;; (:name smartparens
+  ;;        :type github
+  ;;        :pkgname "Fuco1/smartparens"
+  ;;        :depends dash
+  ;;        :feature smartparens
+  ;;        :after)
+#+end_src
+
 #+begin_src emacs-lisp
-  (smartparens-global-mode t)
+;;  (smartparens-global-mode t)
 
   ;;; key binds
-  (define-key sp-keymap (kbd "C-M-f") 'sp-forward-sexp)
-  (define-key sp-keymap (kbd "C-M-b") 'sp-backward-sexp)
-  (define-key sp-keymap (kbd "C-M-d") 'sp-down-sexp)
-  (define-key sp-keymap (kbd "C-M-a") 'sp-backward-down-sexp)
-  (define-key sp-keymap (kbd "C-M-e") 'sp-up-sexp)
-  (define-key sp-keymap (kbd "C-M-u") 'sp-backward-up-sexp)
-  (define-key sp-keymap (kbd "C-M-n") 'sp-next-sexp)
-  (define-key sp-keymap (kbd "C-M-p") 'sp-previous-sexp)
-  (define-key sp-keymap (kbd "C-M-k") 'sp-kill-sexp)
-  (sp-add-ban-insert-pair-in-string "'")
-
+;;  (define-key sp-keymap (kbd "C-M-f") 'sp-forward-sexp)
+;;  (define-key sp-keymap (kbd "C-M-b") 'sp-backward-sexp)
+;;  (define-key sp-keymap (kbd "C-M-d") 'sp-down-sexp)
+;;  (define-key sp-keymap (kbd "C-M-a") 'sp-backward-down-sexp)
+;;  (define-key sp-keymap (kbd "C-M-e") 'sp-up-sexp)
+;;  (define-key sp-keymap (kbd "C-M-u") 'sp-backward-up-sexp)
+;;  (define-key sp-keymap (kbd "C-M-n") 'sp-next-sexp)
+;;  (define-key sp-keymap (kbd "C-M-p") 'sp-previous-sexp)
+;;  (define-key sp-keymap (kbd "C-M-k") 'sp-kill-sexp)
+;;  (sp-add-ban-insert-pair-in-string "'")
+#+end_src
+*** dash
+modern list library
+#+begin_src emacs-lisp :noweb-ref my-pkg :exports none :tangle no
+  ;; (:name dash
+  ;;        :type github
+  ;;        :pkgname "magnars/dash.el")
 #+end_src
 
 * Org-mode Setup
@@ -448,8 +438,6 @@ Possible fit for project management.
         org-mobile-files-exclude-regexp "calendar")
 #+end_src
 
-
- 
 
 ** Bindings
 *** Capture
@@ -551,15 +539,15 @@ Possible fit for project management.
 #+end_src
 ** Org and YAS (Defunct)
 #+begin_src emacs-lisp :tangle no
-(defun yas/org-very-safe-expand ()
-  (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
+;; (defun yas/org-very-safe-expand ()
+;;   (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
 
-(add-hook 'org-mode-hook
-	  (lambda ()
-	    (make-variable-buffer-local 'yas/trigger-key)
-	    (setq yas/trigger-key [tab])
-	    (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
-	    (define-key yas/keymap [tab] 'yas/next-field)))
+;; (add-hook 'org-mode-hook
+;; 	  (lambda ()
+;; 	    (make-variable-buffer-local 'yas/trigger-key)
+;; 	    (setq yas/trigger-key [tab])
+;; 	    (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
+;; 	    (define-key yas/keymap [tab] 'yas/next-field)))
 #+end_src
 
 ** Org Mode notifications
@@ -613,6 +601,14 @@ Possible fit for project management.
 #+end_src
 
 ** org bullets
+#+begin_src emacs-lisp :noweb-ref my-pkg :exports none :tangle no
+  (:name org-bullets
+         :type github
+         :pkgname "sabof/org-bullets"
+         :features org-bullets
+         :after (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+#+end_src
+
 #+begin_src emacs-lisp
   (setq org-bullets-bullet-list '("◉" "○" "•" "★"))
 #+end_src
