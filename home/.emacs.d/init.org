@@ -3,7 +3,7 @@ There is a stub [[file:~/.emacs][.emacs file]] which uses org-babel to load this
 
 Inspiration from the approach at [[https://github.com/dbr/dotemacs][dbr/dotemacs]] as found in a [[http://www.reddit.com/r/emacs/comments/12pgtg/restarting_from_scratch/][reddit thread]].
 
-* El-Get Mode
+* El-Get Package Management
 ** Bootstrap
 #+begin_src emacs-lisp
   (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
@@ -438,7 +438,6 @@ modern list library
         org-mobile-files-exclude-regexp "calendar")
 #+end_src
 
-
 ** Bindings
 *** Capture
 #+begin_src emacs-lisp
@@ -638,6 +637,7 @@ modern list library
 (require 'smtpmail)
 #+end_src
 ** Mu4E
+
 #+begin_src emacs-lisp
   (when  (require 'mu4e nil t)
     (setq mu4e-org-contacts-file "~/org/contacts.org"
