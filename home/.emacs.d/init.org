@@ -3,103 +3,42 @@ There is a stub [[file:~/.emacs][.emacs file]] which uses org-babel to load this
 
 Inspiration from the approach at [[https://github.com/dbr/dotemacs][dbr/dotemacs]] as found in a [[http://www.reddit.com/r/emacs/comments/12pgtg/restarting_from_scratch/][reddit thread]].
 
-* El-Get Package Management
-** Bootstrap
+* Package Management
+** Package setup
+Some of this is done in .emacs now
+#+begin_src emacs-lisp :tangle no
+  ;(require 'package)
+  ;(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+  ;(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+  ;(package-initialize)
+
+  ;(when (not package-archive-contents)
+  ;  (package-refresh-contents))
+#+end_src
+** Package install
+And now for automatic package installation:
 #+begin_src emacs-lisp
-  (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+  (defun ensure-pkgs (packages) (mapc (lambda (pkg) (or (package-installed-p pkg) (package-install pkg))) packages))
   
-  (unless (require 'el-get nil t)
-    (url-retrieve
-     "https://raw.github.com/dimitri/el-get/master/el-get-install.el"
-     (lambda (s)
-       (let (el-get-master-branch)
-         (goto-char (point-max))
-         (eval-print-last-sexp)))))
+  (ensure-pkgs '(melpa
+                 ido-ubiquitous
+                 dired+
+                 ace-jump-mode
+                 expand-region
+                 multiple-cursors
+                 sunrise-commander
+                 magit
+                 magithub
+                 color-theme-solarized
+                 org-plus-contrib))
 #+end_src
-** Custom package sources
-These are generally put next to their relevant configuration when applicable.
-To find, search for ':noweb-ref my-pkg'
-
-#+begin_src emacs-lisp :noweb yes
-(setq el-get-sources '(
-      <<my-pkg>>
-      ))
-#+end_src
-*** Eshell Manual
-#+begin_src emacs-lisp :noweb-ref my-pkg :exports none :tangle no
-  (:name eshell-manual
-         :description "eshell is great but lacks a good manual, someone wrote one."
-         :type github
-         :pkgname "nicferrier/eshell-manual"
-         :build (("make" "eshell.info"))
-         :compile nil
-         :info "eshell.info")
-#+end_src
-*** Folding
-#+begin_src emacs-lisp :noweb-ref my-pkg :exports none :tangle no
-  (:name folding 
-         :post-init (folding-mode-add-find-file-hook))
-#+end_src
-**** Fold DWIM
-#+begin_src emacs-lisp :noweb-ref my-pkg :exports none :tangle no
-  (:name fold-dwim
-         :type http
-         :url "http://www.dur.ac.uk/p.j.heslin/Software/Emacs/Download/fold-dwim.el"
-         :features fold-dwim)
-#+end_src
-
-See also [[*Fold-Dwim-Org%20compatibility%20shim][Fold-Dwim-Org compatibility shim]]
-
-**** Fold DWIM Org-mode style bindings
-#+begin_src emacs-lisp :noweb-ref my-pkg :exports none :tangle no
-  (:name fold-dwim-org
-         :type emacswiki
-         :features fold-dwim-org
-         :depends fold-dwim
-         :after (add-hook 'folding-mode-hook 'fold-dwim-org/minor-mode))
-#+end_src
-** Provided packages
-#+begin_src emacs-lisp
-  (setq my-packages '(
-                      ;; PKG management
-                      el-get
-                      ;; Color
-                      color-theme-solarized
-                      ;; Interface
-                      ido-ubiquitous
-                      dired+
-                      ;;evil
-                      ace-jump-mode
-                      auto-complete
-                      expand-region
-                      multiple-cursors
-                      ;; Sunrise commander
-                      sunrise-commander
-                      sunrise-x-mirror
-                      sunrise-x-loop
-                      sunrise-x-modeline
-                      ;; Programming
-                      lua-mode
-                      flymake-cursor
-                      yasnippet
-                      paredit
-                      zencoding-mode
-                      js3-mode
-                      ;; VCS
-                      magit
-                      magithub
-                      ;; Other
-                      org-mode
-                      ))
-#+end_src
-** Sync
-#+begin_src emacs-lisp
-  (el-get 'sync (append
-                 my-packages
-                 (mapcar 'el-get-source-name el-get-sources)))
-#+end_src
-
 * Behavior Tweaks
+
+** cl
+#+begin_src emacs-lisp
+(require 'cl)
+#+end_src
+
 ** Server mode
 #+begin_src emacs-lisp
 (server-start)
@@ -126,14 +65,36 @@ Depending on how the emacs daemon is started, the current directory is less than
 #+begin_src emacs-lisp
 (setq sentence-end-double-space nil)
 #+end_src
+** Zap chars
+I prefer the vim style zap.  Leaving old one on M-Z.
+
+#+begin_src emacs-lisp
+(autoload 'zap-up-to-char "misc"
+  "Kill up to, but not including ARGth occurrence of CHAR.")
+(global-set-key (kbd "M-z") 'zap-up-to-char)
+(global-set-key (kbd "M-Z") 'zap-to-char)
+#+end_src
+** Save point position between sessions
+#+begin_src emacs-lisp
+(require 'saveplace)
+(setq-default save-place t)
+(setq save-place-file (expand-file-name ".places" user-emacs-directory))
+#+end_src
 * Interface
+** Mac command modifiers
+#+begin_src emacs-lisp
+(setq mac-command-modifier 'hyper)
+(setq mac-option-modifier 'meta)
+(setq mac-fn-modifier 'super)
+#+end_src
 ** Font
 The same font can have different names on each platform.
 #+begin_src emacs-lisp
-(defun my-font ()  
-  (case window-system
-    ('ns (set-frame-font "Source Code Pro 18"))))
-(my-font)
+  (defun my-font ()  
+    (case window-system
+      ('ns  (set-frame-font "Source Code Pro 18"))
+      ('mac (set-frame-font "Source Code Pro 18"))))
+  (my-font)
 #+end_src
 
 ** Minimal Window Decor
@@ -148,32 +109,18 @@ The same font can have different names on each platform.
 This lets you swap dark and light color schemes by setting an
 environment variable.
 
-Not particularly useful on the Mac.
-
 #+begin_src emacs-lisp
-(defun my-theme () 
-  (if (equalp (getenv "SCHEME") "light")
-      (color-theme-solarized-light)
-    (color-theme-solarized-dark)))
-
-(defun my-frame-hook (frame)  
-    (set-variable 'color-theme-is-global nil)
-    (select-frame frame)
-    (if window-system
-    	(progn (my-theme) (my-font))
-        (color-theme-tty-dark)))
-(add-hook 'after-make-frame-functions 'my-frame-hook)
-
-(set-variable 'color-theme-is-global nil)
-(if window-system (my-theme))
+  (defun my-theme () 
+    (if (equalp (getenv "SCHEME") "light")
+        (color-theme-solarized-light)
+      (color-theme-solarized-dark)))
+  
+  (color-theme-initialize)
+  (my-theme)
 #+end_src
 ** Don't bother me as much
 #+begin_src emacs-lisp
 (defalias 'yes-or-no-p 'y-or-n-p)
-#+end_src
-** Mac specific
-#+begin_src emacs-lisp
-(set-default 'ns-command-modifier 'meta)
 #+end_src
 * Custom Functionality
 ** Jump to .emacs
@@ -244,10 +191,12 @@ Default method:
 ** Expand Region
 #+begin_src emacs-lisp
 (global-set-key (kbd "C-=") 'er/expand-region)
+(global-set-key (kbd "M-=") 'er/expand-region)
 #+end_src
 ** Multiple Cursors
 #+begin_src emacs-lisp
-;; (global-set-key (kbd "C-c C-SPC") 'mc/edit-lines)
+(global-set-key (kbd "C-c C-SPC") 'mc/edit-lines)
+(global-set-key (kbd "M-]") 'mc/mark-next-like-this)
 ;; (global-set-key (kbd "C-c C-e") 'mc/edit-ends-of-lines)
 ;; (global-set-key (kbd "C-c C-a") 'mc/edit-beginnings-of-lines)
 #+end_src
@@ -390,25 +339,28 @@ modern list library
 ** Require
 #+begin_src emacs-lisp
 (require 'org)
-(require 'org-protocol)
+;(require 'org-protocol)
 #+end_src
+
 ** Configure
-#+begin_src emacs-lisp
-  (setq org-hide-leading-stars t
-        org-completion-use-ido t
-        org-outline-path-complete-in-steps nil
-        org-enforce-todo-checkbox-dependencies t
-        org-enforce-todo-dependencies t
-        org-special-ctrl-a/e t
-        org-special-ctrl-k t
-        org-yank-adjusted-subtrees t
-        org-startup-indented t
-        org-use-fast-todo-selection t
-        org-directory "~/org"
-        org-default-notes-file (concat org-directory "/notes.org")
-        org-mobile-directory "~/Dropbox/mobileorg"
-        org-mobile-creating-agendas t
-  
+ ; (setq org-hide-leading-stars t
+     ;   org-completion-use-ido t
+     ;   org-outline-path-complete-in-steps nil
+     ;   org-enforce-todo-checkbox-dependencies t
+     ;   org-enforce-todo-dependencies t
+     ;   org-special-ctrl-a/e t
+     ;   org-special-ctrl-k t
+     ;   org-yank-adjusted-subtrees t
+     ;   org-startup-indented t
+     ;   org-use-fast-todo-selection t
+     ;   org-directory "~/org"
+     ;   org-default-notes-file (concat org-directory "/notes.org")
+     ;   org-mobile-directory "~/CloudStation/mobileorg"
+     ;   org-mobile-creating-agendas t;
+
+        org-src-window-setup 'current-window
+        org-src-fontify-natively t
+
         org-todo-keywords
         '((sequence "TODO(t)" "NEXT(n)" "STARTED(s)" "|" "DONE(d!/!)")
           (sequence "WAITING(w@/!)" "SOMEDAY(S!)" "|" "CANCELLED(c@/!)"))
@@ -436,18 +388,18 @@ modern list library
         calendar-longitude -121.874
         calendar-location-name "Pleasanton, CA"
         org-mobile-files-exclude-regexp "calendar")
-#+end_src
+
 
 ** Bindings
 *** Capture
-#+begin_src emacs-lisp
+
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-cc" 'org-capture)
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
-#+end_src
+
 *** Fast Nav
-#+begin_src emacs-lisp
+
   ;; From http://orgmode.org/worg/org-hacks.html
   (defun ded/org-show-next-heading-tidily ()
     "Show next entry, keeping other entries closed."
@@ -481,17 +433,17 @@ modern list library
         '(("n" . ded/org-show-next-heading-tidily)
           ("p" . ded/org-show-previous-heading-tidily)
           ("J" . org-clock-goto)))
-#+end_src
+
 ** Org Links
-#+begin_src emacs-lisp
+
   (setq org-link-abbrev-alist
          '(("jira" . "https://jira.@workplace@.com/browse/")
            ("review" . "https://crucible.@workplace@.com/cru/")
           ))
-#+end_src
+
 
 *** Defunct
-#+begin_src emacs-lisp
+
   ;; (setq org-link-abbrev-alist
   ;;        '(("jira" . "https://jira.@workplace@.com/browse/")
   ;;      ;;("devdrop" . "https://env.@xyzzy@.com:9030/oms/fx/search.flex?q=%s")
@@ -504,20 +456,20 @@ modern list library
   ;;    (interactive)
   ;;    (save-excursion
   ;;      (query-replace-regexp " \\([0-9]+[$.][0-9]+\\)" " [[devdrop:\\1][\\1]]")))
-#+end_src
+
 ** Org-mobile
 *** Schedule
-#+begin_src emacs-lisp
+
 (defun my-org-mobile-pull/push ()
   (interactive)
   (org-mobile-pull)
   (org-mobile-push))
 
-;; Every 15 minutes.
+
 (run-at-time t 900 'my-org-mobile-pull/push)
-#+end_src
+
 ** Agenda commands
-#+begin_src emacs-lisp
+
 (setq org-agenda-custom-commands
       '(("o" "Overview"
 	 ((tags-todo "+home")
@@ -527,17 +479,18 @@ modern list library
 	 ((org-agenda-ndays 1)))
 	("h" tags-todo "+home")
 	("w" tags-todo "+work")))
-#+end_src
+
 ** Org-Velocity
-#+begin_src emacs-lisp
++begin_src emacs-lisp
 (require 'org-velocity)
 
 (global-set-key (kbd "C-c v") 'org-velocity-read)
 (setq org-velocity-bucket "~/org/velocity.org")
 (setq org-velocity-always-use-bucket t)
-#+end_src
+(setq org-velocity-exit-on-match t)
++end_src
 ** Org and YAS (Defunct)
-#+begin_src emacs-lisp :tangle no
+
 ;; (defun yas/org-very-safe-expand ()
 ;;   (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
 
@@ -547,10 +500,10 @@ modern list library
 ;; 	    (setq yas/trigger-key [tab])
 ;; 	    (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
 ;; 	    (define-key yas/keymap [tab] 'yas/next-field)))
-#+end_src
+
 
 ** Org Mode notifications
-#+begin_src emacs-lisp
+
 (require 'appt)
 (setq appt-message-warning-time 15
       appt-display-mode-line t
@@ -560,10 +513,10 @@ modern list library
 
 (org-agenda-to-appt t)
 (add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt)
-#+end_src
+
 
 ** Stay on task (Idle display of Agenda)
-#+begin_src emacs-lisp
+
   ;; From http://article.gmane.org/gmane.emacs.orgmode/23047
   (defun jump-to-org-agenda ()
     (interactive)
@@ -592,56 +545,57 @@ modern list library
     (timer-set-idle-time timer 300 t)
     (timer-activate-when-idle timer nil))
   ;;(run-with-idle-timer 300 t 'jump-to-org-agenda)
-#+end_src
+
 
 ** org contacts
-#+begin_src emacs-lisp
+
 (setq org-contacts-files '("~/org/contacts.org"))
-#+end_src
+
 
 ** org bullets
-#+begin_src emacs-lisp :noweb-ref my-pkg :exports none :tangle no
+
   (:name org-bullets
          :type github
          :pkgname "sabof/org-bullets"
          :features org-bullets
          :after (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-#+end_src
 
-#+begin_src emacs-lisp
+
+
   (setq org-bullets-bullet-list '("◉" "○" "•" "★"))
-#+end_src
+
 ** Export
 *** Dark backgrounds for code blocks
-#+begin_src emacs-lisp
+
 ;; (setq org-export-html-style
 ;;       "<style type=\"text/css\">
 ;; <!--/*--><![CDATA[/*><!--*/
 ;; pre.src { color: #f6f3e8 !important; background-color: #242424 !important; }
 ;; /*]]>*/-->
 ;; </style>")
-#+end_src
+
 
 * Mail
 ** SMTP
-#+begin_src emacs-lisp
+
 (setq starttls-use-gnutls t
       send-mail-function 'smtpmail-send-it
       message-send-mail-function 'smtpmail-send-it
-      smtpmail-starttls-credentials '(("owa.mailseat.com" 587 nil nil))
+      smtpmail-starttls-credentials '(("pod51011.outlook.com" 587 nil nil))
       smtpmail-auth-credentials (expand-file-name "~/.authinfo")
-      smtpmail-default-smtp-server "owa.mailseat.com"
-      smtpmail-smtp-server "owa.mailseat.com"
-      smtpmail-smtp-service 2525
+      smtpmail-default-smtp-server "pod51011.outlook.com"
+      smtpmail-smtp-server "pod51011.outlook.com"
+      smtpmail-smtp-service 587
       smtpmail-debug-info t)
 (require 'smtpmail)
-#+end_src
+
 ** Mu4E
 
-#+begin_src emacs-lisp
+
+  (add-to-list 'load-path "/usr/local/Cellar/mu/0.9.9/share/emacs/site-lisp/mu4e")
   (when  (require 'mu4e nil t)
     (setq mu4e-org-contacts-file "~/org/contacts.org"
-          mu4e-maildir       "~/Mail/@workplace@"   ;; top-level Maildir
+          mu4e-maildir       "~/Maildir/Workday"   ;; top-level Maildir
           mu4e-sent-folder   "/sent"       ;; where do i keep sent mail?
           mu4e-drafts-folder "/Drafts"     ;; where do i keep half-written mail?
           mu4e-trash-folder  "/Trash"     ;; where do i move deleted mail?
@@ -650,7 +604,8 @@ modern list library
           mail-user-agent 'mu4e-user-agent
           mu4e-get-mail-command "pkill -SIGUSR1 offlineimap"
           ;;     mu4e-html2text-command "html2text -nobs -utf8 -width 72"
-          mu4e-html2text-command "my-html2text"
+          mu4e-html2text-command "~/bin/my-html2text"
+          mu4e-mu-binary "/usr/local/bin/mu"
           )
     (add-to-list 'mu4e-headers-actions
                  '("org-contact-add" ?o mu4e-action-add-org-contact) t)
@@ -672,7 +627,7 @@ modern list library
     (define-key mu4e-main-mode-map "m" 'my-mu4e-maildirproc)
     (defadvice mu4e~main-view (after my-ad-maildirproc activate)
       (my-add-maildirproc-mu4e-command)))
-#+end_src
+
 
 * Custom File
 #+begin_src emacs-lisp
