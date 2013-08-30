@@ -29,7 +29,6 @@ And now for automatic package installation:
                  sunrise-commander
                  magit
                  magithub
-                 color-theme-solarized
                  org-plus-contrib))
 #+end_src
 * Behavior Tweaks
@@ -106,17 +105,12 @@ The same font can have different names on each platform.
 #+end_src
 
 ** Color scheme
-This lets you swap dark and light color schemes by setting an
-environment variable.
+I'm using a forked solarzied version which supports terminals with 256 colors, but with the normal 16 configured in
+the solarized theme.  The available packages currently use the 256 color version, which isn't as accurate.
 
 #+begin_src emacs-lisp
-  (defun my-theme () 
-    (if (equalp (getenv "SCHEME") "light")
-        (color-theme-solarized-light)
-      (color-theme-solarized-dark)))
-  
-  (color-theme-initialize)
-  (my-theme)
+(add-to-list 'custom-theme-load-path (expand-file-name "~/.emacs.d/non-elpa/solarized"))
+(load-theme 'solarized-dark t)
 #+end_src
 ** Don't bother me as much
 #+begin_src emacs-lisp

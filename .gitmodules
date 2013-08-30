@@ -1,0 +1,3 @@
+[submodule "home/.emacs.d/non-elpa/solarized"]
+	path = home/.emacs.d/non-elpa/solarized
+	url = https://github.com/mwolson/emacs-color-theme-solarized.git
