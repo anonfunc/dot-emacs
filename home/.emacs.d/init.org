@@ -28,7 +28,6 @@ And now for automatic package installation:
                  multiple-cursors
                  sunrise-commander
                  magit
-                 magithub
                  org-plus-contrib))
 #+end_src
 * Behavior Tweaks
