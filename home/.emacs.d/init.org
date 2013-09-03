@@ -28,6 +28,7 @@ And now for automatic package installation:
                  multiple-cursors
                  sunrise-commander
                  magit
+                 magit-commit-training-wheels
                  org-plus-contrib))
 #+end_src
 * Behavior Tweaks
@@ -235,6 +236,11 @@ These are available with an active region.
 ;; Safe alternative
 (global-set-key (kbd "C-c g") 'magit-status)
 #+end_src
+*** Training wheels
+#+BEGIN_SRC emacs-lisp
+(require 'magit-commit-training-wheels)
+(ad-activate 'magit-log-edit-commit)
+#+END_SRC
 ** Battery life in mode line
 #+begin_src emacs-lisp
 ;; (setq battery-mode-line-format "[%b%p%% %t]")
