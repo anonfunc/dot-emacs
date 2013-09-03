@@ -57,7 +57,7 @@ Depending on how the emacs daemon is started, the current directory is less than
 #+begin_src emacs-lisp
 (setq font-lock-verbose nil)
 (setq vc-handled-backends '(Git))
-(setq jit-lock-defer-time 0.05)
+;(setq jit-lock-defer-time 0.05)
 #+end_src
 ** Modern Sentences
 #+begin_src emacs-lisp
@@ -241,7 +241,21 @@ These are available with an active region.
 ;; (display-battery-mode)
 #+end_src
 
+** Ack and Ag
+#+BEGIN_SRC emacs-lisp
+    (ensure-pkgs '(ack-and-a-half ag))
+    (setq ag-highlight-search t
+          ag-reuse-buffers 't)
+#+END_SRC
 * Programming modes
+** Indent settings
+Don't use tabs, default to 4 spaces.
+#+begin_src emacs-lisp
+(setq-default indent-tabs-mode nil)
+(setq tab-width 4)
+(defvaralias 'c-basic-offset 'tab-width)
+(defvaralias 'cperl-indent-level 'tab-width)
+#+end_src
 ** Lisps
 *** Paredit
 #+begin_src emacs-lisp
@@ -326,6 +340,20 @@ modern list library
   ;; (:name dash
   ;;        :type github
   ;;        :pkgname "magnars/dash.el")
+#+end_src
+
+** Python!
+Use elpy, and tweak indentation.
+#+begin_src emacs-lisp
+  (ensure-pkgs '(yasnippet flymake-cursor elpy))
+  
+  (elpy-enable)
+  (elpy-use-ipython)
+
+(add-hook 'python-mode-hook
+      (lambda ()
+        (setq tab-width 2)
+        (setq python-indent 2)))
 #+end_src
 
 * Org-mode Setup
