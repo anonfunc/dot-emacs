@@ -10,3 +10,4 @@ home/.emacs.d/.org-id-locations
 home/.emacs.d/eshell/
 home/.emacs.d/tramp
 home/.emacs.d/bookmarks
+/home/.emacs.d/ac-comphist.dat
