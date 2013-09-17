@@ -5,7 +5,7 @@ Inspiration from the approach at [[https://github.com/dbr/dotemacs][dbr/dotemacs
 
 * Package Management
 ** Package setup
-Some of this is done in .emacs now
+Some of this is done in .emacs now, keeping here for documentation.
 #+begin_src emacs-lisp :tangle no
   ;(require 'package)
   ;(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
@@ -32,7 +32,6 @@ And now for automatic package installation:
                  org-plus-contrib))
 #+end_src
 * Behavior Tweaks
-
 ** cl
 #+begin_src emacs-lisp
 (require 'cl)
@@ -79,6 +78,10 @@ I prefer the vim style zap.  Leaving old one on M-Z.
 (setq-default save-place t)
 (setq save-place-file (expand-file-name ".places" user-emacs-directory))
 #+end_src
+** Mouse support on terminal
+#+BEGIN_SRC emacs-lisp
+  (unless window-system (xterm-mouse-mode))
+#+END_SRC
 * Interface
 ** Mac command modifiers
 #+begin_src emacs-lisp
@@ -88,13 +91,12 @@ I prefer the vim style zap.  Leaving old one on M-Z.
 #+end_src
 ** Font
 The same font can have different names on each platform.
-#+begin_src emacs-lisp
++begin_src emacs-lisp
   (defun my-font ()  
     (case window-system
-      ('ns  (set-frame-font "Source Code Pro 18"))
-      ('mac (set-frame-font "Source Code Pro 18"))))
+      ('x  (set-frame-font " 18"))))
   (my-font)
-#+end_src
++end_src
 
 ** Minimal Window Decor
 #+begin_src emacs-lisp
@@ -127,6 +129,11 @@ the solarized theme.  The available packages currently use the 256 color version
 #+end_src
 
 * Module Configuration
+** Helm
+#+BEGIN_SRC emacs-lisp
+  (ensure-pkgs '(helm))
+  (require 'helm-config)
+#+END_SRC
 ** Tramp
 Fix too long TMPDIR:
 #+begin_src emacs-lisp
@@ -249,7 +256,7 @@ These are available with an active region.
 
 ** Ack and Ag
 #+BEGIN_SRC emacs-lisp
-    (ensure-pkgs '(ack-and-a-half ag))
+    (ensure-pkgs '(ack-and-a-half ag wgrep-ag))
     (setq ag-highlight-search t
           ag-reuse-buffers 't)
 #+END_SRC
@@ -355,11 +362,12 @@ Use elpy, and tweak indentation.
   
   (elpy-enable)
   (elpy-use-ipython)
-
-(add-hook 'python-mode-hook
-      (lambda ()
-        (setq tab-width 2)
-        (setq python-indent 2)))
+  
+  (add-hook 'python-mode-hook
+            (lambda ()
+              (setq tab-width 2)
+              (setq python-indent 2)
+              (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)))
 #+end_src
 
 * Org-mode Setup
