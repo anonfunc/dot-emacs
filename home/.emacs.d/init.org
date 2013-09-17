@@ -691,6 +691,19 @@ Use elpy, and tweak indentation.
     (defadvice mu4e~main-view (after my-ad-maildirproc activate)
       (my-add-maildirproc-mu4e-command)))
 
+* ERC
+Using bouncer.
+#+begin_src emacs-lisp
+    (load-file (expand-file-name "~/.emacs.d/secrets.el"))
+    (defun my-erc () 
+      (interactive)
+      (erc
+        :server "localhost"
+        :port "6667"
+        :nick my-erc-name 
+        :password my-erc-password))
+#+end_src
+
 * Custom File
 #+begin_src emacs-lisp
 (setq custom-file (expand-file-name "~/.emacs.d/custom.el"))
