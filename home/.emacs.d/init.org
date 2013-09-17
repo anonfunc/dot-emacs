@@ -314,9 +314,11 @@ Possible fit for project management.
 #+end_src
 ** Yasnippet
 #+begin_src emacs-lisp
-;; (yas-global-mode 1)
-;; (yas-load-directory "~/.emacs.d/snippets" t)
+  (ensure-pkgs '(yasnippet))
+  (yas-global-mode 1)
+  (yas-load-directory "~/.emacs.d/snippets" t)
 #+end_src
+
 *** Fold-Dwim-Org compatibility shim
 #+begin_src emacs-lisp
 (defalias 'yas/snippets-at-point 'yas--snippets-at-point) ;; fold-dwim-org compatibility
