@@ -403,6 +403,13 @@ Use elpy, and tweak indentation.
               (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)))
 #+end_src
 
+** HTML and Jinja
+#+begin_src emacs-lisp
+  (ensure-pkgs '(web-mode))
+  (require 'web-mode)
+  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+  (setq web-mode-engines-alist '(("jinja2"    . "\\.html?\\'")))
+#+end_src
 * Org-mode Setup
 ** Require
 #+begin_src emacs-lisp
