@@ -21,6 +21,7 @@ And now for automatic package installation:
   (defun ensure-pkgs (packages) (mapc (lambda (pkg) (or (package-installed-p pkg) (package-install pkg))) packages))
   
   (ensure-pkgs '(melpa
+                 ibuffer-vc
                  ido-ubiquitous
                  dired+
                  ace-jump-mode
@@ -157,26 +158,22 @@ Default method:
   (autoload 'ibuffer "ibuffer" "List buffers." t)
   (eval-after-load 'ibuffer
     '(progn
-       (add-hook 'ibuffer-mode-hook
-                 (lambda () (ibuffer-auto-mode 1)))
-       (setq ibuffer-show-empty-filter-groups nil
-             ibuffer-expert t)
-       (setq ibuffer-saved-filter-groups
-             `(("default"
-                ("wanderlust" (or (mode . wl-draft-mode)
-                                  (mode . wl-folder-mode)
-                                  (mode . wl-summary-mode)))
-                ("magit" (name . "^\\*magit"))
-                ("@workplace@" (filename . "^~/@workplace@"))
-                ("dired" (mode . dired-mode))
-                ("elisp" (mode . emacs-lisp-mode))
-                ("org" (or (mode . org-mode)
-                           (name . "^\\*Agenda")
-                           (name . "Agenda\\*$")))
-                ("special" (name . "^\\*")))))
-       (defun my-ibuffer-groups ()
-         (ibuffer-switch-to-saved-filter-groups "default"))
-       (add-hook 'ibuffer-mode-hook 'my-ibuffer-groups)))
+       (add-hook 'ibuffer-hook
+                 (lambda ()
+                   (ibuffer-vc-set-filter-groups-by-vc-root)
+                   (unless (eq ibuffer-sorting-mode 'alphabetic)
+                     (ibuffer-do-sort-by-alphabetic))))
+       (setq ibuffer-formats
+             '((mark modified read-only vc-status-mini " "
+                     (name 18 18 :left :elide)
+                     " "
+                     (size 9 -1 :right)
+                     " "
+                     (mode 16 16 :left :elide)
+                     " "
+                     (vc-status 16 16 :left)
+                     " "
+                     filename-and-process)))))
 #+end_src
 ** Window Management
 #+begin_src emacs-lisp
