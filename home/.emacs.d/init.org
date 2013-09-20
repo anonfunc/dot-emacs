@@ -258,6 +258,13 @@ These are available with an active region.
     (setq ag-highlight-search t
           ag-reuse-buffers 't)
 #+END_SRC
+** Dired and Dired Extensions
+#+begin_src emacs-lisp
+  (require 'dired-x)
+  (setq dired-omit-files-p t)
+  (add-hook 'dired-mode-hook (lambda () (dired-omit-mode)))
+#+end_src
+
 * Programming modes
 ** Indent settings
 Don't use tabs, default to 4 spaces.
