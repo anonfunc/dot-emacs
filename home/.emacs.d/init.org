@@ -83,6 +83,11 @@ I prefer the vim style zap.  Leaving old one on M-Z.
 #+BEGIN_SRC emacs-lisp
   (unless window-system (xterm-mouse-mode))
 #+END_SRC
+** Uniquify
+#+begin_src emacs-lisp
+  (require 'uniquify)
+  (setq uniquify-buffer-name-style 'forward)
+#+end_src
 * Interface
 ** Mac command modifiers
 #+begin_src emacs-lisp
