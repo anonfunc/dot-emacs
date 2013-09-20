@@ -3,5 +3,5 @@
 # key: elb
 # --
 #+begin_src emacs-lisp
-$0
+`(org-edit-special)`
 #+end_src
