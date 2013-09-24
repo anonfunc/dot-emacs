@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: ,lr
+# --
+<script src="http://`(s-chomp (shell-command-to-string "hostname -f"))`:35729/livereload.js"></script>
