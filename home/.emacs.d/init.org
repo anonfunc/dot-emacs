@@ -20,17 +20,10 @@ And now for automatic package installation:
 #+begin_src emacs-lisp
   (defun ensure-pkgs (packages) (mapc (lambda (pkg) (or (package-installed-p pkg) (package-install pkg))) packages))
   
-  (ensure-pkgs '(melpa
-                 ibuffer-vc
-                 ido-ubiquitous
-                 dired+
-                 ace-jump-mode
-                 expand-region
-                 multiple-cursors
-                 sunrise-commander
-                 magit
-                 magit-commit-training-wheels
-                 org-plus-contrib))
+  (ensure-pkgs '(melpa s ibuffer-vc ido-ubiquitous dired+
+                 ace-jump-mode expand-region multiple-cursors
+                 sunrise-commander magit
+                 magit-commit-training-wheels org-plus-contrib))
 #+end_src
 * Behavior Tweaks
 ** cl
@@ -38,6 +31,11 @@ And now for automatic package installation:
 (require 'cl)
 #+end_src
 
+** s
+String libray, used in some of my yasnippets.
+#+begin_src emacs-lisp
+  (require 's)
+#+end_src
 ** Server mode
 #+begin_src emacs-lisp
 (server-start)
