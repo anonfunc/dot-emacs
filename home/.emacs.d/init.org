@@ -720,6 +720,10 @@ Using bouncer.
         :password my-erc-password))
 #+end_src
 
+* Evil
+#+begin_src emacs-lisp
+  (ensure-pkgs '(evil))
+#+end_src
 * Custom File
 #+begin_src emacs-lisp
 (setq custom-file (expand-file-name "~/.emacs.d/custom.el"))
