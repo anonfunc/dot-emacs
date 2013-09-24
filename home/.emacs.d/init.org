@@ -398,7 +398,9 @@ Use elpy, and tweak indentation.
   
   (elpy-enable)
   (elpy-use-ipython)
-  
+  ; Fix yas-snippet-dirs stealing
+  (setq yas-snippet-dirs (cons "~/.emacs.d/snippets" yas-snippet-dirs))
+
   (add-hook 'python-mode-hook
             (lambda ()
               (setq tab-width 2)
