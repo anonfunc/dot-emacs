@@ -35,6 +35,7 @@ And now for automatic package installation:
 
 ** s
 String libray, used in some of my yasnippets.
+[[https://github.com/magnars/s.el][Github link.]]
 #+begin_src emacs-lisp
   (require 's)
 #+end_src
