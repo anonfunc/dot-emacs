@@ -18,8 +18,10 @@ Some of this is done in .emacs now, keeping here for documentation.
 ** Package install
 And now for automatic package installation:
 #+begin_src emacs-lisp
-  (defun ensure-pkgs (packages) (mapc (lambda (pkg) (or (package-installed-p pkg) (package-install pkg))) packages))
-  
+  (defun ensure-pkgs (packages)
+    (mapc (lambda (pkg) (or (package-installed-p pkg)
+                            (package-install pkg))) packages))
+
   (ensure-pkgs '(melpa s ibuffer-vc ido-ubiquitous dired+
                  ace-jump-mode expand-region multiple-cursors
                  sunrise-commander magit
@@ -40,7 +42,7 @@ String libray, used in some of my yasnippets.
 #+begin_src emacs-lisp
 (server-start)
 #+end_src
-** Chdir to ~ 
+** Chdir to ~
 Depending on how the emacs daemon is started, the current directory is less than ideal.
 
 #+begin_src emacs-lisp
@@ -96,7 +98,7 @@ I prefer the vim style zap.  Leaving old one on M-Z.
 ** Font
 The same font can have different names on each platform.
 +begin_src emacs-lisp
-  (defun my-font ()  
+  (defun my-font ()
     (case window-system
       ('x  (set-frame-font " 18"))))
   (my-font)
@@ -372,7 +374,7 @@ modern list library
   (add-to-list 'auto-mode-alist '("\.groovy$" . groovy-mode))
   (add-to-list 'interpreter-mode-alist '("groovy" . groovy-mode))
   (add-to-list 'auto-mode-alist '("\.gradle$" . groovy-mode))
-  
+
   ;;; make Groovy mode electric by default.
   (add-hook 'groovy-mode-hook
             '(lambda ()
@@ -386,7 +388,7 @@ modern list library
   (ensure-pkgs '(imenu-anywhere))
   (setq-default imenu-generic-expression '(nil))
   (global-set-key (kbd "C-.") 'imenu-anywhere)
-  
+
   ;; Add a mark to pop back to
   (defadvice imenu-anywhere (before push-mark activate)
     (push-mark))
@@ -395,7 +397,7 @@ modern list library
 Use elpy, and tweak indentation.
 #+begin_src emacs-lisp
   (ensure-pkgs '(yasnippet flymake-cursor elpy))
-  
+
   (elpy-enable)
   (elpy-use-ipython)
   ; Fix yas-snippet-dirs stealing
@@ -444,8 +446,8 @@ Use elpy, and tweak indentation.
         org-todo-keywords
         '((sequence "TODO(t)" "NEXT(n)" "STARTED(s)" "|" "DONE(d!/!)")
           (sequence "WAITING(w@/!)" "SOMEDAY(S!)" "|" "CANCELLED(c@/!)"))
-  
-  
+
+
         org-capture-templates
         '(("e" "Capture email" entry (file "inbox.org")
            "* %^{Title}\nSource: %a\n%i")
@@ -457,14 +459,14 @@ Use elpy, and tweak indentation.
            "* NEXT %?\n%U\n%a\nSCHEDULED: %t .+1d/3d\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n  %i")
           ("w" "org-protocol" entry (file "inbox.org")
            "* TODO Review %c\n%U\n  %i" :immediate-finish t))
-  
+
         org-refile-targets '((nil :maxlevel . 9)
                              (org-agenda-files :maxlevel . 9))
         org-refile-use-outline-path t
         org-refile-allow-creating-parent-nodes (quote confirm)
-  
+
         ;; For better sunset calc
-        calendar-latitude 37.662 
+        calendar-latitude 37.662
         calendar-longitude -121.874
         calendar-location-name "Pleasanton, CA"
         org-mobile-files-exclude-regexp "calendar")
@@ -494,7 +496,7 @@ Use elpy, and tweak indentation.
       (org-reveal t)
       (org-show-entry)
       (show-children)))
-  
+
   (defun ded/org-show-previous-heading-tidily ()
     "Show previous entry, keeping other entries closed."
     (let ((pos (point)))
@@ -507,7 +509,7 @@ Use elpy, and tweak indentation.
       (org-reveal t)
       (org-show-entry)
       (show-children)))
-  
+
   (setq org-use-speed-commands t)
   (setq org-speed-commands-user
         '(("n" . ded/org-show-next-heading-tidily)
@@ -531,7 +533,7 @@ Use elpy, and tweak indentation.
   ;;      ;;("work" . "https://dev.@xyzzy@.com/work/fx/search.flex?q=%s")
   ;;      ;;("work" . "https://dev.@xyzzy@.com/oms/fx/search.flex?q=%s")
   ;;      ))
-  
+
   ;;  (defun my-org-make-ids-links ()
   ;;    (interactive)
   ;;    (save-excursion
@@ -552,13 +554,13 @@ Use elpy, and tweak indentation.
 
 (setq org-agenda-custom-commands
       '(("o" "Overview"
-	 ((tags-todo "+home")
-	  (tags-todo "+work")
-	  (tags-todo "-home-work")
-	  (agenda ""))
-	 ((org-agenda-ndays 1)))
-	("h" tags-todo "+home")
-	("w" tags-todo "+work")))
+         ((tags-todo "+home")
+          (tags-todo "+work")
+          (tags-todo "-home-work")
+          (agenda ""))
+         ((org-agenda-ndays 1)))
+        ("h" tags-todo "+home")
+        ("w" tags-todo "+work")))
 
 ** Org-Velocity
 +begin_src emacs-lisp
@@ -575,11 +577,11 @@ Use elpy, and tweak indentation.
 ;;   (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
 
 ;; (add-hook 'org-mode-hook
-;; 	  (lambda ()
-;; 	    (make-variable-buffer-local 'yas/trigger-key)
-;; 	    (setq yas/trigger-key [tab])
-;; 	    (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
-;; 	    (define-key yas/keymap [tab] 'yas/next-field)))
+;;        (lambda ()
+;;          (make-variable-buffer-local 'yas/trigger-key)
+;;          (setq yas/trigger-key [tab])
+;;          (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
+;;          (define-key yas/keymap [tab] 'yas/next-field)))
 
 
 ** Org Mode notifications
@@ -691,7 +693,7 @@ Use elpy, and tweak indentation.
     (add-to-list 'mu4e-view-actions
                  '("org-contact-add" ?o mu4e-action-add-org-contact) t)
     (global-set-key (kbd "C-c m") 'mu4e)
-  
+
     ;; Patch in a maildirproc button.
     (defun my-mu4e-maildirproc ()
       (interactive)
