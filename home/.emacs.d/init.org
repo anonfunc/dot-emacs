@@ -342,6 +342,14 @@ From what the emacs.d
   (require 'dired-x)
   (setq dired-omit-files-p t)
   (add-hook 'dired-mode-hook (lambda () (dired-omit-mode)))
+
+
+;; From What the emacs.d
+;; Make dired less verbose
+(ensure-pkgs '(dired-details))
+(require 'dired-details)
+(setq-default dired-details-hidden-string "")
+(dired-details-install)
 #+end_src
 
 * Programming modes
