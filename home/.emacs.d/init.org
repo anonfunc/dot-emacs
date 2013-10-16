@@ -283,6 +283,7 @@ From what the emacs.d
 #+end_src
 *** Magit SVN
 #+begin_src emacs-lisp
+  (ensure-pkgs '(magit-svn))
   (require 'magit-svn)
 
   (add-hook 'magit-mode-hook (lambda()
