@@ -125,6 +125,12 @@ the solarized theme.  The available packages currently use the 256 color version
 #+begin_src emacs-lisp
 (defalias 'yes-or-no-p 'y-or-n-p)
 #+end_src
+** Control-mode
+#+begin_src emacs-lisp
+  (ensure-pkgs '(control-mode))
+  (require 'control-mode)
+  (control-mode-default-setup)
+#+end_src
 * Custom Functionality
 ** Jump to .emacs
 #+begin_src emacs-lisp
