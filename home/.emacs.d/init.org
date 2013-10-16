@@ -206,20 +206,20 @@ Default method:
 #+end_src
 ** Expand Region
 #+begin_src emacs-lisp
-(global-set-key (kbd "C-=") 'er/expand-region)
-(global-set-key (kbd "M-=") 'er/expand-region)
+;;(global-set-key (kbd "C-=") 'er/expand-region)
+;;(global-set-key (kbd "M-=") 'er/expand-region)
 #+end_src
 ** Multiple Cursors
 #+begin_src emacs-lisp
-(global-set-key (kbd "C-c C-SPC") 'mc/edit-lines)
-(global-set-key (kbd "M-]") 'mc/mark-next-like-this)
+;;(global-set-key (kbd "C-c C-SPC") 'mc/edit-lines)
+;;(global-sqet-key (kbd "M-]") 'mc/mark-next-like-this)
 ;; (global-set-key (kbd "C-c C-e") 'mc/edit-ends-of-lines)
 ;; (global-set-key (kbd "C-c C-a") 'mc/edit-beginnings-of-lines)
 #+end_src
 *** Rectangular region mode
 #+begin_src emacs-lisp
 ;; (global-set-key (kbd "C-c RET") 'set-rectangular-region-anchor)
-#+end_src
+#+end_src;;
 *** Mark More like this
 These are available with an active region.
 #+begin_src emacs-lisp
