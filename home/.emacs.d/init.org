@@ -491,6 +491,21 @@ Use elpy, and tweak indentation.
               (setq python-indent 2)
               (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)))
 #+end_src
+** Global whitespace cleanup
+From "What the emacs.d!?"
+#+begin_src emacs-lisp
+  (defun cleanup-buffer-safe ()
+    "Perform a bunch of safe operations on the whitespace content of a buffer.
+  Does not indent buffer, because it is used for a before-save-hook, and that
+  might be bad."
+    (interactive)
+    (untabify (point-min) (point-max))
+    (delete-trailing-whitespace)
+    (set-buffer-file-coding-system 'utf-8))
+
+  ;; Various superfluous white-space. Just say no.
+  (add-hook 'before-save-hook 'cleanup-buffer-safe)
+#+end_src
 
 ** HTML and Jinja
 #+begin_src emacs-lisp
