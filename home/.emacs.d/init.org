@@ -94,6 +94,7 @@ I prefer the vim style zap.  Leaving old one on M-Z.
 #+begin_src emacs-lisp
 (ensure-pkgs '(maxframe))
 (require 'maxframe)
+(add-hook 'server-visit-hook 'maximize-frame t)
 (add-to-list 'after-make-frame-functions 'maximize-frame)
 #+end_src
 ** Mac command modifiers
