@@ -664,19 +664,6 @@ From "What the emacs.d!?"
 (setq org-velocity-always-use-bucket t)
 (setq org-velocity-exit-on-match t)
 +end_src
-** Org and YAS (Defunct)
-
-;; (defun yas/org-very-safe-expand ()
-;;   (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
-
-;; (add-hook 'org-mode-hook
-;;        (lambda ()
-;;          (make-variable-buffer-local 'yas/trigger-key)
-;;          (setq yas/trigger-key [tab])
-;;          (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
-;;          (define-key yas/keymap [tab] 'yas/next-field)))
-
-
 ** Org Mode notifications
 
 (require 'appt)
@@ -688,7 +675,6 @@ From "What the emacs.d!?"
 
 (org-agenda-to-appt t)
 (add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt)
-
 
 ** Stay on task (Idle display of Agenda)
 
@@ -721,11 +707,9 @@ From "What the emacs.d!?"
     (timer-activate-when-idle timer nil))
   ;;(run-with-idle-timer 300 t 'jump-to-org-agenda)
 
-
 ** org contacts
 
 (setq org-contacts-files '("~/org/contacts.org"))
-
 
 ** org bullets
 
