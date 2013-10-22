@@ -179,6 +179,11 @@ Default method:
   ;;(setq tramp-default-method "ssh")
 #+end_src
 
+Use remote PATH?
+#+begin_src emacs-lisp
+  (require 'tramp)
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+#+end_src
 ** Smex
 #+begin_src emacs-lisp
   (ensure-pkgs '(smex))
