@@ -122,7 +122,8 @@ The same font can have different names on each platform.
 ** Minimal Window Decor
 #+begin_src emacs-lisp
   (setq inhibit-splash-screen t)
-  (menu-bar-mode 0)
+  (unless (eq window-system 'ns)
+    (menu-bar-mode 1))
   (tool-bar-mode 0)
   (if (boundp 'scroll-bar-mode)
       (scroll-bar-mode 0))
