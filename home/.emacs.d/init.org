@@ -632,29 +632,6 @@ From "What the emacs.d!?"
           ("p" . ded/org-show-previous-heading-tidily)
           ("J" . org-clock-goto)))
 
-** Org Links
-
-  (setq org-link-abbrev-alist
-         '(("jira" . "https://jira.@workplace@.com/browse/")
-           ("review" . "https://crucible.@workplace@.com/cru/")
-          ))
-
-
-*** Defunct
-
-  ;; (setq org-link-abbrev-alist
-  ;;        '(("jira" . "https://jira.@workplace@.com/browse/")
-  ;;      ;;("devdrop" . "https://env.@xyzzy@.com:9030/oms/fx/search.flex?q=%s")
-  ;;      ;;("work" . "http://localhost:4444/work/fx/search.flex?q=%s")
-  ;;      ;;("work" . "https://dev.@xyzzy@.com/work/fx/search.flex?q=%s")
-  ;;      ;;("work" . "https://dev.@xyzzy@.com/oms/fx/search.flex?q=%s")
-  ;;      ))
-
-  ;;  (defun my-org-make-ids-links ()
-  ;;    (interactive)
-  ;;    (save-excursion
-  ;;      (query-replace-regexp " \\([0-9]+[$.][0-9]+\\)" " [[devdrop:\\1][\\1]]")))
-
 ** Org-mobile
 *** Schedule
 
