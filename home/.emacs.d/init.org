@@ -92,9 +92,9 @@ I prefer the vim style zap.  Leaving old one on M-Z.
 * Interface
 ** Maximize frame
 #+begin_src emacs-lisp
-  (defun maximize-frame (&optional frame)
-    (set-frame-parameter frame 'maximize 'maximize))
-  (add-to-list 'after-make-frame-functions 'maximize-frame)
+(ensure-pkgs '(maxframe))
+(require 'maxframe)
+(add-hook 'window-setup-hook 'maximize-frame t)
 #+end_src
 ** Mac command modifiers
 #+begin_src emacs-lisp
