@@ -108,6 +108,15 @@ I prefer the vim style zap.  Leaving old one on M-Z.
    (define-key function-key-map "\e[1;9D" [M-left])))
 #+end_src
 * Interface
+** Font
+#+begin_src emacs-lisp
+  (defun my-font (&optional frame)
+    (when (eq window-system 'ns)
+      (set-frame-font "Inconsolata-dz for Powerline 14" nil t)))
+  (my-font)
+  (add-to-list 'after-make-frame-functions 'my-font)
+  (add-hook 'server-visit-hook 'my-font t)
+#+end_src
 ** Maximize frame
 #+begin_src emacs-lisp
   (ensure-pkgs '(maxframe))
@@ -128,16 +137,11 @@ I prefer the vim style zap.  Leaving old one on M-Z.
 (setq mac-option-modifier 'meta)
 (setq mac-fn-modifier 'super)
 #+end_src
-** Font
-#+begin_src emacs-lisp
-  (when (eq window-system 'ns)
-    (set-frame-font "Inconsolata-dz for Powerline 14"))
-#+end_src
 ** Minimal Window Decor
 #+begin_src emacs-lisp
   (setq inhibit-splash-screen t)
   (unless (eq window-system 'ns)
-    (menu-bar-mode 1))
+    (menu-bar-mode 0))
   (tool-bar-mode 0)
   (if (boundp 'scroll-bar-mode)
       (scroll-bar-mode 0))
