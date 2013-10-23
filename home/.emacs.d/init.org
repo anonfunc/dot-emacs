@@ -555,51 +555,16 @@ From "What the emacs.d!?"
 #+end_src
 
 ** Configure
- ; (setq org-hide-leading-stars t
-     ;   org-completion-use-ido t
-     ;   org-outline-path-complete-in-steps nil
-     ;   org-enforce-todo-checkbox-dependencies t
-     ;   org-enforce-todo-dependencies t
-     ;   org-special-ctrl-a/e t
-     ;   org-special-ctrl-k t
-     ;   org-yank-adjusted-subtrees t
-     ;   org-startup-indented t
-     ;   org-use-fast-todo-selection t
-     ;   org-directory "~/org"
-     ;   org-default-notes-file (concat org-directory "/notes.org")
-     ;   org-mobile-directory "~/CloudStation/mobileorg"
-     ;   org-mobile-creating-agendas t;
-
-        org-src-window-setup 'current-window
-        org-src-fontify-natively t
-
-        org-todo-keywords
-        '((sequence "TODO(t)" "NEXT(n)" "STARTED(s)" "|" "DONE(d!/!)")
-          (sequence "WAITING(w@/!)" "SOMEDAY(S!)" "|" "CANCELLED(c@/!)"))
-
-
-        org-capture-templates
-        '(("e" "Capture email" entry (file "inbox.org")
-           "* %^{Title}\nSource: %a\n%i")
-          ("t" "todo" entry (file "inbox.org")
-           "* TODO %?\n%U\n%a\n  %i" :clock-in t :clock-resume t)
-          ("T" "todo, sourceless" entry (file "inbox.org")
-           "* TODO %?\n%U\n  %i" :clock-in t :clock-resume t)
-          ("h" "Habit" entry (file "inbox.org")
-           "* NEXT %?\n%U\n%a\nSCHEDULED: %t .+1d/3d\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n  %i")
-          ("w" "org-protocol" entry (file "inbox.org")
-           "* TODO Review %c\n%U\n  %i" :immediate-finish t))
-
-        org-refile-targets '((nil :maxlevel . 9)
-                             (org-agenda-files :maxlevel . 9))
-        org-refile-use-outline-path t
-        org-refile-allow-creating-parent-nodes (quote confirm)
-
-        ;; For better sunset calc
-        calendar-latitude 37.662
-        calendar-longitude -121.874
-        calendar-location-name "Pleasanton, CA"
-        org-mobile-files-exclude-regexp "calendar")
+#+begin_src emacs-lisp
+    (setq org-completion-use-ido t
+          org-special-ctrl-a/e t
+          org-special-ctrl-k t
+          org-yank-adjusted-subtrees t
+          org-enforce-todo-checkbox-dependencies t
+          org-enforce-todo-dependencies t
+          org-default-notes-file "~/org/notes.org")
+#+end_src
+** Capture Templates
 
 ** Bindings
 *** Capture
@@ -610,65 +575,6 @@ From "What the emacs.d!?"
 (global-set-key "\C-cb" 'org-iswitchb)
 #+end_src
 
-*** Fast Nav
-
-  ;; From http://orgmode.org/worg/org-hacks.html
-  (defun ded/org-show-next-heading-tidily ()
-    "Show next entry, keeping other entries closed."
-    (if (save-excursion (end-of-line) (outline-invisible-p))
-        (progn (org-show-entry) (show-children))
-      (outline-next-heading)
-      (unless (and (bolp) (org-on-heading-p))
-        (org-up-heading-safe)
-        (hide-subtree)
-        (error "Boundary reached"))
-      (org-overview)
-      (org-reveal t)
-      (org-show-entry)
-      (show-children)))
-
-  (defun ded/org-show-previous-heading-tidily ()
-    "Show previous entry, keeping other entries closed."
-    (let ((pos (point)))
-      (outline-previous-heading)
-      (unless (and (< (point) pos) (bolp) (org-on-heading-p))
-        (goto-char pos)
-        (hide-subtree)
-        (error "Boundary reached"))
-      (org-overview)
-      (org-reveal t)
-      (org-show-entry)
-      (show-children)))
-
-  (setq org-use-speed-commands t)
-  (setq org-speed-commands-user
-        '(("n" . ded/org-show-next-heading-tidily)
-          ("p" . ded/org-show-previous-heading-tidily)
-          ("J" . org-clock-goto)))
-
-** Org-mobile
-*** Schedule
-
-(defun my-org-mobile-pull/push ()
-  (interactive)
-  (org-mobile-pull)
-  (org-mobile-push))
-
-
-(run-at-time t 900 'my-org-mobile-pull/push)
-
-** Agenda commands
-
-(setq org-agenda-custom-commands
-      '(("o" "Overview"
-         ((tags-todo "+home")
-          (tags-todo "+work")
-          (tags-todo "-home-work")
-          (agenda ""))
-         ((org-agenda-ndays 1)))
-        ("h" tags-todo "+home")
-        ("w" tags-todo "+work")))
-
 ** Org-Velocity
 +begin_src emacs-lisp
 (require 'org-velocity)
@@ -678,6 +584,11 @@ From "What the emacs.d!?"
 (setq org-velocity-always-use-bucket t)
 (setq org-velocity-exit-on-match t)
 +end_src
+** Org Pomodoro
+M-x org-pomodoro
+#+begin_src emacs-lisp
+  (ensure-pkgs '(org-pomodoro))
+#+end_src
 ** Org Mode notifications
 
 (require 'appt)
@@ -720,22 +631,6 @@ From "What the emacs.d!?"
     (timer-set-idle-time timer 300 t)
     (timer-activate-when-idle timer nil))
   ;;(run-with-idle-timer 300 t 'jump-to-org-agenda)
-
-** org contacts
-
-(setq org-contacts-files '("~/org/contacts.org"))
-
-** org bullets
-
-  (:name org-bullets
-         :type github
-         :pkgname "sabof/org-bullets"
-         :features org-bullets
-         :after (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-
-
-
-  (setq org-bullets-bullet-list '("◉" "○" "•" "★"))
 
 ** Export
 *** Dark backgrounds for code blocks

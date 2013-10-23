@@ -7,7 +7,7 @@
  '(custom-safe-themes (quote ("e16a771a13a202ee6e276d06098bc77f008b73bbac4d526f160faa2d76c1dd0e" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(font-lock-maximum-decoration (quote ((dired-mode) (t . t))))
  '(helm-command-prefix-key "C-c h")
- '(org-agenda-files (quote ("~/org/velocity.org" "~/org/habits.org" "~/org/calendars/gcal.org" "~/org/calendars/exchange.org" "~/org/personal.org" "~/org/work.org" "~/org/shopping.org" "~/org/inbox.org" "~/org/from-mobile.org")))
+ '(org-agenda-files (quote ("~/org/notes.org" "~/org/jiras.org")))
  '(org-modules (quote (org-bbdb org-bibtex org-docview org-gnus org-info org-jsinfo org-habit org-irc org-mew org-mhe org-protocol org-rmail org-vm org-wl org-w3m)))
  '(safe-local-variable-values (quote ((eval folding-mode t) (folded-file . t))))
  '(sp-highlight-pair-overlay nil))
