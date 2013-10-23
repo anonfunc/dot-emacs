@@ -181,6 +181,11 @@ Use remote PATH?
   (require 'tramp)
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
 #+end_src
+
+Cache passwords
+#+begin_src emacs-lisp
+  (setq password-cache-expiry nil)
+#+end_src
 ** Smex
 #+begin_src emacs-lisp
   (ensure-pkgs '(smex))
