@@ -152,6 +152,21 @@ the solarized theme.  The available packages currently use the 256 color version
   (control-mode-default-setup)
 #+end_src
 * Custom Functionality
+** Use custom browser script if possible.
+#+begin_src emacs-lisp
+  (defun browse-url-remote-open (url &optional ignored)
+    "Pass the specified URL to the \"xdg-open\" command.
+  xdg-open is a desktop utility that calls your preferred web browser.
+  The optional argument IGNORED is not used."
+    (interactive (browse-url-interactive-arg "URL: "))
+    (if window-system
+        (browse-url-default-browser url)
+      (call-process "ro" nil 0 nil url)))
+
+
+  (setq browse-url-browser-function 'browse-url-remote-open)
+
+#+end_src
 ** Jump to .emacs
 #+begin_src emacs-lisp
 ;; Jump to .emacs
