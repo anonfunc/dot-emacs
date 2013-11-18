@@ -330,13 +330,13 @@ From what the emacs.d
     ad-do-it
     (delete-other-windows))
 
-  (defun magit-quit-session ()
-    "Restores the previous window configuration and kills the magit buffer"
-    (interactive)
-    (kill-buffer)
-    (jump-to-register :magit-fullscreen))
-
-  (define-key magit-status-mode-map (kbd "q") 'magit-quit-session)
+  (if (boundp 'magit-quit-window)
+      (defadvice magit-quit-window (after magit-restore-screen activate)
+        (jump-to-register :magit-fullscreen)))
+  ;; Newer magit:
+  (if (boundp 'magit-mode-quit-window)
+      (defadvice magit-quit-window (after magit-restore-screen activate)
+        (jump-to-register :magit-fullscreen)))
 #+end_src
 *** Magit SVN
 #+begin_src emacs-lisp
