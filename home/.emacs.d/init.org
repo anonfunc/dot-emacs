@@ -411,6 +411,28 @@ From what the emacs.d
 (dired-details-install)
 #+end_src
 
+** Net Utilities
+From [[http://irreal.org/blog/?p%3D2247][irreal]]
+#+begin_src emacs-lisp
+  (setq ping-program-options '("-c" "4"))
+  (defun net-utils-restore-windows ()
+    "Restore windows and clean up after ping."
+    (interactive)
+    (kill-buffer (current-buffer))
+    (jump-to-register :net-utils-fullscreen))
+
+  (defadvice net-utils-run-program (around net-utils-big-page activate)
+    (window-configuration-to-register :net-utils-fullscreen)
+    (let ((buf ad-do-it))
+      (switch-to-buffer buf)
+      (delete-other-windows)
+      (set-temporary-overlay-map
+        (let ((map (make-sparse-keymap)))
+          (define-key map (kbd "q") 'net-utils-restore-windows)
+          map))
+      (message "Type \"q\" to restore other windows.")))
+#+end_src
+
 * Programming modes
 ** Indent settings
 Don't use tabs, default to 4 spaces.
