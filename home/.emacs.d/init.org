@@ -67,6 +67,7 @@ Depending on how the emacs daemon is started, the current directory is less than
 (setq font-lock-verbose nil)
 (setq vc-handled-backends '(Git))
 ;(setq jit-lock-defer-time 0.05)
+(setq gc-cons-threshold 20000000)
 #+end_src
 ** Modern Sentences
 #+begin_src emacs-lisp
