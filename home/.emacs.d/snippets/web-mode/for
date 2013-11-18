@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: for
+# key: for
+# --
+{% for ${1:thing} in ${2:collection} ${3:if ${4:condition}} %}
+   $0
+${5: {% else %} {# $2 was empty #}}
+{% endfor %} {# $2 #}
