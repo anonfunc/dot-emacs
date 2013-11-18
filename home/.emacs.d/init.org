@@ -18,14 +18,21 @@ Some of this is done in .emacs now, keeping here for documentation.
 ** Package install
 And now for automatic package installation:
 #+begin_src emacs-lisp
+  (defun ensure-pkg (package)
+    (unless (package-installed-p pkg)
+      (package-install pkg)))
+
   (defun ensure-pkgs (packages)
-    (mapc (lambda (pkg) (or (package-installed-p pkg)
-                            (package-install pkg))) packages))
+    (mapc 'ensure-pkg packages))
 
   (ensure-pkgs '(melpa s ibuffer-vc ido-ubiquitous dired+
                  ace-jump-mode expand-region multiple-cursors
                  sunrise-commander magit
                  magit-commit-training-wheels org-plus-contrib))
+
+  (defmacro when-installed (pkg &rest body)
+    `(when (package-installed-p ,pkg)
+       ,@body))
 #+end_src
 * Behavior Tweaks
 ** cl
