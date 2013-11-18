@@ -622,6 +622,8 @@ From "What the emacs.d!?"
 M-x org-pomodoro
 #+begin_src emacs-lisp
   (ensure-pkgs '(org-pomodoro))
+  (require 'org-pomodoro)
+  (global-set-key (kbd "C-c p") 'org-pomodoro)
 #+end_src
 ** Org Mode notifications
 
