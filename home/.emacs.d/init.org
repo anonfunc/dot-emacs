@@ -222,8 +222,10 @@ Cache passwords
 #+end_src
 ** IDO Everywhere
 #+begin_src emacs-lisp
-(ido-mode t)
-(ido-ubiquitous-mode)
+  (ido-mode t)
+  (recentf-mode t)
+  (setq ido-use-virtual-buffers t)
+  (ido-ubiquitous-mode)
 #+end_src
 
 ** Ibuffer
