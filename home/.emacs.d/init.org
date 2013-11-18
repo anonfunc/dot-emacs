@@ -546,6 +546,13 @@ Use elpy, and tweak indentation.
               (setq python-indent 2)
               (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)))
 #+end_src
+*** Eshell support for virtualenvs
+#+begin_src emacs-lisp
+  (defun eshell/workon (virtualenv)
+    (let ((virtualenv-workon-starts-python nil))
+      (virtualenv-workon virtualenv)
+      (setq exec-path (split-string (getenv "PATH") ":"))))
+#+end_src
 ** Global whitespace cleanup
 From "What the emacs.d!?"
 #+begin_src emacs-lisp
