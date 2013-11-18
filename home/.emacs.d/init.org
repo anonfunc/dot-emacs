@@ -392,9 +392,9 @@ From what the emacs.d
 
 ** Ack and Ag
 #+BEGIN_SRC emacs-lisp
-    (ensure-pkgs '(ack-and-a-half ag wgrep-ag))
-    (setq ag-highlight-search t
-          ag-reuse-buffers 't)
+  (ensure-pkgs '(ack-and-a-half ag wgrep-ag))
+  (setq ag-highlight-search t
+        ag-reuse-buffers 't)
 #+END_SRC
 ** Dired and Dired Extensions
 #+begin_src emacs-lisp
