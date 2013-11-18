@@ -350,38 +350,38 @@ From what the emacs.d
 
 *** Git-Review bindings under Magit SVN
 #+begin_src emacs-lisp
-    (setq magit-reviewer-group "mp-dev")
+  (setq magit-reviewer-groups '("mp-dev" "qei-tools-reviewers"))
 
-    (defun magit-review-open-link ()
-      (interactive)
-      (unless (get-buffer magit-process-buffer-name)
-        (error "No Git commands have run"))
-      (save-excursion
-        (set-buffer magit-process-buffer-name)
-        (goto-char (point-min))
-        (if (search-forward-regexp "https.*" nil t)
-            (browse-url-at-point)
-          (message "Did not find url"))))
+  (defun magit-review-open-link ()
+    (interactive)
+    (unless (get-buffer magit-process-buffer-name)
+      (error "No Git commands have run"))
+    (save-excursion
+      (set-buffer magit-process-buffer-name)
+      (goto-char (point-min))
+      (if (search-forward-regexp "https.*" nil t)
+          (browse-url-at-point)
+        (message "Did not find url"))))
 
-    (magit-define-command review-create ()
-      (interactive)
-      (magit-run-git "review" "create"
-                     "-b" (magit-get-current-branch)
-                     "--groups" magit-reviewer-group)
-      (magit-review-open-link))
+  (defun magit-review-create (group)
+    (interactive (list (ido-completing-read "Review group?" magit-reviewer-groups)))
+    (magit-run-git "review" "create"
+                   "-b" (magit-get-current-branch)
+                   "--groups" group)
+    (magit-review-open-link))
 
-    (magit-define-command review-dcommit ()
-      (interactive)
-      (magit-run-git "review" "dcommit"))
+  (defun magit-review-dcommit ()
+    (interactive)
+    (magit-run-git "review" "dcommit"))
 
-    (magit-define-command review-update ()
-      (interactive)
-      (magit-run-git "review" "update")
-      (magit-review-open-link))
+  (defun magit-review-update ()
+    (interactive)
+    (magit-run-git "review" "update")
+    (magit-review-open-link))
 
-    (magit-key-mode-insert-action 'svn "R" "Create Review" 'magit-review-create)
-    (magit-key-mode-insert-action 'svn "U" "Update Review" 'magit-review-update)
-    (magit-key-mode-insert-action 'svn "D" "Review dcommit" 'magit-review-dcommit)
+  (magit-key-mode-insert-action 'svn "R" "Create Review" 'magit-review-create)
+  (magit-key-mode-insert-action 'svn "U" "Update Review" 'magit-review-update)
+  (magit-key-mode-insert-action 'svn "D" "Review dcommit" 'magit-review-dcommit)
 #+end_src
 
 ** Battery life in mode line
