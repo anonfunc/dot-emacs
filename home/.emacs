@@ -1,4 +1,4 @@
-;; Load up org-mode and org-babel.  
+;; Load up org-mode and org-babel.
 ;; Should look for the el-get version if already bootstrapped.
 ;; (org-babel-tangle-file (expand-file-name "~/.emacs.d/init.org") (expand-file-name "~/.emacs.d/init.el") "emacs-lisp")
 (require 'package)
@@ -12,3 +12,4 @@
 (let ((pkg 'org-plus-contrib)) (or (package-installed-p pkg) (package-install pkg)))
 
 (org-babel-load-file (expand-file-name "~/.emacs.d/init.org"))
+(put 'narrow-to-region 'disabled nil)
