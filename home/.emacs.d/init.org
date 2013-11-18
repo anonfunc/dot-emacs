@@ -676,6 +676,36 @@ M-x org-pomodoro
 ;; /*]]>*/-->
 ;; </style>")
 
+** MobileOrg
+#+begin_src emacs-lisp
+  (setq org-mobile-directory "~/.MobileOrg")
+
+  ;; From stackoverflow:
+
+  (defvar my-org-mobile-sync-timer nil)
+
+  (defvar my-org-mobile-sync-secs (* 60 2)) ;; Sync every two minutes
+
+  (defun my-org-mobile-sync-pull-and-push ()
+    (interactive)
+    (org-mobile-pull)
+    (org-mobile-push))
+
+  (defun my-org-mobile-sync-start ()
+    "Start automated `org-mobile-push'"
+    (interactive)
+    (setq my-org-mobile-sync-timer
+          (run-with-idle-timer my-org-mobile-sync-secs t
+                               'my-org-mobile-sync-pull-and-push)))
+
+  (defun my-org-mobile-sync-stop ()
+    "Stop automated `org-mobile-push'"
+    (interactive)
+    (cancel-timer my-org-mobile-sync-timer))
+
+  (my-org-mobile-sync-start)
+#+end_src
+
 * ERC
 Using bouncer.
 #+begin_src emacs-lisp
