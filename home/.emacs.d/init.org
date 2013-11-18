@@ -568,6 +568,18 @@ From "What the emacs.d!?"
   (require 'web-mode)
   (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
   (setq web-mode-engines-alist '(("jinja2"    . "\\.html?\\'")))
+  (when-installed 'smartparens (sp-local-tag '(web-mode) "<" "<_>" "</_>" :transform 'sp-match-sgml-tags))
+#+end_src
+** Javascript
+#+begin_src emacs-lisp
+  (ensure-pkgs '(js2-mode))
+  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+  (add-hook 'js2-mode-hook
+            (lambda ()
+              (setq tab-width 2)
+              (setq js2-basic-offset 2)
+              (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)))
+
 #+end_src
 * Org-mode Setup
 ** Require
