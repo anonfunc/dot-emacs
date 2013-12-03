@@ -18,7 +18,7 @@ Some of this is done in .emacs now, keeping here for documentation.
 ** Package install
 And now for automatic package installation:
 #+begin_src emacs-lisp
-  (defun ensure-pkg (package)
+  (defun ensure-pkg (pkg)
     (unless (package-installed-p pkg)
       (package-install pkg)))
 
