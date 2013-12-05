@@ -252,6 +252,8 @@ Enable remote dir-locals.
   (recentf-mode t)
   (setq ido-use-virtual-buffers t)
   (ido-ubiquitous-mode)
+  (ensure-pkg 'flx-ido)
+  (flx-ido-mode 1)
 #+end_src
 
 ** Ibuffer
