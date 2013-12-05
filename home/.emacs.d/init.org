@@ -561,6 +561,37 @@ Possible fit for project management.
   (defadvice imenu-anywhere (before push-mark activate)
     (push-mark))
 #+end_src
+** Global whitespace cleanup
+From http://stackoverflow.com/questions/3533703/emacs-delete-trailing-whitespace-except-current-line
+#+begin_src emacs-lisp
+  (defun delete-trailing-whitespace-except-current-line ()
+    (interactive)
+    (let ((begin (line-beginning-position))
+          (end (line-end-position)))
+      (save-excursion
+        (when (< (point-min) begin)
+          (save-restriction
+            (narrow-to-region (point-min) (1- begin))
+            (delete-trailing-whitespace)))
+        (when (> (point-max) end)
+          (save-restriction
+            (narrow-to-region (1+ end) (point-max))
+            (delete-trailing-whitespace))))))
+#+end_src
+From "What the emacs.d!?"
+#+begin_src emacs-lisp
+  (defun cleanup-buffer-safe ()
+    "Perform a bunch of safe operations on the whitespace content of a buffer.
+  Does not indent buffer, because it is used for a before-save-hook, and that
+  might be bad."
+    (interactive)
+    (untabify (point-min) (point-max))
+    (delete-trailing-whitespace-except-current-line)
+    (set-buffer-file-coding-system 'utf-8))
+
+  ;; Various superfluous white-space. Just say no.
+  (add-hook 'before-save-hook 'cleanup-buffer-safe)
+#+end_src
 ** Python!
 Use elpy, and tweak indentation.
 #+begin_src emacs-lisp
@@ -574,8 +605,7 @@ Use elpy, and tweak indentation.
   (add-hook 'python-mode-hook
             (lambda ()
               (setq tab-width 2)
-              (setq python-indent 2)
-              (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)))
+              (setq python-indent 2)))
 #+end_src
 *** Eshell support for virtualenvs
 #+begin_src emacs-lisp
@@ -583,21 +613,6 @@ Use elpy, and tweak indentation.
     (let ((virtualenv-workon-starts-python nil))
       (virtualenv-workon virtualenv)
       (setq exec-path (split-string (getenv "PATH") ":"))))
-#+end_src
-** Global whitespace cleanup
-From "What the emacs.d!?"
-#+begin_src emacs-lisp
-  (defun cleanup-buffer-safe ()
-    "Perform a bunch of safe operations on the whitespace content of a buffer.
-  Does not indent buffer, because it is used for a before-save-hook, and that
-  might be bad."
-    (interactive)
-    (untabify (point-min) (point-max))
-    (delete-trailing-whitespace)
-    (set-buffer-file-coding-system 'utf-8))
-
-  ;; Various superfluous white-space. Just say no.
-  (add-hook 'before-save-hook 'cleanup-buffer-safe)
 #+end_src
 
 ** HTML and Jinja
