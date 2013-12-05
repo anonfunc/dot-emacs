@@ -62,6 +62,12 @@ Depending on how the emacs daemon is started, the current directory is less than
   (setq backup-inhibited t)
   (setq auto-save-default nil)
 #+end_src
+** But use a better auto-save mode
+#+begin_src emacs-lisp
+  (ensure-pkg 'auto-save-buffers-enhanced)
+  (auto-save-buffers-enhanced-include-only-checkout-path t)  ; Only auto-save VCS tracked files.
+  (auto-save-buffers-enhanced t)
+#+end_src
 ** Speed Tweaks
 #+begin_src emacs-lisp
 (setq font-lock-verbose nil)
@@ -399,6 +405,11 @@ From what the emacs.d
   (magit-key-mode-insert-action 'svn "D" "Review dcommit" 'magit-review-dcommit)
 #+end_src
 
+*** Magit-wip
+#+begin_src emacs-lisp
+  (require 'magit-wip)
+  (global-magit-wip-save-mode 1)
+#+end_src
 ** Battery life in mode line
 #+begin_src emacs-lisp
 ;; (setq battery-mode-line-format "[%b%p%% %t]")
