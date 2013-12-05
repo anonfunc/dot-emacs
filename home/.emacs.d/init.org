@@ -508,8 +508,10 @@ Adds M-* and M-, to elisp buffers.
 ** Projectile
 Possible fit for project management.
 #+begin_src emacs-lisp
-;(setq projectile-enable-caching t)
-;(projectile-global-mode)
+  (ensure-pkg 'projectile)
+  (setq projectile-enable-caching t)
+  (projectile-global-mode)
+  (setq projectile-switch-project-action 'projectile-find-dir)
 #+end_src
 ** Flymake
 #+begin_src emacs-lisp
