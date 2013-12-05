@@ -230,6 +230,11 @@ Cache passwords
 #+begin_src emacs-lisp
   (setq password-cache-expiry nil)
 #+end_src
+
+Enable remote dir-locals.
+#+begin_src emacs-lisp
+  (setq enable-remote-dir-locals t)
+#+end_src
 ** Smex
 #+begin_src emacs-lisp
   (ensure-pkgs '(smex))
