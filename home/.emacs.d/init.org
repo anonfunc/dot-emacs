@@ -65,6 +65,7 @@ Depending on how the emacs daemon is started, the current directory is less than
 ** But use a better auto-save mode
 #+begin_src emacs-lisp
   (ensure-pkg 'auto-save-buffers-enhanced)
+  (setq auto-save-buffers-enhanced-interval 5)  ; Auto-save on 5 second idle.
   (auto-save-buffers-enhanced-include-only-checkout-path t)  ; Only auto-save VCS tracked files.
   (auto-save-buffers-enhanced t)
 #+end_src
