@@ -48,7 +48,10 @@ String libray, used in some of my yasnippets.
 #+end_src
 ** Server mode
 #+begin_src emacs-lisp
-(server-start)
+  (when (eq window-system 'ns)
+    (server-force-delete)
+    (setq server-socket-dir (format "/tmp/emacs%d" (user-uid)))
+    (server-start))
 #+end_src
 ** Chdir to ~
 Depending on how the emacs daemon is started, the current directory is less than ideal.
@@ -115,16 +118,6 @@ I prefer the vim style zap.  Leaving old one on M-Z.
    (define-key function-key-map "\e[1;9D" [M-left])))
 #+end_src
 * Interface
-** Font
-#+begin_src emacs-lisp
-  (defun my-font (&optional frame)
-    (interactive)
-    (when (eq window-system 'ns)
-      (set-frame-font "Inconsolata-dz for Powerline 14" nil t)))
-  (my-font)
-  (add-to-list 'after-make-frame-functions 'my-font)
-  (add-hook 'server-visit-hook 'my-font t)
-#+end_src
 ** Maximize frame
 #+begin_src emacs-lisp
   (ensure-pkgs '(maxframe))
@@ -138,6 +131,19 @@ I prefer the vim style zap.  Leaving old one on M-Z.
   ;; (add-hook 'server-visit-hook 'fudge-maximize-frame t)
   (add-hook 'server-visit-hook 'raise-frame t)
   (add-to-list 'after-make-frame-functions 'fudge-maximize-frame)
+#+end_src
+** Font
+#+begin_src emacs-lisp
+  (defun my-font (&optional frame)
+    (interactive)
+    (when frame (select-frame frame))
+    (when (eq window-system 'ns)
+      (set-frame-font "Inconsolata-dz for Powerline 14" nil t))
+    (when frame (fudge-maximize-frame frame)))
+  (when (eq window-system 'ns)
+    (my-font)
+    (add-to-list 'after-make-frame-functions 'my-font))
+  ;(add-hook 'server-visit-hook 'my-font t)
 #+end_src
 ** Mac command modifiers
 #+begin_src emacs-lisp
@@ -338,6 +344,11 @@ These are available with an active region.
   (global-set-key (kbd "C-c s") 'sunrise)
 #+end_src
 ** Magit
+*** Use our emacsclient wrapper
+#+begin_src emacs-lisp
+  (when (eq window-system 'ns)
+    (setq magit-emacsclient-executable (expand-file-name "~/bin/ec")))
+#+end_src
 *** Bindings
 #+begin_src emacs-lisp
 ;; F12 for magit
