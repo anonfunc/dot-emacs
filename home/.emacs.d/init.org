@@ -338,11 +338,6 @@ These are available with an active region.
   (global-set-key (kbd "C-c s") 'sunrise)
 #+end_src
 ** Magit
-*** Use our emacsclient wrapper
-#+begin_src emacs-lisp
-  (when (eq system-type 'darwin)
-    (setq magit-emacsclient-executable (expand-file-name "~/bin/ec")))
-#+end_src
 *** Bindings
 #+begin_src emacs-lisp
 ;; F12 for magit
