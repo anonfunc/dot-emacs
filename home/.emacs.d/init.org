@@ -134,16 +134,9 @@ I prefer the vim style zap.  Leaving old one on M-Z.
 #+end_src
 ** Font
 #+begin_src emacs-lisp
-  (defun my-font (&optional frame)
-    (interactive)
-    (when frame (select-frame frame))
-    (when (eq window-system 'ns)
-      (set-frame-font "Inconsolata-dz for Powerline 14" nil t))
-    (when frame (fudge-maximize-frame frame)))
   (when (eq window-system 'ns)
-    (my-font)
-    (add-to-list 'after-make-frame-functions 'my-font))
-  ;(add-hook 'server-visit-hook 'my-font t)
+    (set-face-attribute 'default nil
+                      :family "Source Code Pro" :height 145 :weight 'extra-light))  ; Extra-light doesn't work, but it's the thought which counts
 #+end_src
 ** Mac command modifiers
 #+begin_src emacs-lisp
