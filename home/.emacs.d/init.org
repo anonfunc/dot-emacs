@@ -48,7 +48,7 @@ String libray, used in some of my yasnippets.
 #+end_src
 ** Server mode
 #+begin_src emacs-lisp
-  (when (eq window-system 'ns)
+  (when (eq system-type 'darwin)
     (server-force-delete)
     (setq server-socket-dir (format "/tmp/emacs%d" (user-uid)))
     (server-start))
@@ -122,6 +122,7 @@ I prefer the vim style zap.  Leaving old one on M-Z.
 #+begin_src emacs-lisp
   (ensure-pkgs '(maxframe))
   (require 'maxframe)
+  (setq mf-display-padding-height 60)  ; was 45
   (setq fudge-maximize-frame-first t)
   (defun fudge-maximize-frame (frame)
     (if fudge-maximize-frame-first
@@ -134,7 +135,7 @@ I prefer the vim style zap.  Leaving old one on M-Z.
 #+end_src
 ** Font
 #+begin_src emacs-lisp
-  (when (eq window-system 'ns)
+  (when (eq system-type 'darwin)
     (set-face-attribute 'default nil
                       :family "Source Code Pro" :height 145 :weight 'extra-light))  ; Extra-light doesn't work, but it's the thought which counts
 #+end_src
@@ -147,7 +148,7 @@ I prefer the vim style zap.  Leaving old one on M-Z.
 ** Minimal Window Decor
 #+begin_src emacs-lisp
   (setq inhibit-splash-screen t)
-  (unless (eq window-system 'ns)
+  (unless (eq system-type 'darwin)
     (menu-bar-mode 0))
   (tool-bar-mode 0)
   (if (boundp 'scroll-bar-mode)
@@ -339,7 +340,7 @@ These are available with an active region.
 ** Magit
 *** Use our emacsclient wrapper
 #+begin_src emacs-lisp
-  (when (eq window-system 'ns)
+  (when (eq system-type 'darwin)
     (setq magit-emacsclient-executable (expand-file-name "~/bin/ec")))
 #+end_src
 *** Bindings
