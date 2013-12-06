@@ -645,19 +645,6 @@ Use elpy, and tweak indentation.
 (require 'org)
 ;(require 'org-protocol)
 #+end_src
-
-** Configure
-#+begin_src emacs-lisp
-    (setq org-completion-use-ido t
-          org-special-ctrl-a/e t
-          org-special-ctrl-k t
-          org-yank-adjusted-subtrees t
-          org-enforce-todo-checkbox-dependencies t
-          org-enforce-todo-dependencies t
-          org-default-notes-file "~/org/notes.org")
-#+end_src
-** Capture Templates
-
 ** Bindings
 *** Capture
 #+begin_src emacs-lisp
@@ -666,77 +653,73 @@ Use elpy, and tweak indentation.
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
 #+end_src
+** Configure
+#+begin_src emacs-lisp
+  (setq org-completion-use-ido t
+        org-special-ctrl-a/e t
+        org-special-ctrl-k t
+        org-yank-adjusted-subtrees t
+        org-enforce-todo-checkbox-dependencies t
+        org-enforce-todo-dependencies t
+        org-default-notes-file "~/org/notes.org"
+        org-log-into-drawer t
+        org-clock-into-drawer t
+        org-clock-out-remove-zero-time-clocks t
+        org-use-fast-todo-selection t
+        org-treat-S-cursor-todo-selection-as-state-change nil)
+#+end_src
+** Keywords and to-dos
+#+begin_src emacs-lisp
+(setq org-todo-keywords '((sequence "TODO(t)" "DONE(d)")))
+#+end_src
+** Capture Templates
+#+begin_src emacs-lisp
+  ;; Inspiration from http://doc.norang.ca/org-mode.html#Capture
+  (setq org-capture-templates `(("t" "todo" entry (file ,org-default-notes-file)
+                                 "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+                                ("e" "email" entry (file ,org-default-notes-file)
+                                 "* TODO Email: %:from ($:subject)\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+                                ("l" "log" entry (file+datetree ,org-default-notes-file)
+                                 "* %?\n%U\n" :clock-in t :clock-resume t)
+                                ("i" "Interruption" entry (file+datetree ,org-default-notes-file)
+                                 "* %? :interruption:\n%U\n" :clock-in t :clock-resume t)
+                                ("m" "Meeting" entry (file ,org-default-notes-file)
+                                 "* Meeting: %?\n%T\n" :clock-in t :clock-resume t)
+                                ("h" "Habit" entry (file ,org-default-notes-file)
+                                 "* TODO %?\n%U\n%a\nSCHEDULED: %(format-time-string \"<%Y-%m-%d %a .+1d/3d>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: TODO\n:END:\n")
+                                ))
 
-** Org-Velocity
-+begin_src emacs-lisp
-(require 'org-velocity)
+  ;; Cleanup empty clocks, also from norang:
+  ;; Remove empty LOGBOOK drawers on clock out
+  (defun bh/remove-empty-drawer-on-clock-out ()
+    (interactive)
+    (save-excursion
+      (beginning-of-line 0)
+      (org-remove-empty-drawer-at "LOGBOOK" (point))))
 
-(global-set-key (kbd "C-c v") 'org-velocity-read)
-(setq org-velocity-bucket "~/org/velocity.org")
-(setq org-velocity-always-use-bucket t)
-(setq org-velocity-exit-on-match t)
-+end_src
-** Org Pomodoro
+  (add-hook 'org-clock-out-hook 'bh/remove-empty-drawer-on-clock-out 'append)
+#+end_src
+** Agenda Views
+#+begin_src emacs-lisp
+t
+#+end_src
+** Org Modules
+*** Org-Velocity
+#+begin_src emacs-lisp
+  (require 'org-velocity)
+  (global-set-key (kbd "C-c v") 'org-velocity-read)
+  (setq org-velocity-bucket "~/org/velocity.org"
+        org-velocity-always-use-bucket t
+        org-velocity-exit-on-match nil)
+#+end_src
+*** Org Pomodoro
 M-x org-pomodoro
 #+begin_src emacs-lisp
   (ensure-pkgs '(org-pomodoro))
   (require 'org-pomodoro)
   (global-set-key (kbd "C-c p") 'org-pomodoro)
 #+end_src
-** Org Mode notifications
-
-(require 'appt)
-(setq appt-message-warning-time 15
-      appt-display-mode-line t
-      appt-display-format 'window)
-(appt-activate 1)
-(display-time)
-
-(org-agenda-to-appt t)
-(add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt)
-
-** Stay on task (Idle display of Agenda)
-
-  ;; From http://article.gmane.org/gmane.emacs.orgmode/23047
-  (defun jump-to-org-agenda ()
-    (interactive)
-    (let ((buf (get-buffer "*Org Agenda*"))
-          wind)
-      (if buf
-          (if (setq wind (get-buffer-window buf))
-              (select-window wind)
-            (if (called-interactively-p)
-                (progn
-                  (select-window (display-buffer buf t t))
-                  (org-fit-window-to-buffer)
-                  ;; (org-agenda-redo)
-                  )
-              (with-selected-window (display-buffer buf)
-                (org-fit-window-to-buffer)
-                ;; (org-agenda-redo)
-                )))
-        (call-interactively 'org-agenda-list)))
-    ;;(let ((buf (get-buffer "*Calendar*")))
-    ;;  (unless (get-buffer-window buf)
-    ;;    (org-agenda-goto-calendar)))
-    )
-  (let ((timer (timer-create)))
-    (timer-set-function timer 'jump-to-org-agenda)
-    (timer-set-idle-time timer 300 t)
-    (timer-activate-when-idle timer nil))
-  ;;(run-with-idle-timer 300 t 'jump-to-org-agenda)
-
-** Export
-*** Dark backgrounds for code blocks
-
-;; (setq org-export-html-style
-;;       "<style type=\"text/css\">
-;; <!--/*--><![CDATA[/*><!--*/
-;; pre.src { color: #f6f3e8 !important; background-color: #242424 !important; }
-;; /*]]>*/-->
-;; </style>")
-
-** MobileOrg
+*** MobileOrg
 #+begin_src emacs-lisp
   (setq org-mobile-directory "~/.MobileOrg")
 
@@ -765,6 +748,59 @@ M-x org-pomodoro
 
   (my-org-mobile-sync-start)
 #+end_src
+** Defunct
+*** Org Mode notifications
+
+(require 'appt)
+(setq appt-message-warning-time 15
+      appt-display-mode-line t
+      appt-display-format 'window)
+(appt-activate 1)
+(display-time)
+
+(org-agenda-to-appt t)
+(add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt)
+
+*** Stay on task (Idle display of Agenda)
+
+   ;; From http://article.gmane.org/gmane.emacs.orgmode/23047
+   (defun jump-to-org-agenda ()
+     (interactive)
+     (let ((buf (get-buffer "*Org Agenda*"))
+           wind)
+       (if buf
+           (if (setq wind (get-buffer-window buf))
+               (select-window wind)
+             (if (called-interactively-p)
+                 (progn
+                   (select-window (display-buffer buf t t))
+                   (org-fit-window-to-buffer)
+                   ;; (org-agenda-redo)
+                   )
+               (with-selected-window (display-buffer buf)
+                 (org-fit-window-to-buffer)
+                 ;; (org-agenda-redo)
+                 )))
+         (call-interactively 'org-agenda-list)))
+     ;;(let ((buf (get-buffer "*Calendar*")))
+     ;;  (unless (get-buffer-window buf)
+     ;;    (org-agenda-goto-calendar)))
+     )
+   (let ((timer (timer-create)))
+     (timer-set-function timer 'jump-to-org-agenda)
+     (timer-set-idle-time timer 300 t)
+     (timer-activate-when-idle timer nil))
+   ;;(run-with-idle-timer 300 t 'jump-to-org-agenda)
+
+*** Export
+**** Dark backgrounds for code blocks
+
+;; (setq org-export-html-style
+;;       "<style type=\"text/css\">
+;; <!--/*--><![CDATA[/*><!--*/
+;; pre.src { color: #f6f3e8 !important; background-color: #242424 !important; }
+;; /*]]>*/-->
+;; </style>")
 
 * ERC
 Using bouncer.
