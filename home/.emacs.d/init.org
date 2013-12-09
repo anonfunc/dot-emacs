@@ -403,6 +403,12 @@ From what the emacs.d
     (interactive)
     (magit-run-git "review" "dcommit"))
 
+  (defun magit-review-open ()
+    (interactive)
+    (let* ((branch (magit-get-current-branch))
+           (reviewid (magit-get (format "branch.%s.reviewid" branch))))
+      (browse-url (format my-review-url-format reviewid))))
+
   (defun magit-review-update ()
     (interactive)
     (magit-run-git "review" "update")
@@ -411,6 +417,7 @@ From what the emacs.d
   (magit-key-mode-insert-action 'svn "R" "Create Review" 'magit-review-create)
   (magit-key-mode-insert-action 'svn "U" "Update Review" 'magit-review-update)
   (magit-key-mode-insert-action 'svn "D" "Review dcommit" 'magit-review-dcommit)
+  (magit-key-mode-insert-action 'svn "O" "Open review" 'magit-review-open)
 #+end_src
 
 *** Magit-wip
