@@ -474,6 +474,10 @@ From [[http://irreal.org/blog/?p%3D2247][irreal]]
       (message "Type \"q\" to restore other windows.")))
 #+end_src
 
+** Ham Mode: Edit html as markdown
+#+begin_src emacs-lisp
+  (ensure-pkg 'ham-mode)
+#+end_src
 * Programming modes
 ** Indent settings
 Don't use tabs, default to 4 spaces.
