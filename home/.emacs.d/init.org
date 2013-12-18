@@ -677,6 +677,7 @@ Use elpy, and tweak indentation.
         org-clock-into-drawer t
         org-clock-out-remove-zero-time-clocks t
         org-use-fast-todo-selection t
+        org-agenda-start-on-weekday nil
         org-treat-S-cursor-todo-selection-as-state-change nil)
 #+end_src
 ** Keywords and to-dos
@@ -689,7 +690,7 @@ Use elpy, and tweak indentation.
   (setq org-capture-templates `(("t" "todo" entry (file ,org-default-notes-file)
                                  "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
                                 ("e" "email" entry (file ,org-default-notes-file)
-                                 "* TODO Email: %:from ($:subject)\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+                                 "* TODO Email: %a\nSCHEDULED: %t\n%U\n" :clock-in t :clock-resume t :immediate-finish t)
                                 ("l" "log" entry (file+datetree ,org-default-notes-file)
                                  "* %?\n%U\n" :clock-in t :clock-resume t)
                                 ("i" "Interruption" entry (file+datetree ,org-default-notes-file)
