@@ -13,3 +13,4 @@
 
 (org-babel-load-file (expand-file-name "~/.emacs.d/init.org"))
 (put 'narrow-to-region 'disabled nil)
+(put 'set-goal-column 'disabled nil)
