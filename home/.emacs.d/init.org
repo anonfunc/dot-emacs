@@ -857,6 +857,24 @@ Using bouncer.
 * Evil
 #+begin_src emacs-lisp
   (ensure-pkgs '(evil))
+  ; http://puntoblogspot.blogspot.com/2014/01/evil-exact-amount-of-vim-in-emacs-but.html
+  (require 'evil)
+  ;(setcdr evil-insert-state-map nil)
+  ;(define-key evil-insert-state-map [escape] 'evil-normal-state)
+#+end_src
+** Evil Extensions
+#+begin_src emacs-lisp
+  (ensure-pkg 'evil-matchit)
+  (require 'evil-matchit)
+  (global-evil-matchit-mode 1)
+
+  (ensure-pkg 'evil-nerd-commenter)
+  (require 'evil-nerd-commenter)
+  (evilnc-default-hotkeys)
+
+  (ensure-pkg 'surround)
+  (require 'surround)
+  (global-surround-mode 1)
 #+end_src
 * Email with Mu4E
 ** Package loading
