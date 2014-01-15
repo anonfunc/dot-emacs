@@ -25,7 +25,7 @@ And now for automatic package installation:
   (defun ensure-pkgs (packages)
     (mapc 'ensure-pkg packages))
 
-  (ensure-pkgs '(melpa s ibuffer-vc ido-ubiquitous dired+
+  (ensure-pkgs '(s ibuffer-vc ido-ubiquitous dired+
                  ace-jump-mode expand-region multiple-cursors
                  sunrise-commander magit
                  magit-commit-training-wheels org-plus-contrib))
@@ -659,7 +659,6 @@ Use elpy, and tweak indentation.
               (setq tab-width 2)
               (setq js2-basic-offset 2)
               (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)))
-
 #+end_src
 *** Skewer mode
 Only useful for javascript and css, as HTML changes don't get reflected.
