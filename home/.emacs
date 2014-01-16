@@ -7,10 +7,12 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
 
+
 ;; Deal with broken js2 in gnu repo.
 (setq package-archive-exclude-alist '(("gnu" . 'js2-mode)))
 (let ((pkg 'package-filter))
   (unless (package-installed-p pkg)
+    (package-refresh-contents) ; Need to get list to install this first time.
     (package-install pkg)
     (require 'package-filter)
     (package-refresh-contents)))
