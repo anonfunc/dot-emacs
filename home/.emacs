@@ -7,7 +7,6 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
 
-
 ;; Deal with broken js2 in gnu repo.
 (setq package-archive-exclude-alist '(("gnu" . 'js2-mode)))
 (let ((pkg 'package-filter))
@@ -21,8 +20,8 @@
   (package-refresh-contents))
 
 (let ((pkg 'org-plus-contrib)) (or (package-installed-p pkg) (package-install pkg)))
-(let ((vc-follow-symlinks 't))
-  (org-babel-load-file (expand-file-name "~/.emacs.d/init.org")))
+(setq vc-follow-symlinks t)
+(org-babel-load-file (expand-file-name "~/.emacs.d/init.org"))
 
 (put 'narrow-to-region 'disabled nil)
 (put 'set-goal-column 'disabled nil)
