@@ -118,8 +118,14 @@ I prefer the vim style zap.  Leaving old one on M-Z.
    (define-key function-key-map "\e[1;9D" [M-left])))
 #+end_src
 ** Follow vc links
+Doesn't work.  Odd.
 #+begin_src emacs-lisp
   (setq vc-follow-symlinks t)
+#+end_src
+** Get path from a shell
+#+begin_src emacs-lisp
+  ;(ensure-pkg 'exec-path-from-shell)
+  ;(exec-path-from-shell-initialize)
 #+end_src
 * Interface
 ** Maximize frame
@@ -220,6 +226,11 @@ the solarized theme.  The available packages currently use the 256 color version
   (ensure-pkgs '(helm))
   (require 'helm-config)
 #+END_SRC
+*** Helm Dash
+#+begin_src emacs-lisp
+;  (ensure-pkg 'helm-dash)
+;  (setq helm-dash-common-docsets '("Python 2"))
+#+end_src
 ** Tramp
 Fix too long TMPDIR:
 #+begin_src emacs-lisp
