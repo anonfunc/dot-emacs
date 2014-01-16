@@ -139,9 +139,16 @@ Needs to be run only on darwin
 #+end_src
 ** Font
 #+begin_src emacs-lisp
-  (when (eq system-type 'darwin)
-    (set-face-attribute 'default nil
-                      :family "Source Code Pro" :height 145 :weight 'extra-light))  ; Extra-light doesn't work, but it's the thought which counts
+;  (when (eq system-type 'darwin)
+;    (set-face-attribute 'default nil
+;                      :family "Source Code Pro" :height 145 :weight 'extra-light))  ; Extra-light doesn't work, but it's the thought which counts
+#+end_src
+#+begin_src emacs-lisp
+  (ensure-pkg 'dynamic-fonts)
+  (add-to-list 'dynamic-fonts-preferred-monospace-fonts "Source Code Pro")
+  (setq dynamic-fonts-preferred-monospace-point-size 14)
+  (setq dynamic-fonts-preferred-proportional-point-size 14)
+  (dynamic-fonts-setup)
 #+end_src
 ** Mac command modifiers
 #+begin_src emacs-lisp
