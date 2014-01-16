@@ -39,6 +39,7 @@ And now for automatic package installation:
 String libray, used in some of my yasnippets.
 [[https://github.com/magnars/s.el][Github link.]]
 #+begin_src emacs-lisp
+  (ensure-pkg 's)
   (require 's)
 #+end_src
 ** Server mode
@@ -50,11 +51,9 @@ String libray, used in some of my yasnippets.
 #+end_src
 ** Chdir to ~
 Depending on how the emacs daemon is started, the current directory is less than ideal.
-
 #+begin_src emacs-lisp
   (cd (expand-file-name "~/"))
 #+end_src
-
 ** Disable backups
 #+begin_src emacs-lisp
   (setq backup-inhibited t)
@@ -80,7 +79,6 @@ Depending on how the emacs daemon is started, the current directory is less than
 #+end_src
 ** Zap chars
 I prefer the vim style zap.  Leaving old one on M-Z.
-
 #+begin_src emacs-lisp
 (autoload 'zap-up-to-char "misc"
   "Kill up to, but not including ARGth occurrence of CHAR.")
@@ -95,14 +93,14 @@ I prefer the vim style zap.  Leaving old one on M-Z.
 #+end_src
 ** Mouse support on terminal
 #+BEGIN_SRC emacs-lisp
-  (unless window-system (xterm-mouse-mode))
+  (xterm-mouse-mode)
 #+END_SRC
 ** Uniquify
 #+begin_src emacs-lisp
   (require 'uniquify)
   (setq uniquify-buffer-name-style 'forward)
 #+end_src
-** xterm keys
+** TODO xterm keys
 #+begin_src emacs-lisp
   (add-hook 'term-setup-hook
   '(lambda ()
@@ -117,13 +115,14 @@ Doesn't work.  Odd.
 #+begin_src emacs-lisp
   (setq vc-follow-symlinks t)
 #+end_src
-** Get path from a shell
+** TODO Get path from a shell
 #+begin_src emacs-lisp
   ;(ensure-pkg 'exec-path-from-shell)
   ;(exec-path-from-shell-initialize)
 #+end_src
 * Interface
-** Maximize frame
+** TODO Maximize frame
+Needs to be run only on darwin
 #+begin_src emacs-lisp
   (ensure-pkgs '(maxframe))
   (require 'maxframe)
@@ -163,7 +162,6 @@ Doesn't work.  Odd.
 ** Color scheme
 I'm using a forked solarzied version which supports terminals with 256 colors, but with the normal 16 configured in
 the solarized theme.  The available packages currently use the 256 color version, which isn't as accurate.
-
 #+begin_src emacs-lisp
 (add-to-list 'custom-theme-load-path (expand-file-name "~/.emacs.d/non-elpa/solarized"))
 (load-theme 'solarized-dark t)
@@ -172,17 +170,17 @@ the solarized theme.  The available packages currently use the 256 color version
 #+begin_src emacs-lisp
 (defalias 'yes-or-no-p 'y-or-n-p)
 #+end_src
-** Control-mode
+** Control-mode                                                    :disabled:
 #+begin_src emacs-lisp
-  (ensure-pkgs '(control-mode))
-  (require 'control-mode)
-  (control-mode-default-setup)
+  ;; (ensure-pkgs '(control-mode))
+  ;; (require 'control-mode)
+  ;; (control-mode-default-setup)
 #+end_src
-** Powerline
+** Powerline                                                       :disabled:
 #+begin_src emacs-lisp
-  (ensure-pkg 'powerline)
-  (powerline-default-theme)
-  (powerline-center-evil-theme)
+  ;; (ensure-pkg 'powerline)
+  ;; (powerline-default-theme)
+  ;; (powerline-center-evil-theme)
 #+end_src
 * Custom Functionality
 ** Use custom browser script if possible.
@@ -196,19 +194,15 @@ the solarized theme.  The available packages currently use the 256 color version
         (browse-url-default-browser url)
       (call-process "ro" nil 0 nil url)))
 
-
   (setq browse-url-browser-function 'browse-url-remote-open)
-
 #+end_src
 ** Jump to .emacs
 #+begin_src emacs-lisp
-;; Jump to .emacs
-(defun my-edit-dot-emacs ()
-  (interactive)
-  (find-file "~/.emacs.d/init.org"))
-(global-set-key (kbd "C-c e") 'my-edit-dot-emacs)
+  (defun my-edit-dot-emacs ()
+    (interactive)
+    (find-file "~/.emacs.d/init.org"))
+  (global-set-key (kbd "C-c e") 'my-edit-dot-emacs)
 #+end_src
-
 * Module Configuration
 ** Iedit
 #+begin_src emacs-lisp
@@ -221,7 +215,7 @@ the solarized theme.  The available packages currently use the 256 color version
   (ensure-pkgs '(helm))
   (require 'helm-config)
 #+END_SRC
-*** Helm Dash
+*** Helm Dash                                                      :disabled:
 #+begin_src emacs-lisp
 ;  (ensure-pkg 'helm-dash)
 ;  (setq helm-dash-common-docsets '("Python 2"))
@@ -252,7 +246,9 @@ Enable remote dir-locals.
 #+begin_src emacs-lisp
   (setq enable-remote-dir-locals t)
 #+end_src
-** Smex
+** TODO Smex
+Consider getting used to helm
+
 #+begin_src emacs-lisp
   (ensure-pkgs '(smex))
   (require 'smex)
@@ -263,7 +259,8 @@ Enable remote dir-locals.
   ;; This is your old M-x.
   (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 #+end_src
-** IDO Everywhere
+** TODO IDO Everywhere
+Consider helm
 #+begin_src emacs-lisp
   (ido-mode t)
   (recentf-mode t)
@@ -309,13 +306,13 @@ Enable remote dir-locals.
 #+begin_src emacs-lisp
 (cua-selection-mode t)
 #+end_src
-** Expand Region
+** Expand Region                                                   :disabled:
 #+begin_src emacs-lisp
 ;;(ensure-pkg 'expand-region)
 ;;(global-set-key (kbd "C-=") 'er/expand-region)
 ;;(global-set-key (kbd "M-=") 'er/expand-region)
 #+end_src
-** Multiple Cursors
+** Multiple Cursors                                                :disabled:
 #+begin_src emacs-lisp
 ;; (ensure-pkg 'multiple-cursors)
 ;;(global-set-key (kbd "C-c C-SPC") 'mc/edit-lines)
@@ -323,11 +320,11 @@ Enable remote dir-locals.
 ;; (global-set-key (kbd "C-c C-e") 'mc/edit-ends-of-lines)
 ;; (global-set-key (kbd "C-c C-a") 'mc/edit-beginnings-of-lines)
 #+end_src
-*** Rectangular region mode
+*** Rectangular region mode                                        :disabled:
 #+begin_src emacs-lisp
 ;; (global-set-key (kbd "C-c RET") 'set-rectangular-region-anchor)
 #+end_src;;
-*** Mark More like this
+*** Mark More like this                                            :disabled:
 These are available with an active region.
 #+begin_src emacs-lisp
 ;; (define-key region-bindings-mode-map "a" 'mc/mark-all-like-this)
@@ -343,10 +340,10 @@ These are available with an active region.
 ;;         :features region-bindings-mode
 ;;         :after (progn (region-bindings-mode-enable)))
 #+end_src
-** Ace Jump Mode
+** Ace Jump Mode                                                   :disabled:
 #+begin_src emacs-lisp
-(ensure-pkgs '(ace-jump-mode))
-(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+  ;; (ensure-pkgs '(ace-jump-mode))
+  ;; (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 #+end_src
 ** Sunrise Commander
 #+begin_src emacs-lisp
@@ -451,7 +448,8 @@ From what the emacs.d
   (require 'magit-wip)
   (global-magit-wip-save-mode 1)
 #+end_src
-** Battery life in mode line
+** TODO Battery life in mode line                                  :disabled:
+Make mac only.
 #+begin_src emacs-lisp
 ;; (setq battery-mode-line-format "[%b%p%% %t]")
 ;; (display-battery-mode)
@@ -509,7 +507,7 @@ From [[http://irreal.org/blog/?p%3D2247][irreal]]
 Don't use tabs, default to 4 spaces.
 #+begin_src emacs-lisp
 (setq-default indent-tabs-mode nil)
-(setq tab-width 4)
+(setq-default tab-width 4)
 (defvaralias 'c-basic-offset 'tab-width)
 (defvaralias 'cperl-indent-level 'tab-width)
 #+end_src
@@ -522,7 +520,7 @@ Don't use tabs, default to 4 spaces.
   (show-smartparens-global-mode t)
 #+end_src
 ** Lisps
-*** Paredit
+*** Paredit                                                        :disabled:
 #+begin_src emacs-lisp
   ;; ;; Paredit
   ;; (mapc (lambda (mode)
@@ -531,7 +529,7 @@ Don't use tabs, default to 4 spaces.
   ;;           (add-hook hook (lambda () (paredit-mode +1)))))
   ;;       '(emacs-lisp lisp inferior-lisp))
 #+end_src
-*** Elisp slime nav
+*** Elisp slime nav                                                :disabled:
 Adds M-* and M-, to elisp buffers.
 #+begin_src emacs-lisp :noweb-ref my-pkg :exports none :tangle no
   ;; (:name elisp-slime-nav
@@ -551,7 +549,7 @@ Possible fit for project management.
   (projectile-global-mode)
   (setq projectile-switch-project-action 'projectile-find-dir)
 #+end_src
-** Flymake
+** Flymake                                                         :disabled:
 #+begin_src emacs-lisp
 ;; (require 'flymake-cursor)
 #+end_src
@@ -572,10 +570,10 @@ Possible fit for project management.
   (yas-load-directory "~/.emacs.d/snippets" t)
 #+end_src
 
-*** Fold-Dwim-Org compatibility shim
+*** Fold-Dwim-Org compatibility shim                               :disabled:
 #+begin_src emacs-lisp
-(defalias 'yas/snippets-at-point 'yas--snippets-at-point) ;; fold-dwim-org compatibility
-(setq fold-dwim-org/trigger-keys-block (list [tab] [lefttab] [(control tab)]))
+  ;; (defalias 'yas/snippets-at-point 'yas--snippets-at-point) ;; fold-dwim-org compatibility
+  ;; (setq fold-dwim-org/trigger-keys-block (list [tab] [lefttab] [(control tab)]))
 #+end_src
 ** Groovy
 #+begin_src emacs-lisp
@@ -649,7 +647,8 @@ Use elpy, and tweak indentation.
               (setq tab-width 2)
               (setq python-indent 2)))
 #+end_src
-*** Eshell support for virtualenvs
+*** TODO Eshell support for virtualenvs
+Work in progress.
 #+begin_src emacs-lisp
   (defun eshell/workon (virtualenv)
     (let ((virtualenv-workon-starts-python nil))
@@ -665,7 +664,8 @@ Use elpy, and tweak indentation.
   (setq web-mode-engines-alist '(("jinja2"    . "\\.html?\\'")))
   (when-installed 'smartparens (sp-local-tag '(web-mode) "<" "<_>" "</_>" :transform 'sp-match-sgml-tags))
 #+end_src
-*** Emmet mode!
+*** TODO Emmet mode!
+Research ac-emmet?
 #+begin_src emacs-lisp
   (ensure-pkg 'emmet-mode)
   (require 'emmet-mode)
@@ -686,12 +686,12 @@ Use elpy, and tweak indentation.
               (setq js2-basic-offset 2)
               (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)))
 #+end_src
-*** Skewer mode
+*** Skewer mode                                                    :disabled:
 Only useful for javascript and css, as HTML changes don't get reflected.
 The missing pieces should be filled in by LiveReload...
 #+begin_src emacs-lisp
-  (ensure-pkg 'skewer-mode)
-  (add-hook 'js2-mode-hook 'skewer-mode)
+  ;(ensure-pkg 'skewer-mode)
+  ;(add-hook 'js2-mode-hook 'skewer-mode)
   ;; If we need it for css/html/web-mode:
   ;(add-hook 'css-mode-hook 'skewer-css-mode)
   ;(add-hook 'html-mode-hook 'skewer-html-mode)
@@ -702,7 +702,6 @@ Snippet to load javascript:
 #+BEGIN_SRC html
 <script src="http://localhost:8080/skewer"/>
 #+END_SRC
-
 * Org-mode Setup
 ** Require
 #+begin_src emacs-lisp
@@ -711,6 +710,42 @@ Snippet to load javascript:
 ;(require 'org-protocol)
 #+end_src
 ** Bindings
+*** Speed keys
+From worg: http://orgmode.org/worg/org-hacks.html
+#+begin_src emacs-lisp
+  (defun ded/org-show-next-heading-tidily ()
+    "Show next entry, keeping other entries closed."
+    (if (save-excursion (end-of-line) (outline-invisible-p))
+        (progn (org-show-entry) (show-children))
+      (outline-next-heading)
+      (unless (and (bolp) (org-on-heading-p))
+        (org-up-heading-safe)
+        (hide-subtree)
+        (error "Boundary reached"))
+      (org-overview)
+      (org-reveal t)
+      (org-show-entry)
+      (show-children)))
+
+  (defun ded/org-show-previous-heading-tidily ()
+    "Show previous entry, keeping other entries closed."
+    (let ((pos (point)))
+      (outline-previous-heading)
+      (unless (and (< (point) pos) (bolp) (org-on-heading-p))
+        (goto-char pos)
+        (hide-subtree)
+        (error "Boundary reached"))
+      (org-overview)
+      (org-reveal t)
+      (org-show-entry)
+      (show-children)))
+
+  (setq org-use-speed-commands t)
+  (add-to-list 'org-speed-commands-user
+               '("n" ded/org-show-next-heading-tidily))
+  (add-to-list 'org-speed-commands-user
+               '("p" ded/org-show-previous-heading-tidily))
+#+end_src
 *** Capture
 #+begin_src emacs-lisp
 (global-set-key "\C-cl" 'org-store-link)
@@ -732,6 +767,7 @@ Snippet to load javascript:
         org-clock-out-remove-zero-time-clocks t
         org-use-fast-todo-selection t
         org-agenda-start-on-weekday nil
+        org-use-speed-commands t
         org-treat-S-cursor-todo-selection-as-state-change nil)
 #+end_src
 ** Keywords and to-dos
@@ -764,10 +800,6 @@ Snippet to load javascript:
       (org-remove-empty-drawer-at "LOGBOOK" (point))))
 
   (add-hook 'org-clock-out-hook 'bh/remove-empty-drawer-on-clock-out 'append)
-#+end_src
-** Agenda Views
-#+begin_src emacs-lisp
-t
 #+end_src
 ** Org Modules
 *** Org-Velocity
@@ -814,7 +846,7 @@ M-x org-pomodoro
 
   (my-org-mobile-sync-start)
 #+end_src
-** Defunct
+** Defunct                                                         :disabled:
 *** Org Mode notifications
 
 (require 'appt)
