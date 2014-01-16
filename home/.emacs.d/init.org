@@ -119,7 +119,7 @@ I prefer the vim style zap.  Leaving old one on M-Z.
 #+end_src
 ** Follow vc links
 #+begin_src emacs-lisp
-  (setq vc-follow-symlinks 't)
+  (setq vc-follow-symlinks t)
 #+end_src
 * Interface
 ** Maximize frame
@@ -445,7 +445,7 @@ From what the emacs.d
 #+BEGIN_SRC emacs-lisp
   (ensure-pkgs '(ack-and-a-half ag wgrep-ag))
   (setq ag-highlight-search t
-        ag-reuse-buffers 't)
+        ag-reuse-buffers t)
 #+END_SRC
 ** Dired and Dired Extensions
 #+begin_src emacs-lisp
