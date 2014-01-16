@@ -159,12 +159,25 @@ Needs to be run only on darwin
       (scroll-bar-mode 0))
 #+end_src
 
-** Color scheme
-I'm using a forked solarzied version which supports terminals with 256 colors, but with the normal 16 configured in
+** Color Theme
+I'm using a forked solarized version which supports terminals with 256 colors, but with the normal 16 configured in
 the solarized theme.  The available packages currently use the 256 color version, which isn't as accurate.
 #+begin_src emacs-lisp
-(add-to-list 'custom-theme-load-path (expand-file-name "~/.emacs.d/non-elpa/solarized"))
-(load-theme 'solarized-dark t)
+;(add-to-list 'custom-theme-load-path (expand-file-name "~/.emacs.d/non-elpa/solarized"))
+;(load-theme 'solarized-dark t)
+#+end_src
+
+#+begin_src emacs-lisp
+;  (ensure-pkg 'color-theme-approximate)
+;  (color-theme-approximate-on)
+#+end_src
+
+Let's try the most comprehensive one again, but be careful to always
+tell it we have a 16 color terminal, not 256.
+
+#+begin_src emacs-lisp
+  (ensure-pkg 'solarized-theme)
+  (load-theme 'solarized-dark t)
 #+end_src
 ** Don't bother me as much
 #+begin_src emacs-lisp
@@ -178,9 +191,9 @@ the solarized theme.  The available packages currently use the 256 color version
 #+end_src
 ** Powerline                                                       :disabled:
 #+begin_src emacs-lisp
-  ;; (ensure-pkg 'powerline)
-  ;; (powerline-default-theme)
-  ;; (powerline-center-evil-theme)
+  (ensure-pkg 'powerline)
+  (powerline-default-theme)
+  (powerline-center-evil-theme)
 #+end_src
 * Custom Functionality
 ** Use custom browser script if possible.
