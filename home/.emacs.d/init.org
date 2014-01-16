@@ -25,11 +25,6 @@ And now for automatic package installation:
   (defun ensure-pkgs (packages)
     (mapc 'ensure-pkg packages))
 
-  (ensure-pkgs '(s ibuffer-vc ido-ubiquitous dired+
-                 ace-jump-mode expand-region multiple-cursors
-                 sunrise-commander magit
-                 magit-commit-training-wheels org-plus-contrib))
-
   (defmacro when-installed (pkg &rest body)
     `(when (package-installed-p ,pkg)
        ,@body))
@@ -273,6 +268,7 @@ Enable remote dir-locals.
   (ido-mode t)
   (recentf-mode t)
   (setq ido-use-virtual-buffers t)
+  (ensure-pkg 'ido-ubiquitous)
   (ido-ubiquitous-mode)
   (ensure-pkg 'flx-ido)
   (flx-ido-mode 1)
@@ -282,6 +278,7 @@ Enable remote dir-locals.
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-x C-b") 'ibuffer)
   (autoload 'ibuffer "ibuffer" "List buffers." t)
+  (ensure-pkg 'ibuffer-vc)
   (eval-after-load 'ibuffer
     '(progn
        (add-hook 'ibuffer-hook
@@ -314,11 +311,13 @@ Enable remote dir-locals.
 #+end_src
 ** Expand Region
 #+begin_src emacs-lisp
+;;(ensure-pkg 'expand-region)
 ;;(global-set-key (kbd "C-=") 'er/expand-region)
 ;;(global-set-key (kbd "M-=") 'er/expand-region)
 #+end_src
 ** Multiple Cursors
 #+begin_src emacs-lisp
+;; (ensure-pkg 'multiple-cursors)
 ;;(global-set-key (kbd "C-c C-SPC") 'mc/edit-lines)
 ;;(global-sqet-key (kbd "M-]") 'mc/mark-next-like-this)
 ;; (global-set-key (kbd "C-c C-e") 'mc/edit-ends-of-lines)
@@ -350,6 +349,9 @@ These are available with an active region.
 (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 #+end_src
 ** Sunrise Commander
+#+begin_src emacs-lisp
+  (ensure-pkg 'sunrise-commander)
+#+end_src
 *** Bindings
 #+begin_src emacs-lisp
   ;; F11 for sunrise commander
@@ -359,6 +361,9 @@ These are available with an active region.
   (global-set-key (kbd "C-c s") 'sunrise)
 #+end_src
 ** Magit
+#+begin_src emacs-lisp
+  (ensure-pkgs '(magit magit-commit-training-wheels))
+#+end_src
 *** Bindings
 #+begin_src emacs-lisp
 ;; F12 for magit
@@ -467,7 +472,7 @@ From what the emacs.d
 
   ;; From What the emacs.d
   ;; Make dired less verbose
-  (ensure-pkgs '(dired-details))
+  (ensure-pkgs '(dired-details dired+))
   (require 'dired-details)
   (setq-default dired-details-hidden-string "")
   (dired-details-install)
@@ -701,6 +706,7 @@ Snippet to load javascript:
 * Org-mode Setup
 ** Require
 #+begin_src emacs-lisp
+(ensure-pkg 'org-plus-contrib)
 (require 'org)
 ;(require 'org-protocol)
 #+end_src
