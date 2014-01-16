@@ -145,6 +145,7 @@ Needs to be run only on darwin
 #+end_src
 #+begin_src emacs-lisp
   (ensure-pkg 'dynamic-fonts)
+  (require 'dynamic-fonts)
   (add-to-list 'dynamic-fonts-preferred-monospace-fonts "Source Code Pro")
   (setq dynamic-fonts-preferred-monospace-point-size 14)
   (setq dynamic-fonts-preferred-proportional-point-size 14)
