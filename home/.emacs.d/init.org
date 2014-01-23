@@ -1011,7 +1011,7 @@ Using bouncer.
         mu4e-refile-folder "/Archive"   ;; saved messages
         mu4e-get-mail-command "offlineimap"
         mu4e-update-interval 600  ;; 10 minutes
-        mu4e-html2text-command "html2text -utf8 -width 72")
+        mu4e-html2text-command "html2text -width 72")
 #+end_src
 See also [[http://www.djcbsoftware.nl/code/mu/mu4e/Maildir-searches.html#Maildir-searches][Setting up maildir shortcuts]]
 ** Sending Mail
