@@ -260,21 +260,52 @@ tell it we have a 16 color terminal, not 256.
   (global-set-key (kbd "C-c e") 'my-edit-dot-emacs)
 #+end_src
 * Module Configuration
-** Iedit
+** TODO Iedit                                                      :disabled:
 #+begin_src emacs-lisp
-  (ensure-pkgs '(iedit))
-  (require 'iedit)
-  (global-set-key (kbd "C-c ;") 'iedit-mode)
+  ;; (ensure-pkgs '(iedit))
+  ;; (require 'iedit)
+  ;; (global-set-key (kbd "C-c ;") 'iedit-mode)
+#+end_src
+** Multiple Cursors
+Consider instead of Iedit?
+#+begin_src emacs-lisp
+  (ensure-pkg 'multiple-cursors)
+  (global-set-key (kbd "C-c ;") 'mc/mark-all-dwim)
+#+end_src
+** Visual Regex
+#+begin_src emacs-lisp
+  (ensure-pkg 'visual-regexp)
+  (global-set-key (kbd "C-c r") 'vr/replace)
+  (global-set-key (kbd "C-c q") 'vr/query-replace)
+  ;; if you use multiple-cursors, this is for you:
+  (global-set-key (kbd "C-c R") 'vr/mc-mark)
 #+end_src
 ** Helm
 #+BEGIN_SRC emacs-lisp
   (ensure-pkgs '(helm))
   (require 'helm-config)
+  (setq helm-input-idle-delay 0.01
+        helm-idle-delay helm-input-idle-delay)
+  (global-set-key (kbd "M-x") 'helm-M-x)
+  (global-set-key (kbd "C-x C-f") 'helm-find-files)
+  (global-set-key (kbd "C-x b") 'helm-for-files)
+  ;(global-set-key (kbd "C-x b") 'switch-to-buffer)
+  (helm-mode)
 #+END_SRC
-*** Helm Dash                                                      :disabled:
+*** Swoop
 #+begin_src emacs-lisp
-;  (ensure-pkg 'helm-dash)
-;  (setq helm-dash-common-docsets '("Python 2"))
+  (ensure-pkg 'helm-swoop)
+  (require 'helm-swoop)
+  (global-set-key (kbd "M-i") 'helm-swoop)
+  (global-set-key (kbd "M-I") 'helm-multi-swoop)
+  (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
+  (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop)
+  (setq helm-multi-swoop-edit-save t)
+#+end_src
+*** Dash                                                           :disabled:
+#+begin_src emacs-lisp
+  (ensure-pkg 'helm-dash)
+  ;(setq helm-dash-common-docsets '("Python 2"))
 #+end_src
 ** Tramp
 Fix too long TMPDIR:
@@ -302,31 +333,18 @@ Enable remote dir-locals.
 #+begin_src emacs-lisp
   (setq enable-remote-dir-locals t)
 #+end_src
-** TODO Smex
-Consider getting used to helm
-
+** DONE Smex                                                       :disabled:
+Get used to [[*Helm][Helm]]...
 #+begin_src emacs-lisp
-  (ensure-pkgs '(smex))
-  (require 'smex)
-  (smex-initialize)
+  ;; (ensure-pkgs '(smex))
+  ;; (require 'smex)
+  ;; (smex-initialize)
 
-  (global-set-key (kbd "M-x") 'smex)
-  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-  ;; This is your old M-x.
-  (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+  ;; (global-set-key (kbd "M-x") 'smex)
+  ;; (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+  ;; ;; This is your old M-x.
+  ;; (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 #+end_src
-** TODO IDO Everywhere
-Consider helm
-#+begin_src emacs-lisp
-  (ido-mode t)
-  (recentf-mode t)
-  (setq ido-use-virtual-buffers t)
-  (ensure-pkg 'ido-ubiquitous)
-  (ido-ubiquitous-mode)
-  (ensure-pkg 'flx-ido)
-  (flx-ido-mode 1)
-#+end_src
-
 ** Ibuffer
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -609,6 +627,8 @@ Possible fit for project management.
   (setq projectile-enable-caching t)
   (projectile-global-mode)
   (setq projectile-switch-project-action 'projectile-find-dir)
+  (ensure-pkg 'helm-projectile)
+  (define-key projectile-mode-map (kbd "C-c p h") 'helm-projectile)
 #+end_src
 ** Flycheck
 #+begin_src emacs-lisp
@@ -635,7 +655,13 @@ Possible fit for project management.
   (yas-global-mode 1)
   (yas-load-directory "~/.emacs.d/snippets" t)
 #+end_src
-
+*** Helm
+#+begin_src emacs-lisp
+  (ensure-pkg 'helm-c-yasnippet)
+  (define-key yas-minor-mode-map (kbd "C-c & s") 'helm-yas-complete)
+  (define-key yas-minor-mode-map (kbd "C-c & v") 'helm-yas-visit-snippet-file)
+  (define-key yas-minor-mode-map (kbd "C-c & n") 'helm-yas-create-snippet-on-region)
+#+end_src
 *** Fold-Dwim-Org compatibility shim                               :disabled:
 #+begin_src emacs-lisp
   ;; (defalias 'yas/snippets-at-point 'yas--snippets-at-point) ;; fold-dwim-org compatibility
