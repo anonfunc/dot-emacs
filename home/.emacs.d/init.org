@@ -221,7 +221,18 @@ tell it we have a 16 color terminal, not 256.
   ;; (require 'control-mode)
   ;; (control-mode-default-setup)
 #+end_src
-** Powerline                                                       :disabled:
+** Clean Modeline with Diminish
+#+begin_src emacs-lisp
+  (ensure-pkg 'diminish)
+  (diminish 'helm-mode)
+  (diminish 'auto-revert-mode)
+  (diminish 'magit-wip-save-mode)
+  (diminish 'smartparens-mode)
+  (diminish 'projectile-mode)
+  (diminish 'undo-tree-mode)
+  (diminish 'highlight-indentation-mode)
+#+end_src
+** Powerline
 #+begin_src emacs-lisp
   (ensure-pkg 'powerline)
   (powerline-default-theme)
