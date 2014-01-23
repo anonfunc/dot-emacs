@@ -1024,7 +1024,7 @@ Using bouncer.
 
   (ensure-pkg 'evil-nerd-commenter)
   (require 'evil-nerd-commenter)
-  (evilnc-default-hotkeys)
+  (global-set-key (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
 
   (ensure-pkg 'surround)
   (require 'surround)
