@@ -610,6 +610,11 @@ Possible fit for project management.
   (projectile-global-mode)
   (setq projectile-switch-project-action 'projectile-find-dir)
 #+end_src
+** Flycheck
+#+begin_src emacs-lisp
+  (ensure-pkg 'flycheck)
+  (add-hook 'after-init-hook #'global-flycheck-mode)
+#+end_src
 ** Flymake                                                         :disabled:
 #+begin_src emacs-lisp
 ;; (require 'flymake-cursor)
@@ -697,9 +702,10 @@ From "What the emacs.d!?"
 Use elpy, and tweak indentation.
 #+begin_src emacs-lisp
   (ensure-pkgs '(yasnippet flymake-cursor elpy))
-
   (elpy-enable)
   (elpy-use-ipython)
+  (setq elpy-default-minor-modes (remove 'flymake-mode elpy-default-minor-modes))
+  (elpy-clean-modeline)
   ; Fix yas-snippet-dirs stealing
   (setq yas-snippet-dirs (cons "~/.emacs.d/snippets" yas-snippet-dirs))
 
