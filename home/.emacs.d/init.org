@@ -116,26 +116,28 @@ Doesn't work.  Odd.
   (setq vc-follow-symlinks t)
 #+end_src
 ** TODO Get path from a shell
+Doesn't seem to work reliably.
 #+begin_src emacs-lisp
   ;(ensure-pkg 'exec-path-from-shell)
   ;(exec-path-from-shell-initialize)
 #+end_src
 * Interface
-** TODO Maximize frame
+** Maximize frame
 Needs to be run only on darwin
 #+begin_src emacs-lisp
-  (ensure-pkgs '(maxframe))
-  (require 'maxframe)
-  (setq mf-display-padding-height 60)  ; was 45
-  (setq fudge-maximize-frame-first t)
-  (defun fudge-maximize-frame (frame)
-    (if fudge-maximize-frame-first
-        (run-with-idle-timer 0.5 nil 'maximize-frame frame)
-      (maximize-frame frame)
-      (setq fudge-maximize-frame-first nil)))
-  ;; (add-hook 'server-visit-hook 'fudge-maximize-frame t)
-  (add-hook 'server-visit-hook 'raise-frame t)
-  (add-to-list 'after-make-frame-functions 'fudge-maximize-frame)
+  (when (eq system-type 'darwin)
+    (ensure-pkgs '(maxframe))
+    (require 'maxframe)
+    (setq mf-display-padding-height 60)  ; was 45
+    (setq fudge-maximize-frame-first t)
+    (defun fudge-maximize-frame (frame)
+      (if fudge-maximize-frame-first
+          (run-with-idle-timer 0.5 nil 'maximize-frame frame)
+        (maximize-frame frame)
+        (setq fudge-maximize-frame-first nil)))
+    ;; (add-hook 'server-visit-hook 'fudge-maximize-frame t)
+    (add-hook 'server-visit-hook 'raise-frame t)
+    (add-to-list 'after-make-frame-functions 'fudge-maximize-frame))
 #+end_src
 
 #+begin_src emacs-lisp
