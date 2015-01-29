@@ -5,16 +5,7 @@ Inspiration from the approach at [[https://github.com/dbr/dotemacs][dbr/dotemacs
 
 * Package Management
 ** Package setup
-Some of this is done in .emacs now, keeping here for documentation.
-#+begin_src emacs-lisp :tangle no
-  ;(require 'package)
-  ;(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-  ;(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-  ;(package-initialize)
-
-  ;(when (not package-archive-contents)
-  ;  (package-refresh-contents))
-#+end_src
+[[file:~/.homesick/repos/dot-emacs/home/.emacs::%3B%3B%20Load%20up%20org-mode%20and%20org-babel.][Please see your .emacs file.]]
 ** Package install
 And now for automatic package installation:
 #+begin_src emacs-lisp
@@ -223,17 +214,6 @@ tell it we have a 16 color terminal, not 256.
   ;; (require 'control-mode)
   ;; (control-mode-default-setup)
 #+end_src
-** Clean Modeline with Diminish
-#+begin_src emacs-lisp
-  (ensure-pkg 'diminish)
-  (diminish 'helm-mode)
-  (diminish 'auto-revert-mode)
-  (diminish 'magit-wip-save-mode)
-  (diminish 'smartparens-mode)
-  (diminish 'projectile-mode)
-  (diminish 'undo-tree-mode)
-  (diminish 'highlight-indentation-mode)
-#+end_src
 ** Powerline
 #+begin_src emacs-lisp
   (ensure-pkg 'powerline)
@@ -307,6 +287,7 @@ Consider instead of Iedit?
 *** Dash                                                           :disabled:
 #+begin_src emacs-lisp
   (ensure-pkg 'helm-dash)
+  (global-set-key (kbd "C-c d") 'helm-dash)
   ;(setq helm-dash-common-docsets '("Python 2"))
 #+end_src
 ** Tramp
@@ -435,7 +416,8 @@ These are available with an active region.
 #+end_src
 ** Magit
 #+begin_src emacs-lisp
-  (ensure-pkgs '(magit magit-commit-training-wheels))
+  (ensure-pkg 'magit)
+  ;;(ensure-pkg 'magit-commit-training-wheels)
 
   ;; Mac uses this homebrew one, which doesn't get found.
   ;; Might go away with exec-path fixes.
@@ -452,8 +434,8 @@ These are available with an active region.
 #+end_src
 *** Training wheels
 #+BEGIN_SRC emacs-lisp
-(require 'magit-commit-training-wheels)
-(ad-activate 'magit-log-edit-commit)
+;;(require 'magit-commit-training-wheels)
+;;(ad-activate 'magit-log-edit-commit)
 #+END_SRC
 *** Window advice
 From what the emacs.d
@@ -538,7 +520,8 @@ Make mac only.
 
 ** Ack and Ag
 #+BEGIN_SRC emacs-lisp
-  (ensure-pkgs '(ack-and-a-half ag wgrep-ag))
+  (ensure-pkgs '(ack-and-a-half ag))
+  (ensure-pkg 'wgrep-ag)
   (setq ag-highlight-search t
         ag-reuse-buffers t)
 #+END_SRC
@@ -555,6 +538,11 @@ Make mac only.
   (require 'dired-details)
   (setq-default dired-details-hidden-string "")
   (dired-details-install)
+#+end_src
+*** Dired and find
+#+begin_src emacs-lisp
+  (require 'find-dired)
+  (setq find-ls-option '("-print0 | xargs -0 ls -ld " . "-ld"))
 #+end_src
 
 ** Net Utilities
@@ -636,6 +624,8 @@ Possible fit for project management.
 #+begin_src emacs-lisp
   (ensure-pkg 'flycheck)
   (add-hook 'after-init-hook #'global-flycheck-mode)
+  ;; Elisp fixes
+  (eval-after-load 'flycheck (lambda () (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))))
 #+end_src
 ** Flymake                                                         :disabled:
 #+begin_src emacs-lisp
@@ -731,16 +721,16 @@ Use elpy, and tweak indentation.
 #+begin_src emacs-lisp
   (ensure-pkgs '(yasnippet flymake-cursor elpy))
   (elpy-enable)
-  (elpy-use-ipython)
-  (setq elpy-default-minor-modes (remove 'flymake-mode elpy-default-minor-modes))
-  (elpy-clean-modeline)
+  ;(elpy-use-ipython)
+  (setq elpy-rpc-backend "jedi")
+
   ; Fix yas-snippet-dirs stealing
   (setq yas-snippet-dirs (cons "~/.emacs.d/snippets" yas-snippet-dirs))
-
-  (add-hook 'python-mode-hook
-            (lambda ()
-              (setq tab-width 2)
-              (setq python-indent 2)))
+  (defun my-python-hook ()
+    (setq tab-width 2)
+    (setq python-indent 2)
+    (setq-local helm-dash-docsets '("Python 2" "Flask")))
+  (add-hook 'python-mode-hook 'my-python-hook)
 #+end_src
 *** TODO Eshell support for virtualenvs
 Work in progress.
@@ -941,6 +931,14 @@ M-x org-pomodoro
 
   (my-org-mobile-sync-start)
 #+end_src
+** Org Babel / Code Blocks
+Enable python.
+#+begin_src emacs-lisp
+  (add-to-list 'org-babel-load-languages '("python" . t))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((python . t)))
+#+end_src
 ** Defunct                                                         :disabled:
 *** Org Mode notifications
 
@@ -1009,15 +1007,15 @@ Using bouncer.
 #+end_src
 
 * Evil
-#+begin_src emacs-lisp
+#begin_src emacs-lisp
   (ensure-pkgs '(evil))
   ; http://puntoblogspot.blogspot.com/2014/01/evil-exact-amount-of-vim-in-emacs-but.html
   (require 'evil)
   ;(setcdr evil-insert-state-map nil)
   ;(define-key evil-insert-state-map [escape] 'evil-normal-state)
-#+end_src
+#end_src
 ** Evil Extensions
-#+begin_src emacs-lisp
+#begin_src emacs-lisp
   (ensure-pkg 'evil-matchit)
   (require 'evil-matchit)
   (global-evil-matchit-mode 1)
@@ -1029,7 +1027,7 @@ Using bouncer.
   (ensure-pkg 'surround)
   (require 'surround)
   (global-surround-mode 1)
-#+end_src
+#end_src
 * Email with Mu4E
 ** Package loading
 #+begin_src emacs-lisp
@@ -1043,11 +1041,25 @@ Using bouncer.
         mu4e-drafts-folder "/Drafts"     ;; unfinished messages
         mu4e-trash-folder  "/Deleted Items"      ;; trashed messages
         mu4e-refile-folder "/Archive"   ;; saved messages
-        mu4e-get-mail-command "offlineimap"
+        mu4e-get-mail-command "offlineimap -q"
         mu4e-update-interval 600  ;; 10 minutes
-        mu4e-html2text-command "html2text -width 72")
+        mu4e-html2text-command "tr -d '\r¹©' | sed -e s/’/\\'/g -e 's!&nbsp;! !g' -e 's!&gt;!>!g' -e 's!–!-!g' | html2text -width 100 -style pretty")
 #+end_src
 See also [[http://www.djcbsoftware.nl/code/mu/mu4e/Maildir-searches.html#Maildir-searches][Setting up maildir shortcuts]]
+** Bookmarks
+#+begin_src emacs-lisp
+  (add-to-list 'mu4e-bookmarks
+               '("(from:CRT OR from:jira) AND NOT flag:trashed"
+                 "Trashable" ?q))
+
+  (add-to-list 'mu4e-bookmarks
+               '("(to:ask_tools OR cc:ask_tools) AND maildir:/Archive"
+                 "Archive/ask_tools" ?a))
+
+  (add-to-list 'mu4e-bookmarks
+               '("rb.corp.workplace.com AND maildir:/Archive"
+                 "Archive/Reviews" ?e))
+#+end_src
 ** Sending Mail
 #+begin_src emacs-lisp
   ;; tell message-mode how to send mail
@@ -1083,6 +1095,18 @@ See also [[http://www.djcbsoftware.nl/code/mu/mu4e/Maildir-searches.html#Maildir
 
   (setq gnus-dired-mail-mode 'mu4e-user-agent)
   (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
+#+end_src
+* Stuff that happens at the end
+** Clean Modeline with Diminish
+#+begin_src emacs-lisp
+  (ensure-pkg 'diminish)
+  (diminish 'helm-mode)
+  (diminish 'auto-revert-mode)
+  (diminish 'magit-wip-save-mode)
+  (diminish 'smartparens-mode)
+  (diminish 'projectile-mode)
+  ;;(diminish 'undo-tree-mode)
+  (diminish 'highlight-indentation-mode)
 #+end_src
 * Custom File
 #+begin_src emacs-lisp
