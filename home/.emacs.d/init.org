@@ -214,6 +214,24 @@ tell it we have a 16 color terminal, not 256.
   ;; (require 'control-mode)
   ;; (control-mode-default-setup)
 #+end_src
+** Hydra
+#+begin_src emacs-lisp
+  (ensure-pkg 'hydra)
+#+end_src
+** Guided-Nav
+#+begin_src emacs-lisp
+  (ensure-pkg 'guide-key)
+  (setq guide-key/guide-key-sequence '("C-x"))
+  (setq guide-key/recursive-key-sequence-flag t)
+
+  (defun guide-key/my-hook-function-for-org-mode ()
+    (guide-key/add-local-guide-key-sequence "C-c")
+    (guide-key/add-local-guide-key-sequence "C-c C-x")
+    (guide-key/add-local-highlight-command-regexp "org-"))
+  (add-hook 'org-mode-hook 'guide-key/my-hook-function-for-org-mode)
+
+  (guide-key-mode 1)
+#+end_src
 ** Powerline
 #+begin_src emacs-lisp
   (ensure-pkg 'powerline)
@@ -938,6 +956,11 @@ Enable python.
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((python . t)))
+#+end_src
+** Org Trello
+#+begin_src emacs-lisp
+  (ensure-pkg 'org-trello)
+  (require 'org-trello)
 #+end_src
 ** Defunct                                                         :disabled:
 *** Org Mode notifications
