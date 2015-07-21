@@ -1026,14 +1026,16 @@ Enable python.
 * ERC
 Using bouncer.
 #+begin_src emacs-lisp
-    (load-file (expand-file-name "~/.emacs.d/secrets.el"))
-    (defun my-erc ()
-      (interactive)
-      (erc
-        :server "localhost"
-        :port "6667"
-        :nick my-erc-name
-        :password my-erc-password))
+  (load-file (expand-file-name "~/.emacs.d/secrets.el"))
+  (defun my-erc ()
+    (interactive)
+    (erc
+      :server "localhost"
+      :port "6667"
+      :nick my-erc-name
+      :password my-erc-password))
+  (setq erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE" "324" "329" "332" "333" "353" "477"))
+
 #+end_src
 
 * Evil
