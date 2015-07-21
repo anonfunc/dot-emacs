@@ -527,7 +527,7 @@ From what the emacs.d
 *** Magit-wip
 #+begin_src emacs-lisp
   (require 'magit-wip)
-  (global-magit-wip-save-mode 1)
+  ;(global-magit-wip-save-mode 1)
 #+end_src
 ** TODO Battery life in mode line                                  :disabled:
 Make mac only.
