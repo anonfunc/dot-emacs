@@ -718,7 +718,14 @@ From http://stackoverflow.com/questions/3533703/emacs-delete-trailing-whitespace
         (when (> (point-max) end)
           (save-restriction
             (narrow-to-region (1+ end) (point-max))
-            (delete-trailing-whitespace))))))
+            (delete-trailing-whitespace)))
+        (widen)
+        (goto-char (point-max))
+        (delete-blank-lines)
+        (let ((trailnewlines (abs (skip-chars-backward "\n\t"))))
+          (if (> trailnewlines 0)
+              (progn
+                (delete-char trailnewlines)))))))
 #+end_src
 From "What the emacs.d!?"
 #+begin_src emacs-lisp
