@@ -408,10 +408,15 @@ These are available with an active region.
 ;;         :features region-bindings-mode
 ;;         :after (progn (region-bindings-mode-enable)))
 #+end_src
-** Ace Jump Mode                                                   :disabled:
+** Avy
 #+begin_src emacs-lisp
-  ;; (ensure-pkgs '(ace-jump-mode))
-  ;; (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+  (ensure-pkg 'avy)
+  (global-set-key (kbd "M-g g") 'avy-goto-line)
+  (global-set-key (kbd "M-g M-g") 'avy-goto-line)
+  (global-set-key (kbd "C-c j") 'avy-goto-char-2)
+
+  ;; Add C-c j in isearch for jump to matches
+  (define-key isearch-mode-map (kbd "C-c j") 'avy-isearch)
 #+end_src
 ** Sunrise Commander
 #+begin_src emacs-lisp
