@@ -92,7 +92,7 @@ I prefer the vim style zap.  Leaving old one on M-Z.
   (setq uniquify-buffer-name-style 'forward)
 #+end_src
 ** TODO xterm keys
-#+begin_src emacs-lisp
+#begin_src emacs-lisp
   (add-hook 'term-setup-hook
   '(lambda ()
    (define-key function-key-map "\e[1;9A" [M-up])
@@ -100,7 +100,7 @@ I prefer the vim style zap.  Leaving old one on M-Z.
    (define-key function-key-map "\e[1;9C" [M-right])
    (define-key function-key-map "\e[1;2A" [S-up])
    (define-key function-key-map "\e[1;9D" [M-left])))
-#+end_src
+#end_src
 ** Follow vc links
 Doesn't work.  Odd.
 #+begin_src emacs-lisp
@@ -108,10 +108,10 @@ Doesn't work.  Odd.
 #+end_src
 ** TODO Get path from a shell
 Doesn't seem to work reliably.
-#+begin_src emacs-lisp
+#begin_src emacs-lisp
   ;(ensure-pkg 'exec-path-from-shell)
   ;(exec-path-from-shell-initialize)
-#+end_src
+#end_src
 * Interface
 ** Maximize frame
 Needs to be run only on darwin
@@ -218,8 +218,8 @@ tell it we have a 16 color terminal, not 256.
 #+begin_src emacs-lisp
   (ensure-pkg 'hydra)
 #+end_src
-** Guided-Nav
-#+begin_src emacs-lisp
+** Guided-Nav                                                      :disabled:
+#begin_src emacs-lisp
   (ensure-pkg 'guide-key)
   (setq guide-key/guide-key-sequence '("C-x"))
   (setq guide-key/recursive-key-sequence-flag t)
@@ -231,20 +231,17 @@ tell it we have a 16 color terminal, not 256.
   (add-hook 'org-mode-hook 'guide-key/my-hook-function-for-org-mode)
 
   (guide-key-mode 1)
-#+end_src
-** Powerline
-#+begin_src emacs-lisp
+#end_src
+** Powerline                                                       :disabled:
+#begin_src emacs-lisp
   (ensure-pkg 'powerline)
   (powerline-default-theme)
   (powerline-center-evil-theme)
-#+end_src
+#end_src
 * Custom Functionality
 ** Use custom browser script if possible.
 #+begin_src emacs-lisp
   (defun browse-url-remote-open (url &optional ignored)
-    "Pass the specified URL to the \"xdg-open\" command.
-  xdg-open is a desktop utility that calls your preferred web browser.
-  The optional argument IGNORED is not used."
     (interactive (browse-url-interactive-arg "URL: "))
     (if window-system
         (browse-url-default-browser url)
@@ -260,25 +257,25 @@ tell it we have a 16 color terminal, not 256.
   (global-set-key (kbd "C-c e") 'my-edit-dot-emacs)
 #+end_src
 * Module Configuration
-** TODO Iedit                                                      :disabled:
+** Iedit                                                      :disabled:
 #+begin_src emacs-lisp
   ;; (ensure-pkgs '(iedit))
   ;; (require 'iedit)
   ;; (global-set-key (kbd "C-c ;") 'iedit-mode)
 #+end_src
-** Multiple Cursors
+** Multiple Cursors                                                :disabled:
 Consider instead of Iedit?
-#+begin_src emacs-lisp
+#begin_src emacs-lisp
   (ensure-pkg 'multiple-cursors)
   (global-set-key (kbd "C-c ;") 'mc/mark-all-dwim)
-#+end_src
+#end_src
 ** Visual Regex
 #+begin_src emacs-lisp
   (ensure-pkg 'visual-regexp)
   (global-set-key (kbd "C-c r") 'vr/replace)
   (global-set-key (kbd "C-c q") 'vr/query-replace)
   ;; if you use multiple-cursors, this is for you:
-  (global-set-key (kbd "C-c R") 'vr/mc-mark)
+  ;(global-set-key (kbd "C-c R") 'vr/mc-mark)
 #+end_src
 ** Helm
 #+BEGIN_SRC emacs-lisp
@@ -377,10 +374,6 @@ Get used to [[*Helm][Helm]]...
   (global-set-key (kbd "<mouse-8>") 'winner-undo)
   (global-set-key (kbd "<mouse-9>") 'winner-redo))
 #+end_src
-** Cua Selection mode, but no C-x or C-c
-#+begin_src emacs-lisp
-(cua-selection-mode t)
-#+end_src
 ** Expand Region                                                   :disabled:
 #+begin_src emacs-lisp
 ;;(ensure-pkg 'expand-region)
@@ -455,9 +448,9 @@ These are available with an active region.
 ;;(require 'magit-commit-training-wheels)
 ;;(ad-activate 'magit-log-edit-commit)
 #+END_SRC
-*** Window advice
+*** Window advice                                                  :disabled:
 From what the emacs.d
-#+begin_src emacs-lisp
+#begin_src emacs-lisp
   (defadvice magit-status (around magit-fullscreen activate)
     (window-configuration-to-register :magit-fullscreen)
     ad-do-it
@@ -470,19 +463,19 @@ From what the emacs.d
   (if (boundp 'magit-mode-quit-window)
       (defadvice magit-quit-window (after magit-restore-screen activate)
         (jump-to-register :magit-fullscreen)))
-#+end_src
-*** Magit SVN
-#+begin_src emacs-lisp
+#end_src
+*** Magit SVN                                                      :disabled:
+#begin_src emacs-lisp
   (ensure-pkgs '(magit-svn))
   (require 'magit-svn)
 
   (add-hook 'magit-mode-hook (lambda()
                                (if (magit-svn-get-ref-info)
                                    (magit-svn-mode))))
-#+end_src
+#end_src
 
-*** Git-Review bindings under Magit SVN
-#+begin_src emacs-lisp
+*** Git-Review bindings under Magit SVN                            :disabled:
+#begin_src emacs-lisp
   (setq magit-reviewer-groups '("mp-dev" "qei-tools-reviewers"))
 
   (defun magit-review-open-link ()
@@ -522,11 +515,11 @@ From what the emacs.d
   (magit-key-mode-insert-action 'svn "U" "Update Review" 'magit-review-update)
   (magit-key-mode-insert-action 'svn "D" "Review dcommit" 'magit-review-dcommit)
   (magit-key-mode-insert-action 'svn "O" "Open review" 'magit-review-open)
-#+end_src
+#end_src
 
-*** Magit-wip
+*** Magit-wip                                                      :disabled:
 #+begin_src emacs-lisp
-  (require 'magit-wip)
+  ;(require 'magit-wip)
   ;(global-magit-wip-save-mode 1)
 #+end_src
 ** TODO Battery life in mode line                                  :disabled:
@@ -536,13 +529,13 @@ Make mac only.
 ;; (display-battery-mode)
 #+end_src
 
-** Ack and Ag
-#+BEGIN_SRC emacs-lisp
+** Ack and Ag                                                      :disabled:
+#BEGIN_SRC emacs-lisp
   (ensure-pkgs '(ack-and-a-half ag))
   (ensure-pkg 'wgrep-ag)
   (setq ag-highlight-search t
         ag-reuse-buffers t)
-#+END_SRC
+#END_SRC
 ** Dired and Dired Extensions
 #+begin_src emacs-lisp
   (require 'dired-x)
@@ -628,23 +621,23 @@ Adds M-* and M-, to elisp buffers.
   ;; (add-hook 'emacs-lisp-mode-hook (lambda () (elisp-slime-nav-mode t)))
 #+end_src
 
-** Projectile
+** Projectile                                                      :disabled:
 Possible fit for project management.
-#+begin_src emacs-lisp
+#begin_src emacs-lisp
   (ensure-pkg 'projectile)
   (setq projectile-enable-caching t)
   (projectile-global-mode)
   (setq projectile-switch-project-action 'projectile-find-dir)
   (ensure-pkg 'helm-projectile)
   (define-key projectile-mode-map (kbd "C-c p h") 'helm-projectile)
-#+end_src
-** Flycheck
-#+begin_src emacs-lisp
+#end_src
+** Flycheck                                                        :disabled:
+#begin_src emacs-lisp
   (ensure-pkg 'flycheck)
   (add-hook 'after-init-hook #'global-flycheck-mode)
   ;; Elisp fixes
   (eval-after-load 'flycheck (lambda () (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))))
-#+end_src
+#end_src
 ** Flymake                                                         :disabled:
 #+begin_src emacs-lisp
 ;; (require 'flymake-cursor)
@@ -741,9 +734,9 @@ From "What the emacs.d!?"
   ;; Various superfluous white-space. Just say no.
   (add-hook 'before-save-hook 'cleanup-buffer-safe)
 #+end_src
-** Python!
+** Python!                                                         :disabled:
 Use elpy, and tweak indentation.
-#+begin_src emacs-lisp
+#begin_src emacs-lisp
   (ensure-pkgs '(yasnippet flymake-cursor elpy))
   (elpy-enable)
   ;(elpy-use-ipython)
@@ -756,7 +749,7 @@ Use elpy, and tweak indentation.
     (setq python-indent 2)
     (setq-local helm-dash-docsets '("Python 2" "Flask")))
   (add-hook 'python-mode-hook 'my-python-hook)
-#+end_src
+#end_src
 *** TODO Eshell support for virtualenvs
 Work in progress.
 #+begin_src emacs-lisp
@@ -767,16 +760,16 @@ Work in progress.
 #+end_src
 
 ** HTML and Jinja
-#+begin_src emacs-lisp
+   #begin_src emacs-lisp
   (ensure-pkgs '(web-mode))
   (require 'web-mode)
   (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
   (setq web-mode-engines-alist '(("jinja2"    . "\\.html?\\'")))
   (when-installed 'smartparens (sp-local-tag '(web-mode) "<" "<_>" "</_>" :transform 'sp-match-sgml-tags))
-#+end_src
+#end_src
 *** TODO Emmet mode!
 Research ac-emmet?
-#+begin_src emacs-lisp
+#begin_src emacs-lisp
   (ensure-pkg 'emmet-mode)
   (require 'emmet-mode)
   (add-hook 'sgml-mode-hook 'emmet-mode)
@@ -784,9 +777,9 @@ Research ac-emmet?
   (add-hook 'css-mode-hook  'emmet-mode)
   (add-hook 'emmet-mode-hook (lambda () (setq emmet-indentation 2)))
   (setq emmet-move-cursor-between-quotes t)
-#+end_src
+#end_src
 ** Javascript
-#+begin_src emacs-lisp
+#begin_src emacs-lisp
   (ensure-pkgs '(js2-mode))
   (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
   (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
@@ -795,18 +788,18 @@ Research ac-emmet?
               (setq tab-width 2)
               (setq js2-basic-offset 2)
               (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)))
-#+end_src
+#end_src
 *** Skewer mode                                                    :disabled:
 Only useful for javascript and css, as HTML changes don't get reflected.
 The missing pieces should be filled in by LiveReload...
-#+begin_src emacs-lisp
+#begin_src emacs-lisp
   ;(ensure-pkg 'skewer-mode)
   ;(add-hook 'js2-mode-hook 'skewer-mode)
   ;; If we need it for css/html/web-mode:
   ;(add-hook 'css-mode-hook 'skewer-css-mode)
   ;(add-hook 'html-mode-hook 'skewer-html-mode)
   ;(add-hook 'web-mode-hook 'skewer-html-mode)
-#+end_src
+#end_src
 
 Snippet to load javascript:
 #+BEGIN_SRC html
@@ -1038,7 +1031,7 @@ Using bouncer.
 
 #+end_src
 
-* Evil
+* Evil                                                             :disabled:
 #begin_src emacs-lisp
   (ensure-pkgs '(evil))
   ; http://puntoblogspot.blogspot.com/2014/01/evil-exact-amount-of-vim-in-emacs-but.html
@@ -1046,7 +1039,7 @@ Using bouncer.
   ;(setcdr evil-insert-state-map nil)
   ;(define-key evil-insert-state-map [escape] 'evil-normal-state)
 #end_src
-** Evil Extensions
+** Evil Extensions                                                 :disabled:
 #begin_src emacs-lisp
   (ensure-pkg 'evil-matchit)
   (require 'evil-matchit)
@@ -1061,8 +1054,8 @@ Using bouncer.
   (global-surround-mode 1)
 #end_src
 * Stuff that happens at the end
-** Clean Modeline with Diminish
-#+begin_src emacs-lisp
+** Clean Modeline with Diminish                                    :disabled:
+#begin_src emacs-lisp
   (ensure-pkg 'diminish)
   (diminish 'helm-mode)
   (diminish 'auto-revert-mode)
@@ -1071,7 +1064,7 @@ Using bouncer.
   (diminish 'projectile-mode)
   ;;(diminish 'undo-tree-mode)
   (diminish 'highlight-indentation-mode)
-#+end_src
+#end_src
 * Custom File
 #+begin_src emacs-lisp
 (setq custom-file (expand-file-name "~/.emacs.d/custom.el"))

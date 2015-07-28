@@ -6,13 +6,18 @@
  '(background-mode dark)
  '(cua-delete-selection nil)
  '(cua-mode t nil (cua-base))
- '(custom-safe-themes (quote ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+ '(custom-safe-themes
+   (quote
+    ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(exec-path-from-shell-variables (quote ("PATH")))
  '(font-lock-maximum-decoration (quote ((dired-mode) (t . t))))
  '(helm-command-prefix-key "C-c h")
+ '(magit-pull-arguments (quote ("--rebase")))
  '(magit-use-overlays nil)
  '(org-agenda-files (quote ("~/org/exchange-calendar.org")))
- '(org-modules (quote (org-bbdb org-bibtex org-docview org-gnus org-info org-jsinfo org-habit org-irc org-mew org-mhe org-protocol org-rmail org-vm org-wl org-w3m)))
+ '(org-modules
+   (quote
+    (org-bbdb org-bibtex org-docview org-gnus org-info org-jsinfo org-habit org-irc org-mew org-mhe org-protocol org-rmail org-vm org-wl org-w3m)))
  '(safe-local-variable-values (quote ((eval folding-mode t) (folded-file . t))))
  '(sp-highlight-pair-overlay nil)
  '(tool-bar-mode nil)
