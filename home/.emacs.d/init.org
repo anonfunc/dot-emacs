@@ -208,36 +208,10 @@ tell it we have a 16 color terminal, not 256.
 #+begin_src emacs-lisp
 (defalias 'yes-or-no-p 'y-or-n-p)
 #+end_src
-** Control-mode                                                    :disabled:
-#+begin_src emacs-lisp
-  ;; (ensure-pkgs '(control-mode))
-  ;; (require 'control-mode)
-  ;; (control-mode-default-setup)
-#+end_src
 ** Hydra
 #+begin_src emacs-lisp
   (ensure-pkg 'hydra)
 #+end_src
-** Guided-Nav                                                      :disabled:
-#begin_src emacs-lisp
-  (ensure-pkg 'guide-key)
-  (setq guide-key/guide-key-sequence '("C-x"))
-  (setq guide-key/recursive-key-sequence-flag t)
-
-  (defun guide-key/my-hook-function-for-org-mode ()
-    (guide-key/add-local-guide-key-sequence "C-c")
-    (guide-key/add-local-guide-key-sequence "C-c C-x")
-    (guide-key/add-local-highlight-command-regexp "org-"))
-  (add-hook 'org-mode-hook 'guide-key/my-hook-function-for-org-mode)
-
-  (guide-key-mode 1)
-#end_src
-** Powerline                                                       :disabled:
-#begin_src emacs-lisp
-  (ensure-pkg 'powerline)
-  (powerline-default-theme)
-  (powerline-center-evil-theme)
-#end_src
 * Custom Functionality
 ** Use custom browser script if possible.
 #+begin_src emacs-lisp
@@ -331,18 +305,6 @@ Enable remote dir-locals.
 #+begin_src emacs-lisp
   (setq enable-remote-dir-locals t)
 #+end_src
-** DONE Smex                                                       :disabled:
-Get used to [[*Helm][Helm]]...
-#+begin_src emacs-lisp
-  ;; (ensure-pkgs '(smex))
-  ;; (require 'smex)
-  ;; (smex-initialize)
-
-  ;; (global-set-key (kbd "M-x") 'smex)
-  ;; (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-  ;; ;; This is your old M-x.
-  ;; (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
-#+end_src
 ** Ibuffer
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -383,40 +345,6 @@ Use the mouse back/forward buttons to go back and forth in history of window con
   (setq aw-dispatch-always t)
   (ace-window-display-mode)
 
-#+end_src
-** Expand Region                                                   :disabled:
-#+begin_src emacs-lisp
-;;(ensure-pkg 'expand-region)
-;;(global-set-key (kbd "C-=") 'er/expand-region)
-;;(global-set-key (kbd "M-=") 'er/expand-region)
-#+end_src
-** Multiple Cursors                                                :disabled:
-#+begin_src emacs-lisp
-;; (ensure-pkg 'multiple-cursors)
-;;(global-set-key (kbd "C-c C-SPC") 'mc/edit-lines)
-;;(global-sqet-key (kbd "M-]") 'mc/mark-next-like-this)
-;; (global-set-key (kbd "C-c C-e") 'mc/edit-ends-of-lines)
-;; (global-set-key (kbd "C-c C-a") 'mc/edit-beginnings-of-lines)
-#+end_src
-*** Rectangular region mode                                        :disabled:
-#+begin_src emacs-lisp
-;; (global-set-key (kbd "C-c RET") 'set-rectangular-region-anchor)
-#+end_src;;
-*** Mark More like this                                            :disabled:
-These are available with an active region.
-#+begin_src emacs-lisp
-;; (define-key region-bindings-mode-map "a" 'mc/mark-all-like-this)
-;; (define-key region-bindings-mode-map "p" 'mc/mark-previous-like-this)
-;; (define-key region-bindings-mode-map "n" 'mc/mark-next-like-this)
-;; (define-key region-bindings-mode-map "m" 'mc/mark-more-like-this-extended)
-#+end_src
-
-#+begin_src emacs-lisp :noweb-ref my-pkg :exports none :tangle no
-;;  (:name region-bindings-mode
-;;         :type github
-;;         :pkgname "fgallina/region-bindings-mode"
-;;         :features region-bindings-mode
-;;         :after (progn (region-bindings-mode-enable)))
 #+end_src
 ** Avy
 #+begin_src emacs-lisp
@@ -544,13 +472,12 @@ Make mac only.
 ;; (display-battery-mode)
 #+end_src
 
-** Ack and Ag                                                      :disabled:
-#BEGIN_SRC emacs-lisp
-  (ensure-pkgs '(ack-and-a-half ag))
-  (ensure-pkg 'wgrep-ag)
+** Ag
+#+BEGIN_SRC emacs-lisp
+  (ensure-pkgs '(ag wgrep-ag))
   (setq ag-highlight-search t
         ag-reuse-buffers t)
-#END_SRC
+#+END_SRC
 ** Dired and Dired Extensions
 #+begin_src emacs-lisp
   (require 'dired-x)
