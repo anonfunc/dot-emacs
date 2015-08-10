@@ -379,6 +379,59 @@ Use the mouse back/forward buttons to go back and forth in history of window con
     (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
 #+end_src
 *** Bindings
+*** git-review
+#+begin_src emacs-lisp
+  (require 'magit-popup)
+  (require 'magit)
+
+  ;; Customize me:
+  (setq magit-reviewer-groups '("mp-dev"))
+
+  (defun magit-review-open-link ()
+    (interactive)
+    (unless (magit-process-buffer)
+      (error "No Git commands have run"))
+    (save-excursion
+      (magit-process)
+      (goto-char (point-min))
+      (if (search-forward-regexp "https.*" nil t)
+          (browse-url-at-point)
+        (message "Did not find url"))))
+
+  (defun magit-review-create (group)
+    (interactive (list (ido-completing-read "Review group?" magit-reviewer-groups)))
+    (magit-run-git "review" "create"
+                   "-b" (magit-get-current-branch)
+                   "--groups" group)
+    (magit-review-open-link))
+
+  (defun magit-review-dcommit ()
+    (interactive)
+    (magit-run-git "review" "dcommit"))
+
+  (defun magit-review-open ()
+    (interactive)
+    (let* ((branch (magit-get-current-branch))
+           (reviewid (magit-get (format "branch.%s.reviewid" branch))))
+      (browse-url (format my-review-url-format reviewid))))
+
+  (defun magit-review-update ()
+    (interactive)
+    (magit-run-git "review" "update")
+    (magit-review-open-link))
+
+  (magit-define-popup magit-review-popup
+    "Popup console for review commands."
+    'magit-commands nil nil
+    :actions  '((?c "Create"  magit-review-create)
+                (?u "Update"  magit-review-update)
+                (?o "Open"    magit-review-open)
+                (?d "dcommit" magit-review-dcommit))
+    :default-action 'magit-review-create)
+
+  (magit-define-popup-action 'magit-dispatch-popup ?. "Reviews" 'magit-review-popup)
+  (define-key magit-mode-map "." 'magit-review-popup)
+#+end_src
 #+begin_src emacs-lisp
 ;; F12 for magit
 (global-unset-key (kbd "<f12>"))
