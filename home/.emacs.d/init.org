@@ -240,7 +240,7 @@ tell it we have a 16 color terminal, not 256.
 
   (defun my-svin-commit-review ()
     (interactive)
-    (with-editor (compile (concat "svin commit --dry-run -r " (my-svin-review-id)))))
+    (with-editor (compile (concat "svin commit -r " (my-svin-review-id)))))
 
 
   (defhydra hydra-svin-review (:exit t)
