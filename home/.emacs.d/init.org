@@ -231,7 +231,7 @@ tell it we have a 16 color terminal, not 256.
 
   (defun my-svin-open-review ()
     (interactive)
-    (shell-command (concat "svin review --open -r" user-login-name))) ; user-login-name works around a current bug here, and can go away soon.
+    (browse-url (format my-review-url-format (my-svin-review-id))))
 
   (defun my-svin-update-review ()
     (interactive)
@@ -511,7 +511,7 @@ From what the emacs.d
 
 *** Git-Review bindings under Magit SVN                            :disabled:
 #begin_src emacs-lisp
-  (setq magit-reviewer-groups '("mp-dev" "qei-tools-reviewers"))
+  (setq magit-reviewer-groups my-reviewer-groups)
 
   (defun magit-review-open-link ()
     (interactive)
