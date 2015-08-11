@@ -60,7 +60,7 @@ Depending on how the emacs daemon is started, the current directory is less than
 ** Speed Tweaks
 #+begin_src emacs-lisp
 (setq font-lock-verbose nil)
-(setq vc-handled-backends '(Git))
+(setq vc-handled-backends '(Git SVN))
 ;(setq jit-lock-defer-time 0.05)
 (setq gc-cons-threshold 20000000)
 #+end_src
@@ -211,6 +211,45 @@ tell it we have a 16 color terminal, not 256.
 ** Hydra
 #+begin_src emacs-lisp
   (ensure-pkg 'hydra)
+#+end_src
+*** Custom svin hydra
+#+begin_src emacs-lisp
+  (ensure-pkg 'with-editor)
+  (require 'vc-dir)
+  (defun my-default-directory-no-slash ()
+    (if (string-match "/$" default-directory)
+        (replace-match "" t t default-directory)))
+
+  (defun my-svin-review-id ()
+    (let ((reviewboard-json (json-read-file (expand-file-name "~/.svin/reviewboard/rb_record.json"))))
+      (cdr (assoc 'default (cdr (assoc (intern (my-default-directory-no-slash)) reviewboard-json))))))
+
+  (defun my-svin-create-review (group)
+    (interactive (list (ido-completing-read "Review group?" my-reviewer-groups)))
+    (with-editor
+      (compile (concat "svin review -r " user-login-name " -g " group))))  ; user-login-name works around a current bug here, and can go away soon.
+
+  (defun my-svin-open-review ()
+    (interactive)
+    (shell-command (concat "svin review --open -r" user-login-name))) ; user-login-name works around a current bug here, and can go away soon.
+
+  (defun my-svin-update-review ()
+    (interactive)
+    (with-editor
+      (compile (concat  "svin review -r " user-login-name " --update " (my-svin-review-id))))) ; user-login-name works around a current bug here, and can go away soon.
+
+  (defun my-svin-commit-review ()
+    (interactive)
+    (with-editor (compile (concat "svin commit --dry-run -r " (my-svin-review-id)))))
+
+
+  (defhydra hydra-svin-review (:exit t)
+    "Review"
+    ("c" my-svin-create-review "create")
+    ("o" my-svin-open-review "open")
+    ("u" my-svin-update-review "update")
+    ("d" my-svin-commit-review "commit"))
+  (define-key vc-dir-mode-map (kbd ".") 'hydra-svin-review/body)
 #+end_src
 * Custom Functionality
 ** Use custom browser script if possible.
