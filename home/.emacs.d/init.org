@@ -642,6 +642,7 @@ Don't use tabs, default to 4 spaces.
   (require 'smartparens-config)
   (sp-use-smartparens-bindings)
   (show-smartparens-global-mode t)
+  (require 'smartparens-python)
 #+end_src
 ** Lisps
 *** Paredit                                                        :disabled:
