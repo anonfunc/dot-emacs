@@ -91,16 +91,12 @@ I prefer the vim style zap.  Leaving old one on M-Z.
   (require 'uniquify)
   (setq uniquify-buffer-name-style 'forward)
 #+end_src
-** TODO xterm keys
-#begin_src emacs-lisp
-  (add-hook 'term-setup-hook
-  '(lambda ()
-   (define-key function-key-map "\e[1;9A" [M-up])
-   (define-key function-key-map "\e[1;9B" [M-down])
-   (define-key function-key-map "\e[1;9C" [M-right])
-   (define-key function-key-map "\e[1;2A" [S-up])
-   (define-key function-key-map "\e[1;9D" [M-left])))
-#end_src
+** xterm keys
+#+begin_src emacs-lisp
+  (defun my-terminal-hook ()
+    (define-key key-translation-map (kbd "<select>") (kbd "<end>")))
+  (add-hook 'tty-setup-hook 'my-terminal-hook)
+#+end_src
 ** Follow vc links
 Doesn't work.  Odd.
 #+begin_src emacs-lisp
