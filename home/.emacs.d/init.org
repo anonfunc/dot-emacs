@@ -275,9 +275,9 @@ tell it we have a 16 color terminal, not 256.
 * Module Configuration
 ** Iedit                                                      :disabled:
 #+begin_src emacs-lisp
-  ;; (ensure-pkgs '(iedit))
-  ;; (require 'iedit)
-  ;; (global-set-key (kbd "C-c ;") 'iedit-mode)
+  (ensure-pkgs '(iedit))
+  (require 'iedit)
+  (global-set-key (kbd "C-c i") 'iedit-mode)
 #+end_src
 ** Multiple Cursors                                                :disabled:
 Consider instead of Iedit?
