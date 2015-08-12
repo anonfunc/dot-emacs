@@ -713,11 +713,6 @@ Possible fit for project management.
   (define-key yas-minor-mode-map (kbd "C-c & v") 'helm-yas-visit-snippet-file)
   (define-key yas-minor-mode-map (kbd "C-c & n") 'helm-yas-create-snippet-on-region)
 #+end_src
-*** Fold-Dwim-Org compatibility shim                               :disabled:
-#+begin_src emacs-lisp
-  ;; (defalias 'yas/snippets-at-point 'yas--snippets-at-point) ;; fold-dwim-org compatibility
-  ;; (setq fold-dwim-org/trigger-keys-block (list [tab] [lefttab] [(control tab)]))
-#+end_src
 ** Groovy
 #+begin_src emacs-lisp
   (ensure-pkgs '(groovy-mode))
@@ -746,7 +741,7 @@ Possible fit for project management.
 #+end_src
 ** Global whitespace cleanup
 From http://stackoverflow.com/questions/3533703/emacs-delete-trailing-whitespace-except-current-line
-#+begin_src emacs-lisp
+#begin_src emacs-lisp
   (defun delete-trailing-whitespace-except-current-line ()
     (interactive)
     (let ((begin (line-beginning-position))
@@ -764,12 +759,12 @@ From http://stackoverflow.com/questions/3533703/emacs-delete-trailing-whitespace
         (goto-char (point-max))
         (delete-blank-lines)
         (let ((trailnewlines (abs (skip-chars-backward "\n\t"))))
-          (if (> trailnewlines 0)
+          (if (> trailnewlines 1)
               (progn
-                (delete-char trailnewlines)))))))
-#+end_src
+                (delete-char (- trailnewlines1 ))))))))
+#end_src
 From "What the emacs.d!?"
-#+begin_src emacs-lisp
+#begin_src emacs-lisp
   (defun cleanup-buffer-safe ()
     "Perform a bunch of safe operations on the whitespace content of a buffer.
   Does not indent buffer, because it is used for a before-save-hook, and that
@@ -781,8 +776,20 @@ From "What the emacs.d!?"
 
   ;; Various superfluous white-space. Just say no.
   (add-hook 'before-save-hook 'cleanup-buffer-safe)
+#end_src
+
+Let's try ws-butler instead:
+#+begin_src emacs-lisp
+  (ensure-pkg 'ws-butler)
+  (ws-butler-global-mode)
 #+end_src
-** Python!                                                         :disabled:
+** Python
+#+begin_src emacs-lisp
+  (ensure-pkg 'elpy)
+  (elpy-enable)
+
+#+end_src
+** Old Python!                                                     :disabled:
 Use elpy, and tweak indentation.
 #begin_src emacs-lisp
   (ensure-pkgs '(yasnippet flymake-cursor elpy))
