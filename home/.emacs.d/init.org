@@ -622,6 +622,11 @@ From [[http://irreal.org/blog/?p%3D2247][irreal]]
   (ensure-pkg 'ham-mode)
 #+end_src
 * Programming modes
+** Editorconfig
+#+begin_src emacs-lisp
+  (ensure-pkg 'editorconfig)
+  (require 'editorconfig)
+#+end_src
 ** Indent settings
 Don't use tabs, default to 4 spaces.
 #+begin_src emacs-lisp
