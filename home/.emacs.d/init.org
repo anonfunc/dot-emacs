@@ -666,16 +666,19 @@ Adds M-* and M-, to elisp buffers.
   ;; (add-hook 'emacs-lisp-mode-hook (lambda () (elisp-slime-nav-mode t)))
 #+end_src
 
-** Projectile                                                      :disabled:
+** Projectile
 Possible fit for project management.
-#begin_src emacs-lisp
+#+begin_src emacs-lisp
   (ensure-pkg 'projectile)
-  (setq projectile-enable-caching t)
+  (setq projectile-enable-caching nil)
   (projectile-global-mode)
   (setq projectile-switch-project-action 'projectile-find-dir)
   (ensure-pkg 'helm-projectile)
+  (require 'helm-projectile)
+  (helm-projectile-on)
   (define-key projectile-mode-map (kbd "C-c p h") 'helm-projectile)
-#end_src
+  (ensure-pkg 'helm-ag)
+#+end_src
 ** Flycheck                                                        :disabled:
 #begin_src emacs-lisp
   (ensure-pkg 'flycheck)
