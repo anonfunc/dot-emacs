@@ -384,8 +384,8 @@ Use the mouse back/forward buttons to go back and forth in history of window con
 *** Ace-window
 #+begin_src emacs-lisp
   (ensure-pkg 'ace-window)
-  (global-set-key (kbd "M-p") 'ace-window)
-  (setq aw-dispatch-always t)
+  (global-set-key (kbd "C-c w") 'ace-window)
+  (setq aw-dispatch-always nil)
   (ace-window-display-mode)
 
 #+end_src
