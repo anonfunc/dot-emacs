@@ -414,6 +414,7 @@ Use the mouse back/forward buttons to go back and forth in history of window con
 ** Magit
 #+begin_src emacs-lisp
   (ensure-pkg 'magit)
+  (ensure-pkg 'magit-svn)
   ;;(ensure-pkg 'magit-commit-training-wheels)
 
   ;; Mac uses this homebrew one, which doesn't get found.
