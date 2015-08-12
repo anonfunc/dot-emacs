@@ -198,7 +198,15 @@ tell it we have a 16 color terminal, not 256.
 
 #+begin_src emacs-lisp
   (ensure-pkg 'solarized-theme)
-  (load-theme 'solarized-dark t)
+
+  (defun my-after-make-frame (frame)
+    (cond ((display-graphic-p frame)
+           (message "Graphical frame")
+           (load-theme 'solarized-dark t))
+          (t (message "Not a graphical frame")
+             (disable-theme 'solarized-dark))))
+
+  (add-hook 'after-make-frame-functions 'my-after-make-frame)
 #+end_src
 ** Don't bother me as much
 #+begin_src emacs-lisp
