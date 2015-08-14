@@ -489,7 +489,7 @@ Use the mouse back/forward buttons to go back and forth in history of window con
 #+END_SRC
 *** Window advice                                                  :disabled:
 From what the emacs.d
-#begin_src emacs-lisp
+#+begin_src emacs-lisp
   (defadvice magit-status (around magit-fullscreen activate)
     (window-configuration-to-register :magit-fullscreen)
     ad-do-it
@@ -502,7 +502,7 @@ From what the emacs.d
   (if (boundp 'magit-mode-quit-window)
       (defadvice magit-quit-window (after magit-restore-screen activate)
         (jump-to-register :magit-fullscreen)))
-#end_src
+#+end_src
 *** Magit SVN                                                      :disabled:
 #begin_src emacs-lisp
   (ensure-pkgs '(magit-svn))
