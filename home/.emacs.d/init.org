@@ -142,14 +142,14 @@ Needs to be run only on darwin
 
 ** Font
 #+begin_src emacs-lisp
-;  (when (eq system-type 'darwin)
-;    (set-face-attribute 'default nil
-;                      :family "Source Code Pro" :height 145 :weight 'extra-light))  ; Extra-light doesn't work, but it's the thought which counts
+  (when (eq system-type 'darwin)
+    (set-face-attribute 'default nil
+    :family "Sauce Code Powerline" :height 145 :weight 'medium))
 #+end_src
 #+begin_src emacs-lisp
   (ensure-pkg 'dynamic-fonts)
   (require 'dynamic-fonts)
-  (add-to-list 'dynamic-fonts-preferred-monospace-fonts "Source Code Pro")
+  (add-to-list 'dynamic-fonts-preferred-monospace-fonts "Saurce Code Powerline")
   (setq dynamic-fonts-preferred-monospace-point-size 14)
   (setq dynamic-fonts-preferred-proportional-point-size 14)
   (dynamic-fonts-setup)
@@ -195,17 +195,36 @@ the solarized theme.  The available packages currently use the 256 color version
 Let's try the most comprehensive one again, but be careful to always
 tell it we have a 16 color terminal, not 256.
 
+#begin_src emacs-lisp
+
+;  (ensure-pkg 'solarized-theme)
+
+;  (defun my-after-make-frame (frame)
+;    (cond ((display-graphic-p frame)
+;           (message "Graphical frame")
+;           (load-theme 'solarized-dark t))
+;          (t (message "Not a graphical frame")
+;             (disable-theme 'solarized-dark))))
+;
+;  (add-hook 'after-make-frame-functions 'my-after-make-frame)
+;  (ensure-pkg 'solarized-theme)
+;  (load-theme 'solarized-dark t)
+#end_src
+
 #+begin_src emacs-lisp
-  (ensure-pkg 'solarized-theme)
+;;  (ensure-pkg 'color-theme-sanityinc-solarized)
+;;  (require 'color-theme-sanityinc-solarized)
+;;  (color-theme-sanityinc-solarized-dark)
+#+end_src
 
-  (defun my-after-make-frame (frame)
-    (cond ((display-graphic-p frame)
-           (message "Graphical frame")
-           (load-theme 'solarized-dark t))
-          (t (message "Not a graphical frame")
-             (disable-theme 'solarized-dark))))
+#begin_src emacs-lisp
+  (ensure-pkg 'zenburn-theme)
+  (load-theme 'zenburn t)
+#end_src
 
-  (add-hook 'after-make-frame-functions 'my-after-make-frame)
+#+begin_src emacs-lisp
+  (ensure-pkg 'darktooth-theme)
+  (load-theme 'darktooth t)
 #+end_src
 ** Don't bother me as much
 #+begin_src emacs-lisp
