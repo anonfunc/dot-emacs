@@ -222,9 +222,42 @@ tell it we have a 16 color terminal, not 256.
   (load-theme 'zenburn t)
 #end_src
 
+This is *just* enough shittiness to get the themes to work correctly for the first frame launched under an emacs daemon.
+The problem is that emacs as a daemon has an invisible frame, which is why any color theme which tries to look at the display or frame to get
+information craps out.
+
+So I delay theme setting until *after* frame creation and put a little async on it.
+
 #+begin_src emacs-lisp
+  (ensure-pkg 'dash)
+  (require 'dash)
   (ensure-pkg 'darktooth-theme)
-  (load-theme 'darktooth t)
+  (defvar my-set-theme nil)
+  (defvar my-theme 'darktooth)
+
+  (defun my-fake-frame-p (frame)
+    (message "Looking at %s" (terminal-name frame))
+    (string-equal "initial_terminal" (terminal-name frame)))
+
+  (defun my-after-make-frame (frame)
+    (if my-set-theme (message "Theme already set")
+      (cond ((not (my-fake-frame-p frame))
+             (message "Real frame (after make)")
+             (run-at-time 0.3 nil 'load-theme my-theme t)
+             (setq my-set-theme t))
+            (t (message "Daemon frame. (after make)")))))
+
+  ;;; Might not need this one.
+  (defun my-after-switch-server ()
+    (if my-set-theme (message "Theme already set")
+      (cond ((-remove 'my-fake-frame-p (visible-frame-list))
+             (message "Real frame (switch server)")
+             (load-theme my-theme t)
+             (setq my-set-theme t))
+            (t (message "Daemon frame (switch server)")))))
+
+  (add-hook 'after-make-frame-functions 'my-after-make-frame)
+  (add-hook 'server-switch-hook 'my-after-switch-server)
 #+end_src
 ** Don't bother me as much
 #+begin_src emacs-lisp
