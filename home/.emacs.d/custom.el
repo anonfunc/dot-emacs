@@ -6,8 +6,8 @@
  '(ansi-color-names-vector
    ["#073642" "#dc322f" "#859900" "#b58900" "#268bd2" "#d33682" "#2aa198" "#657b83"])
  '(background-mode dark)
- '(compilation-message-face (quote default))
  '(color-theme-sanityinc-solarized-rgb-is-srgb nil)
+ '(compilation-message-face (quote default))
  '(cua-delete-selection nil)
  '(cua-global-mark-cursor-color "#2aa198")
  '(cua-mode t nil (cua-base))
@@ -16,7 +16,7 @@
  '(cua-read-only-cursor-color "#859900")
  '(custom-safe-themes
    (quote
-    ("4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+    ("36affb6b6328d2bfa7a31b3183cd65d6dd1a8c0945382f94de729233b9737359" "4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(exec-path-from-shell-variables (quote ("PATH")))
  '(fci-rule-color "#073642")
  '(font-lock-maximum-decoration (quote ((dired-mode) (t . t))))
@@ -51,6 +51,7 @@
  '(org-modules
    (quote
     (org-bbdb org-bibtex org-docview org-gnus org-info org-jsinfo org-habit org-irc org-mew org-mhe org-protocol org-rmail org-vm org-wl org-w3m)))
+ '(org-trello-current-prefix-keybinding "C-c o" nil (org-trello))
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
  '(safe-local-variable-values (quote ((eval folding-mode t) (folded-file . t))))
