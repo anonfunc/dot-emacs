@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+#set -x
 if [[ $TERM == xterm && $(tput colors) == "256" ]]
 then
   export TERM=xterm-256color
@@ -57,7 +57,7 @@ then
     then
         ec $*
     else
-        emacs --debug-init --daemon && sleep 1 && ec $*
+        /Applications/Emacs.app/Contents/MacOS/Emacs --debug-init --daemon && sleep 1 && ec $*
     fi
 else
     ec $*
