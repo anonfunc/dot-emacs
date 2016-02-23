@@ -108,6 +108,10 @@ Doesn't seem to work reliably.
   ;(ensure-pkg 'exec-path-from-shell)
   ;(exec-path-from-shell-initialize)
 #end_src
+** Disable cua-mode, mostly.
+#+begin_src emacs-lisp
+  (setq cua-enable-cua-keys nil)
+#+end_src
 * Interface
 ** Maximize frame
 Needs to be run only on darwin
