@@ -108,6 +108,12 @@ Doesn't seem to work reliably.
   ;(ensure-pkg 'exec-path-from-shell)
   ;(exec-path-from-shell-initialize)
 #end_src
+** Key Chords?
+#+begin_src emacs-lisp
+  (ensure-pkg 'key-chord)
+  (require 'key-chord)
+  (key-chord-mode 1)
+#+end_src
 ** Disable cua-mode, mostly.
 #+begin_src emacs-lisp
   (setq cua-enable-cua-keys nil)
@@ -358,6 +364,9 @@ Consider instead of Iedit?
   (global-set-key (kbd "M-x") 'helm-M-x)
   (global-set-key (kbd "C-x C-f") 'helm-find-files)
   (global-set-key (kbd "C-x b") 'helm-for-files)
+
+  (key-chord-define-global "xf" 'helm-find-files)
+  (key-chord-define-global "bb" 'helm-buffers-list)
   ;(global-set-key (kbd "C-x b") 'switch-to-buffer)
   (helm-mode)
 #+END_SRC
@@ -453,6 +462,8 @@ Use the mouse back/forward buttons to go back and forth in history of window con
 
   ;; Add C-c j in isearch for jump to matches
   (define-key isearch-mode-map (kbd "C-c j") 'avy-isearch)
+
+  (key-chord-define-global "jk" 'avy-goto-char-2)
 #+end_src
 ** Sunrise Commander
 #+begin_src emacs-lisp
