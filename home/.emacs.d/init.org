@@ -510,9 +510,10 @@ Use the mouse back/forward buttons to go back and forth in history of window con
 
   (defun magit-review-create (group)
     (interactive (list (ido-completing-read "Review group?" magit-reviewer-groups)))
-    (magit-run-git "review" "create"
+    (magit-run-git "review" "create" "--no-prompt"
                    "-b" (magit-get-current-branch)
-                   "--groups" group)
+                   "--groups" group
+                   "--owners")
     (magit-review-open-link))
 
   (defun magit-review-dcommit ()
