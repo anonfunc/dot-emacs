@@ -702,6 +702,12 @@ Don't use tabs, default to 4 spaces.
 (defvaralias 'c-basic-offset 'tab-width)
 (defvaralias 'cperl-indent-level 'tab-width)
 #+end_src
+** Line length
+#+begin_src emacs-lisp
+  (ensure-pkg 'column-enforce-mode)
+  (setq column-enforce-column 120)
+#+end_src
+
 ** Smartparens
 #+begin_src emacs-lisp
   (ensure-pkgs '(smartparens))
