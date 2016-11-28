@@ -420,9 +420,10 @@ Consider instead of Iedit?
   (global-set-key (kbd "M-x") 'helm-M-x)
   (global-set-key (kbd "C-x C-f") 'helm-find-files)
   (global-set-key (kbd "C-x b") 'helm-for-files)
+  (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 
   (key-chord-define-global "xf" 'helm-find-files)
-  (key-chord-define-global "bb" 'helm-buffers-list)
+  ;(key-chord-define-global "vb" 'helm-buffers-list)
   ;(global-set-key (kbd "C-x b") 'switch-to-buffer)
   (helm-mode)
 #+END_SRC
@@ -514,13 +515,23 @@ Use the mouse back/forward buttons to go back and forth in history of window con
   (ensure-pkg 'avy)
   (global-set-key (kbd "M-g g") 'avy-goto-line)
   (global-set-key (kbd "M-g M-g") 'avy-goto-line)
-  (global-set-key (kbd "C-c j") 'avy-goto-char-2)
+  (global-set-key (kbd "C-c j") 'avy-goto-char-timer)
 
   ;; Add C-c j in isearch for jump to matches
   (define-key isearch-mode-map (kbd "C-c j") 'avy-isearch)
 
-  (key-chord-define-global "jk" 'avy-goto-char-2)
+  (key-chord-define-global "jk" 'avy-goto-char-timer)
 #+end_src
+** Jump to last change
+#+begin_src emacs-lisp
+  (ensure-pkgs '(smartrep goto-last-change))
+  (require 'smartrep)
+  (global-set-key (kbd "C-c k") 'goto-last-change)
+  (smartrep-define-key
+      global-map "C-c"
+    '(("k" . goto-last-change)))  ; "C-c k" for searches
+#+end_src
+
 ** Sunrise Commander
 #+begin_src emacs-lisp
   (ensure-pkg 'sunrise-commander)
@@ -544,7 +555,6 @@ Use the mouse back/forward buttons to go back and forth in history of window con
   (when (featurep 'ns)
     (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
 #+end_src
-*** Bindings
 *** git-review
 #+begin_src emacs-lisp
   (require 'magit-popup)
@@ -599,19 +609,12 @@ Use the mouse back/forward buttons to go back and forth in history of window con
   (magit-define-popup-action 'magit-dispatch-popup ?. "Reviews" 'magit-review-popup)
   (define-key magit-mode-map "." 'magit-review-popup)
 #+end_src
-#+begin_src emacs-lisp
-;; F12 for magit
-(global-unset-key (kbd "<f12>"))
-(global-set-key (kbd "<f12>") 'magit-status)
-;; Safe alternative
-(global-set-key (kbd "C-c g") 'magit-status)
-#+end_src
 *** Training wheels
 #+BEGIN_SRC emacs-lisp
 ;;(require 'magit-commit-training-wheels)
 ;;(ad-activate 'magit-log-edit-commit)
 #+END_SRC
-*** Window advice                                                  :disabled:
+*** Window advice
 From what the emacs.d
 #+begin_src emacs-lisp
   (defadvice magit-status (around magit-fullscreen activate)
@@ -684,6 +687,14 @@ From what the emacs.d
 #+begin_src emacs-lisp
   ;(require 'magit-wip)
   ;(global-magit-wip-save-mode 1)
+#+end_src
+*** Bindings
+#+begin_src emacs-lisp
+;; F12 for magit
+(global-unset-key (kbd "<f12>"))
+(global-set-key (kbd "<f12>") 'magit-status)
+;; Safe alternative
+(global-set-key (kbd "C-c g") 'magit-status)
 #+end_src
 ** TODO Battery life in mode line                                  :disabled:
 Make mac only.
@@ -799,15 +810,89 @@ Adds M-* and M-, to elisp buffers.
 Possible fit for project management.
 #+begin_src emacs-lisp
   (ensure-pkg 'projectile)
-  (setq projectile-enable-caching nil)
+
   (projectile-global-mode)
-  (setq projectile-switch-project-action 'projectile-find-dir)
+
   (ensure-pkg 'helm-projectile)
   (require 'helm-projectile)
   (helm-projectile-on)
   (define-key projectile-mode-map (kbd "C-c p h") 'helm-projectile)
   (ensure-pkg 'helm-ag)
+  (setq projectile-completion-system 'helm
+        projectile-switch-project-action 'helm-projectile
+        projectile-enable-caching nil)
 #+end_src
+
+** Fixmee
+#+begin_src emacs-lisp
+  (ensure-pkgs '(button-lock fixmee))
+  (require 'button-lock)
+  (global-fixmee-mode 1)
+#+end_src
+
+** Projectile/Fixmee Hydra
+#+begin_src emacs-lisp
+  (defhydra hydra-project (:color blue :hint nil :idle 0.4)
+          "
+                                                                      ╭────────────┐
+      Files             Search          Buffer             Do         │ Projectile │
+    ╭─────────────────────────────────────────────────────────────────┴────────────╯
+      [_f_] file          [_a_] ag          [_b_] switch         [_g_] magit
+      [_l_] file dwim     [_A_] grep        [_v_] show all       [_p_] commander
+      [_r_] recent file   [_s_] occur       [_V_] ibuffer        [_i_] info
+      [_d_] dir           [_S_] replace     [_K_] kill all       [_h_] Helm
+      [_o_] other         [_t_] find tag
+      [_u_] test file     [_T_] make tags
+                                                                          ╭────────┐
+      Other Window      Run             Cache              Do             │ Fixmee │
+    ╭──────────────────────────────────────────────────╯ ╭────────────────┴────────╯
+      [_F_] file          [_U_] test        [_kc_] clear         [_x_] TODO & FIXME
+      [_L_] dwim          [_m_] compile     [_kk_] add current   [_X_] toggle
+      [_D_] dir           [_c_] shell       [_ks_] cleanup
+      [_O_] other         [_C_] command     [_kd_] remove
+      [_B_] buffer
+    --------------------------------------------------------------------------------
+          "
+          ("<tab>" hydra-master/body "back")
+          ("<ESC>" nil "quit")
+          ("a"   projectile-ag)
+          ("A"   projectile-grep)
+          ("b"   projectile-switch-to-buffer)
+          ("B"   projectile-switch-to-buffer-other-window)
+          ("c"   projectile-run-async-shell-command-in-root)
+          ("C"   projectile-run-command-in-root)
+          ("d"   projectile-find-dir)
+          ("D"   projectile-find-dir-other-window)
+          ("f"   projectile-find-file)
+          ("F"   projectile-find-file-other-window)
+          ("g"   projectile-vc)
+          ("h"   helm-projectile)
+          ("i"   projectile-project-info)
+          ("kc"  projectile-invalidate-cache)
+          ("kd"  projectile-remove-known-project)
+          ("kk"  projectile-cache-current-file)
+          ("K"   projectile-kill-buffers)
+          ("ks"  projectile-cleanup-known-projects)
+          ("l"   projectile-find-file-dwim)
+          ("L"   projectile-find-file-dwim-other-window)
+          ("m"   projectile-compile-project)
+          ("o"   projectile-find-other-file)
+          ("O"   projectile-find-other-file-other-window)
+          ("p"   projectile-commander)
+          ("r"   projectile-recentf)
+          ("s"   projectile-multi-occur)
+          ("S"   projectile-replace)
+          ("t"   projectile-find-tag)
+          ("T"   projectile-regenerate-tags)
+          ("u"   projectile-find-test-file)
+          ("U"   projectile-test-project)
+          ("v"   projectile-display-buffer)
+          ("V"   projectile-ibuffer)
+          ("X"   fixmee-mode)
+          ("x"   fixmee-view-listing))
+  (define-key projectile-mode-map (kbd "C-c o") #'hydra-project/body)
+#+end_src
+
 ** Flycheck                                                        :disabled:
 #begin_src emacs-lisp
   (ensure-pkg 'flycheck)
@@ -920,8 +1005,13 @@ Let's try ws-butler instead:
   (ensure-pkg 'sphinx-doc)
   (defun my-elpy-setup ()
     (require 'sphinx-doc)
+    (sp-use-smartparens-bindings)
     (sphinx-doc-mode t)
     (message "Done with custom setup."))
+    (define-key elpy-mode-map (kbd "C-<right>") nil)
+    (define-key elpy-mode-map (kbd "C-<left>") nil)
+    (define-key elpy-mode-map (kbd "H-<right>") 'elpy-nav-forward-block)
+    (define-key elpy-mode-map (kbd "H-<left>") 'elpy-nav-backward-block)
   (add-hook 'elpy-mode-hook 'my-elpy-setup)
 #+end_src
 ** Old Python!                                                     :disabled:
@@ -977,6 +1067,7 @@ Research ac-emmet?
             (lambda ()
               (setq tab-width 2)
               (setq js2-basic-offset 2)
+              (setq js2-indent-level 2)
               (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)))
 #end_src
 *** Skewer mode                                                    :disabled:
@@ -1148,10 +1239,10 @@ Enable python.
    '((python . t)))
 #+end_src
 ** Org Trello
-#+begin_src emacs-lisp
+#begin_src emacs-lisp
   (ensure-pkg 'org-trello)
   (require 'org-trello)
-#+end_src
+#end_src
 ** Defunct                                                         :disabled:
 *** Org Mode notifications
 
