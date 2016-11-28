@@ -37,7 +37,7 @@ String libray, used in some of my yasnippets.
 #+begin_src emacs-lisp
   (when (eq system-type 'darwin)
     (server-force-delete)
-    (setq server-socket-dir (format "/tmp/emacs%d" (user-uid)))
+    ;(setq server-socket-dir (format "/tmp/emacs%d" (user-uid)))
     (server-start))
 #+end_src
 ** Chdir to ~
@@ -121,7 +121,7 @@ Doesn't seem to work reliably.
 * Interface
 ** Maximize frame
 Needs to be run only on darwin
-#+begin_src emacs-lisp
+#begin_src emacs-lisp
   (when (eq system-type 'darwin)
     (ensure-pkgs '(maxframe))
     (require 'maxframe)
@@ -135,6 +135,23 @@ Needs to be run only on darwin
     ;; (add-hook 'server-visit-hook 'fudge-maximize-frame t)
     (add-hook 'server-visit-hook 'raise-frame t)
     (add-to-list 'after-make-frame-functions 'fudge-maximize-frame))
+#end_src
+#+begin_src emacs-lisp
+  (add-hook 'server-visit-hook 'raise-frame t)
+
+  (defun my-toggle-frame-fullscreen (frame)
+    "toggle-frame-fullscreen with a frame argument"
+    (let ((fullscreen (frame-parameter frame 'fullscreen)))
+      (if (memq fullscreen '(fullscreen fullboth))
+      (let ((fullscreen-restore (frame-parameter frame 'fullscreen-restore)))
+        (if (memq fullscreen-restore '(maximized fullheight fullwidth))
+            (set-frame-parameter frame 'fullscreen fullscreen-restore)
+          (set-frame-parameter frame 'fullscreen nil)))
+        (modify-frame-parameters
+         frame `((fullscreen . fullboth) (fullscreen-restore . ,fullscreen))))))
+
+  (add-to-list 'after-make-frame-functions 'my-toggle-frame-fullscreen)
+
 #+end_src
 
 #+begin_src emacs-lisp
@@ -154,16 +171,53 @@ Needs to be run only on darwin
 #+begin_src emacs-lisp
   (when (eq system-type 'darwin)
     (set-face-attribute 'default nil
-    :family "Sauce Code Powerline" :height 145 :weight 'medium))
+    :family "Fira Code Medium" :height 145 :weight 'medium)
+    (mac-auto-operator-composition-mode))
 #+end_src
 #+begin_src emacs-lisp
   (ensure-pkg 'dynamic-fonts)
   (require 'dynamic-fonts)
   (add-to-list 'dynamic-fonts-preferred-monospace-fonts "Saurce Code Powerline")
+  (add-to-list 'dynamic-fonts-preferred-monospace-fonts "Fira Code")
   (setq dynamic-fonts-preferred-monospace-point-size 14)
   (setq dynamic-fonts-preferred-proportional-point-size 14)
   (dynamic-fonts-setup)
 #+end_src
+
+*** Fira Code medium setup
+#+begin_src emacs-lisp
+
+  (let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
+                 (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
+                 (36 . ".\\(?:>\\)")
+                 (37 . ".\\(?:\\(?:%%\\)\\|%\\)")
+                 (38 . ".\\(?:\\(?:&&\\)\\|&\\)")
+                 (42 . ".\\(?:\\(?:\\*\\*/\\)\\|\\(?:\\*[*/]\\)\\|[*/>]\\)")
+                 (43 . ".\\(?:\\(?:\\+\\+\\)\\|[+>]\\)")
+                 (45 . ".\\(?:\\(?:-[>-]\\|<<\\|>>\\)\\|[<>}~-]\\)")
+                 (46 . ".\\(?:\\(?:\\.[.<]\\)\\|[.=-]\\)")
+                 (47 . ".\\(?:\\(?:\\*\\*\\|//\\|==\\)\\|[*/=>]\\)")
+                 (48 . ".\\(?:x[a-zA-Z]\\)")
+                 (58 . ".\\(?:::\\|[:=]\\)")
+                 (59 . ".\\(?:;;\\|;\\)")
+                 (60 . ".\\(?:\\(?:!--\\)\\|\\(?:~~\\|->\\|\\$>\\|\\*>\\|\\+>\\|--\\|<[<=-]\\|=[<=>]\\||>\\)\\|[*$+~/<=>|-]\\)")
+                 (61 . ".\\(?:\\(?:/=\\|:=\\|<<\\|=[=>]\\|>>\\)\\|[<=>~]\\)")
+                 (62 . ".\\(?:\\(?:=>\\|>[=>-]\\)\\|[=>-]\\)")
+                 (63 . ".\\(?:\\(\\?\\?\\)\\|[:=?]\\)")
+                 (91 . ".\\(?:]\\)")
+                 (92 . ".\\(?:\\(?:\\\\\\\\\\)\\|\\\\\\)")
+                 (94 . ".\\(?:=\\)")
+                 (119 . ".\\(?:ww\\)")
+                 (123 . ".\\(?:-\\)")
+                 (124 . ".\\(?:\\(?:|[=|]\\)\\|[=>|]\\)")
+                 (126 . ".\\(?:~>\\|~~\\|[>=@~-]\\)")
+                 )
+               ))
+    (dolist (char-regexp alist)
+      (set-char-table-range composition-function-table (car char-regexp)
+                            `([,(cdr char-regexp) 0 font-shape-gstring]))))
+#+end_src
+
 ** Mac command modifiers
 #+begin_src emacs-lisp
 (setq mac-command-modifier 'hyper)
@@ -254,7 +308,8 @@ So I delay theme setting until *after* frame creation and put a little async on 
       (cond ((not (my-fake-frame-p frame))
              (message "Real frame (after make)")
              (run-at-time 0.3 nil 'load-theme my-theme t)
-             (setq my-set-theme t))
+             (setq my-set-theme t)
+             (dynamic-fonts-setup))
             (t (message "Daemon frame. (after make)")))))
 
   ;;; Might not need this one.
@@ -268,6 +323,7 @@ So I delay theme setting until *after* frame creation and put a little async on 
 
   (add-hook 'after-make-frame-functions 'my-after-make-frame)
   (add-hook 'server-switch-hook 'my-after-switch-server)
+  (load-theme my-theme t)
 #+end_src
 ** Don't bother me as much
 #+begin_src emacs-lisp

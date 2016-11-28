@@ -6,7 +6,6 @@
  '(ansi-color-names-vector
    ["#073642" "#dc322f" "#859900" "#b58900" "#268bd2" "#d33682" "#2aa198" "#657b83"])
  '(background-mode dark)
- '(color-theme-sanityinc-solarized-rgb-is-srgb nil)
  '(compilation-message-face (quote default))
  '(cua-delete-selection nil)
  '(cua-global-mark-cursor-color "#2aa198")
@@ -22,11 +21,6 @@
  '(font-lock-maximum-decoration (quote ((dired-mode) (t . t))))
  '(helm-command-prefix-key "C-c h")
  '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
- '(highlight-symbol-colors
-   (--map
-    (solarized-color-blend it "#002b36" 0.25)
-    (quote
-     ("#b58900" "#2aa198" "#dc322f" "#6c71c4" "#859900" "#cb4b16" "#268bd2"))))
  '(highlight-symbol-foreground-color "#93a1a1")
  '(highlight-tail-colors
    (quote
@@ -45,17 +39,19 @@
    (quote
     ("#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36")))
  '(magit-diff-use-overlays nil)
- '(magit-pull-arguments (quote ("--rebase")))
+ '(magit-pull-arguments nil)
  '(magit-use-overlays nil)
  '(org-agenda-files nil)
  '(org-modules
    (quote
     (org-bbdb org-bibtex org-docview org-gnus org-info org-jsinfo org-habit org-irc org-mew org-mhe org-protocol org-rmail org-vm org-wl org-w3m)))
  '(org-trello-current-prefix-keybinding "C-c o" nil (org-trello))
+ '(package-selected-packages
+   (quote
+    (fixmee goto-last-change org-trello org-pomodoro sphinx-doc elpy ws-butler imenu-anywhere groovy-mode helm-c-yasnippet yasnippet helm-ag helm-projectile projectile smartparens column-enforce-mode editorconfig ham-mode dired+ dired-details wgrep-ag ag magit-svn magit sunrise-commander ace-window ibuffer-vc helm-dash helm-swoop helm visual-regexp iedit with-editor hydra darktooth-theme dash dynamic-fonts maxframe key-chord auto-save-buffers-enhanced s org-plus-contrib)))
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
  '(safe-local-variable-values (quote ((eval folding-mode t) (folded-file . t))))
- '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
  '(sp-highlight-pair-overlay nil)
  '(term-default-bg-color "#002b36")
  '(term-default-fg-color "#839496")
