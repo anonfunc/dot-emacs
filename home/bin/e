@@ -42,22 +42,24 @@ ec() {
   if [[ $(uname) == "Darwin" ]]
   then
     #need to raise emacs window
-    file=/tmp/emacs*/server
-    ARGS+=("--socket-name $file")
-    emacsclient ${ARGS[@]} $*
-    sleep 1
+    #file=/tmp/emacs*/server
+    #ARGS+=("--socket-name $file")
     osascript -e 'if application "Emacs" is running then tell application "Emacs" to activate' 2>&1 > /dev/null
+    emacsclient ${ARGS[@]} $*
+    osascript -e 'if application "iTerm2" is running then tell application "iTerm2" to activate' 2>&1 > /dev/null
   else
     emacsclient -a "" ${ARGS[@]} $*
   fi
 }
+
 if [[ $(uname) == "Darwin" ]]
 then
     if [[ -n $( pgrep -i -f emacs ) ]]
     then
         ec $*
     else
-        /Applications/Emacs.app/Contents/MacOS/Emacs --debug-init --daemon && sleep 1 && ec $*
+        /Applications/Emacs.app/Contents/MacOS/Emacs --debug-init &
+        sleep 2 && ec $*
     fi
 else
     ec $*
