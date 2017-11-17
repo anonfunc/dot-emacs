@@ -395,7 +395,7 @@ So I delay theme setting until *after* frame creation and put a little async on 
 #+begin_src emacs-lisp
   (ensure-pkgs '(iedit))
   (require 'iedit)
-  (global-set-key (kbd "C-c i") 'iedit-mode)
+  (global-set-key  (kbd "C-c i") 'iedit-mode)
 #+end_src
 ** Multiple Cursors                                                :disabled:
 Consider instead of Iedit?
@@ -1086,6 +1086,19 @@ Snippet to load javascript:
 #+BEGIN_SRC html
 <script src="http://localhost:8080/skewer"/>
 #+END_SRC
+** Golang
+#+begin_src emacs-lisp
+  (ensure-pkgs '(go-mode go-autocomplete go-eldoc flycheck go-rename))
+
+  (require 'go-autocomplete)
+  (require 'auto-complete-config)
+  (ac-config-default)
+  (add-to-list 'exec-path (expand-file-name "~/go/bin"))
+  (require 'go-eldoc)
+  (add-hook 'go-mode-hook 'go-eldoc-setup)
+  (add-hook 'go-mode-hook 'flycheck-mode)
+#+end_src
+
 * Org-mode Setup
 ** Require
 #+begin_src emacs-lisp

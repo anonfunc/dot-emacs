@@ -48,7 +48,7 @@
  '(org-trello-current-prefix-keybinding "C-c o" nil (org-trello))
  '(package-selected-packages
    (quote
-    (fixmee goto-last-change org-trello org-pomodoro sphinx-doc elpy ws-butler imenu-anywhere groovy-mode helm-c-yasnippet yasnippet helm-ag helm-projectile projectile smartparens column-enforce-mode editorconfig ham-mode dired+ dired-details wgrep-ag ag magit-svn magit sunrise-commander ace-window ibuffer-vc helm-dash helm-swoop helm visual-regexp iedit with-editor hydra darktooth-theme dash dynamic-fonts maxframe key-chord auto-save-buffers-enhanced s org-plus-contrib)))
+    (go-rename flycheck go-eldoc go-autocomplete go-mode fixmee goto-last-change org-trello org-pomodoro sphinx-doc elpy ws-butler imenu-anywhere groovy-mode helm-c-yasnippet yasnippet helm-ag helm-projectile projectile smartparens column-enforce-mode editorconfig ham-mode dired+ dired-details wgrep-ag ag magit-svn magit sunrise-commander ace-window ibuffer-vc helm-dash helm-swoop helm visual-regexp iedit with-editor hydra darktooth-theme dash dynamic-fonts maxframe key-chord auto-save-buffers-enhanced s org-plus-contrib)))
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
  '(safe-local-variable-values (quote ((eval folding-mode t) (folded-file . t))))
